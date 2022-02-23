@@ -115,9 +115,6 @@ bool SDL_Handler::is_key_pressed() const {
 	return !(m_keys_down.size() == 0);
 }
 
-/*
-	TODO: Add support for multiple windows
-*/
 V2d<int> SDL_Handler::get_mouse_pos() const {
 	SDL_PumpEvents();
 	V2d<int> res;
@@ -125,5 +122,28 @@ V2d<int> SDL_Handler::get_mouse_pos() const {
 	SDL_GetGlobalMouseState(&res.x, &res.y);
 	SDL_GetWindowPosition(m_window, &window_pos.x, &window_pos.y);
 	res = res - window_pos;
+	return res;
+}
+
+/*
+	Clamp point p inside bounding box defined by points f and t (inclusive).
+*/
+void clamp_point(V2d<int> & p, const V2d<int> & f, const V2d<int> & t) {
+	// clamp horisontally
+	if (p.x < f.x) p.x = f.x;
+	else if (p.x > t.x) p.x = t.x;
+
+	// clamp vertically
+	if (p.y < f.y) p.y = f.y;
+	else if (p.y > t.y) p.y = t.y;
+}
+
+/*
+	TODO: Add support for multiple windows
+*/
+V2d<int> SDL_Handler::get_mouse_pos_clamped() const {
+	V2d<int> res = get_mouse_pos();
+	// clamp mouse position within screen space
+	clamp_point(res, {0, 0}, {width() - 1, height() - 1});
 	return res;
 };

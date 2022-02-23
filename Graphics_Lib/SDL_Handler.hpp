@@ -24,6 +24,7 @@ public:
 	bool is_key_pressed(int key_id) const;
 	bool is_key_pressed() const;
 	V2d<int> get_mouse_pos() const;
+	V2d<int> get_mouse_pos_clamped() const;
 
 	bool is_open() const { return m_is_open; };
 
