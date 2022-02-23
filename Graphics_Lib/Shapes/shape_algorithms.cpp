@@ -1,6 +1,6 @@
 #include <vector>
 #include "../V2d.hpp"
-#include "bresenham_line.hpp"
+#include "shape_algorithms.hpp"
 
 std::vector<V2d<int>> got_points_for_line_low(const V2d<int> & f, const V2d<int> & t);
 std::vector<V2d<int>> get_points_for_line_high(const V2d<int> & f, const V2d<int> & t);
