@@ -1,8 +1,8 @@
 #include "rgba.hpp"
 
 ostream & operator << (ostream & os, const Rgba & color) {
-	return os << "(r: " << color.r << ", "
-				 << "g: " << color.g << ", "
-				 << "b: " << color.b << ", "
-				 << "a: " << color.a << ')';
+	return os << "(r: " << (int) color.r << ", "
+				 <<  "g: " << (int) color.g << ", "
+				 <<  "b: " << (int) color.b << ", "
+				 <<  "a: " << (int) color.a << ')';
 };

@@ -7,7 +7,7 @@ SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point
 	// create SDL instances
 	m_window = SDL_CreateWindow(title.c_str(), start_point.x, start_point.y, width(), height(), SDL_WINDOW_SHOWN);
 	m_renderer = SDL_CreateRenderer(m_window, -1, SDL_RENDERER_ACCELERATED);
-	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width(), height());
+	m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, width(), height());
 
 	// check for error in initialization
 	if (m_window == nullptr || m_renderer == nullptr || m_texture == nullptr)
