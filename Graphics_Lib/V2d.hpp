@@ -15,6 +15,10 @@ struct V2d {
 
 	double size() 	  const { return std::sqrt(x*x + y*y); };
 	double size_sq() const { return x*x + y*y; };
+	bool is_bound(const V2d<T> & lower, const V2d<T> & upper) const {
+		return ! (x < lower.x || x > upper.x ||
+					 y < lower.y || y > upper.y);
+	};
 };
 
 template <typename T> 

@@ -45,13 +45,14 @@ protected:
 
 	void clear_pixels();
 	void clear_pixels(const Rgba & col);
+	
+	Rgba * m_pixels;
 
 private:
 	SDL_Window * m_window;
 	SDL_Renderer * m_renderer;
 	SDL_Texture * m_texture;
 
-	Rgba * m_pixels;
 	const unsigned int m_width, m_height;
 
 	void push_pixels(const Rgba * pxs);

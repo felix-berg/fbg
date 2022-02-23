@@ -1,5 +1,5 @@
-#ifndef BRESENHAM_LINE_HPP
-#define BRESENHAM_LINE_HPP
+#ifndef SHAPE_ALGORITHMS_HPP
+#define SHAPE_ALGORITHMS_HPP
 
 #include <vector>
 #include "../V2d.hpp"

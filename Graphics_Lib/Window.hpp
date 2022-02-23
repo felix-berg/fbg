@@ -2,6 +2,7 @@
 #define WINDOW_HPP
 
 #include "Shapes/shape.hpp"
+#include "Shapes/context.hpp"
 #include "SDL_Handler.hpp"
 
 #include <vector>
@@ -19,18 +20,13 @@ public:
 	void background(const Rgba & color) { m_background_color = color; };
 	Rgba get_background_color() const { return m_background_color; };
 
-	int num_shapes() const { return m_shapes.size(); };
-	
-	void attach(Shape & shape) { m_shapes.push_back(&shape); };
-	void detach(Shape & shape) { 
-		for (int i = 0; i < m_shapes.size(); i++) if (*m_shapes[i] == shape) m_shapes.erase(m_shapes.begin() + i); 
-	};
-
 	void draw();
+
+	Context context;
 
 private:
 	std::vector<Shape *> m_shapes;
-	Rgba m_background_color;
+	Rgba m_background_color = {0, 0, 0, 255};
 };
 
 #endif
