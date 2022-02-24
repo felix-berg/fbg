@@ -16,9 +16,15 @@ public:
 	virtual void compute_fillin(Rgba * pixels, int w, int h) { };
 
 	V2d<int> get_point(int i) const { return m_points[i]; };
-	const Rgba & get_fill() const { return m_fill; };
-	const Rgba & get_stroke() const { return m_stroke; };
-	int get_stroke_weight() const { return m_stroke_weight; };
+	
+	const Rgba & fill() const { return m_fill; };
+	const Rgba & stroke() const { return m_stroke; };
+	int stroke_weight() const { return m_stroke_weight; };
+	
+	void fill(const Rgba & f) { m_fill = f; };
+	void stroke(const Rgba & s) { m_stroke = s; };
+	void strokeweight(int sw) { m_stroke_weight = sw; };
+
 	unsigned int id() const { return m_id; };
 
 	void add_point(const V2d<int> & p) { m_points.push_back(p); };

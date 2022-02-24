@@ -10,19 +10,22 @@
 #include "Graphics_Lib/Window.hpp"
 
 int main() {
-	Window window {"uh", 800, 800};
-	window.background({0, 0, 0, 0});
+	srand(clock());
+	Window window {"uh", 1000, 800};
+	window.background(0, 100);
 	
-	Line l {{100, 100}, window.get_mouse_pos()};
+	std::vector<Line> lines { 100 };
+	for (Line & l : lines) l.stroke({255, 255, 255, 255});
 
-	window.context.attach(l);
+	for (Line & l : lines) window.context.attach(l);
+	for (Line & l : lines) l.from({rand() % window.width(), rand() % window.height()});
 
 	int total_frames = 0;
 
 	clock_t start_time = clock();
 
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
-		l.to(window.get_mouse_pos());
+		for (Line & l: lines) l.to(window.get_mouse_pos());
 		window.draw(); 
 		total_frames++;
 	}

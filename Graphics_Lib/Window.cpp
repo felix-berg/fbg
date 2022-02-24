@@ -19,7 +19,13 @@ void Window::wait_for_key(int key_id) {
 }
 
 void Window::draw() {
-	clear_pixels(m_background_color);
+	// clear_pixels(m_background_color); // not accounting for combining alpha into it.
+	for (int y = 0; y < height(); y++)
+		for (int x = 0; x < width(); x++) {
+			Rgba & p = m_pixels[x + y * width()];
+			p = color_over(p, m_background_color);
+		}
+
 	context.compute_lines(m_pixels, width(), height());
 
 	// update the SDL Pixelbuffer and pull new events.

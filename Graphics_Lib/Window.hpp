@@ -9,16 +9,28 @@
 
 class Window : public SDL_Handler {
 public:
-	Window() : SDL_Handler { } { };
-	Window(const std::string & title, unsigned int w, unsigned int h) : SDL_Handler { title, w, h } { };
+	Window() {	};
+	Window(const std::string & title, unsigned int w, unsigned int h) : SDL_Handler { title, w, h } {	};
 
 	void wait_for_key(int key_id);
 	void wait_for_key();
 
-	void background(unsigned char brightness) { m_background_color = {brightness, brightness, brightness, brightness}; };
-	void background(unsigned char brightness, unsigned char alpha) { m_background_color = {brightness, brightness, brightness, alpha}; };
-	void background(const Rgba & color) { m_background_color = color; };
-	Rgba get_background_color() const { return m_background_color; };
+	// setters
+	void background(unsigned char brightness) 
+		{ m_background_color = {brightness, brightness, brightness, 255}; };
+
+	void background(unsigned char brightness, unsigned char alpha) 
+		{ m_background_color = {brightness, brightness, brightness, alpha}; };
+
+	void background(unsigned char r, unsigned char g, unsigned char b) 
+		{ m_background_color = { r, g, b, 255 }; };
+		
+	void background(const Rgba & color) 
+		{ m_background_color = color; };
+
+	
+	// getters
+	Rgba background() const { return m_background_color; };
 
 	void draw();
 
