@@ -2,19 +2,26 @@
 
 #include <iostream>
 #include <vector>
-#include <functional>
 
 #include "Graphics_Lib/Shapes/shape.hpp"
 #include "Graphics_Lib/Shapes/line.hpp"
 #include "Graphics_Lib/Shapes/context.hpp"
 #include "Graphics_Lib/Window.hpp"
+#include "Graphics_Lib/alphacomposit.hpp"
+
+void test_alpha_compositing();
+void test_alpha_compositing2();
 
 int main() {
+
+	// test_alpha_compositing2();
+	// return 0;
+
 	srand(clock());
-	Window window {"uh", 1000, 800};
-	window.background(0, 100);
+	Window window {"uh", 640, 480};
+	window.background(0, 20);
 	
-	std::vector<Line> lines { 100 };
+	std::vector<Line> lines { 1 };
 	for (Line & l : lines) l.stroke({255, 255, 255, 255});
 
 	for (Line & l : lines) window.context.attach(l);
@@ -26,14 +33,81 @@ int main() {
 
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
 		for (Line & l: lines) l.to(window.get_mouse_pos());
-		window.draw(); 
+		window.draw();
 		total_frames++;
 	}
 
 	clock_t total_time = clock() - start_time;
-	float total_time_secs = (float) total_time / (float) CLOCKS_PER_SEC;
-	
-	std::cout << "Average framerate: " << (float) total_frames / total_time_secs << " fps\n";
-	
+	float total_time_mcs = (float) total_time / (float) total_frames;
+	std::cout << "Average frametime: " << total_time_mcs << " µs\n";
+
 	return 0;
 }
+
+void test_alpha_compositing2() {
+	srand(clock());
+	Rgba * a = (Rgba *) malloc(sizeof(Rgba) * 196000);
+	Rgba * b = (Rgba *) malloc(sizeof(Rgba) * 196000);
+
+	for (int i = 0; i < 196000; i++) {
+		// a[i] = {clock() % 255, clock() % 255, clock() % 255, clock() % 255};
+		// b[i] = {clock() % 255, clock() % 255, clock() % 255, clock() % 155};
+	}
+
+	clock_t start, stop;
+	start = clock();
+	for (int i = 0; i < 196000; i += 8)
+		alpha_composite8(a + i, b + i);
+
+
+	stop = clock();
+	std::cout << stop - start << '\n';
+
+	start = clock();
+	// for (int i = 0; i < 196000; i += 8)
+	// 	alpha_composite8(a + i, b + i);
+
+	for (int i = 0; i < 196000; i++)
+		alpha_composite1(a + i, b + i);
+
+	stop = clock();
+	std::cout << stop - start << '\n';
+}
+
+// void test_alpha_compositing() {
+
+// 	Rgba * a = (Rgba *) malloc(sizeof(Rgba) * 196000);
+// 	Rgba * b = (Rgba *) malloc(sizeof(Rgba) * 196000);
+
+// 	std::cout << "initializeing...\n"; 
+
+// 	for (int i = 0; i < 196000; i++) {
+// 		a[i] = {121, 2, 3, 4};
+// 		b[i] = {5, 100, 100, 200};
+// 	}
+
+// 	clock_t start_ = clock(), end_;
+
+// 	for (int i = 0; i < 196000; i += 32)
+// 		alpha_composit_16(a + i, b + i);
+	
+// 	end_ = clock();
+
+// 	std::cout << "It took: " << end_ - start_ << " µs\n";
+
+// 	std::cout << "Initializing...\n";
+// 	for (int i = 0; i < 196000; i++) {
+// 		a[i] = {121, 2, 3, 4};
+// 		b[i] = {5, 100, 100, 200};
+// 	}
+
+// 	start_ = clock();
+
+// 	for (int i = 0; i < 196000; i++) {
+// 		alpha_composit_1(&a[i], &b[i]);
+// 	}
+	
+// 	end_ = clock();
+
+// 	std::cout << "It took: " << end_ - start_ << " µs\n";
+// }

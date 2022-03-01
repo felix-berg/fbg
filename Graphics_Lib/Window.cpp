@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "alphacomposit.hpp"
 
 #define KEY_DELAY 10
 
@@ -19,23 +20,12 @@ void Window::wait_for_key(int key_id) {
 }
 
 void Window::draw() {
-	// clear_pixels(m_background_color); // not accounting for combining alpha into it.
-	for (int y = 0; y < height(); y++)
-		for (int x = 0; x < width(); x++) {
-			Rgba & p = m_pixels[x + y * width()];
-			p = color_over(p, m_background_color);
-		}
-
+	for (int i = 0; i < size(); i++) {
+		alpha_composite1(m_pixels + i, &m_background_color);
+	}
+	// alpha_compositeNC(m_pixels, &m_background_color, size());
 	context.compute_lines(m_pixels, width(), height());
 
 	// update the SDL Pixelbuffer and pull new events.
 	this->update();
 }
-
-// for (int yoff = - stroke_weight / 2; yoff <= stroke_weight / 2; yoff++)
-// 	for (int xoff = - stroke_weight / 2; xoff <= stroke_weight / 2; xoff++) {
-// 		V2d<int> offset = {xoff, yoff};
-// 		V2d<int> draw_point = p + offset;
-// 		if (is_bounded(draw_point, {0, 0}, {width() - 1, height() - 1}) && draw_point.x * draw_point.x + draw_point.y * draw_point.y < (stroke_weight / 2) * (stroke_weight / 2));
-// 			this->set_pixel(draw_point, shape->get_stroke());
-// }

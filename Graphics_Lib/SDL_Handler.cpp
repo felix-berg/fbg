@@ -15,6 +15,8 @@ SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point
 
 	// allocate pixel buffer
 	m_pixels = (Rgba *) malloc(sizeof(Rgba) * size());
+	
+	clear_pixels({0, 0, 0, 255});
 
 	// set window to the open state
 	m_is_open = true;

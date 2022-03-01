@@ -9,15 +9,13 @@ using std::ostream;
 	A color given by a red, green, blue and alpha value.
 */
 struct Rgba {
-	unsigned char a, r, g, b; 
+	u_char a, r, g, b; 
 
 	Rgba() { };
-	Rgba(unsigned char rr, unsigned char gg, unsigned char bb, unsigned char aa)
+	Rgba(u_char rr, u_char gg, u_char bb, u_char aa)
 		: r { rr }, g { gg }, b { bb }, a { aa } { };
 }; 
 
 ostream & operator << (ostream & os, const Rgba & color);
-
-Rgba color_over(const Rgba & under, const Rgba & over);
 
 #endif

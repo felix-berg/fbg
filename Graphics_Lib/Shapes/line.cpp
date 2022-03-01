@@ -2,6 +2,7 @@
 #include "../V2d.hpp"
 #include "../rgba.hpp"
 #include "shape_algorithms.hpp"
+#include "../alphacomposit.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -19,7 +20,7 @@ void Line::compute_lines(Rgba * pixels, int width, int height) {
 	for (V2d<int> & p : points) {
 		if (p.is_bound({0, 0}, {width - 1, height - 1})) {
 			Rgba & pixel = pixels[p.x + p.y * width];
-			pixel = color_over(pixel, stroke());
+			alpha_composite1(&pixel, &stroke());
 		}
 	}
 }

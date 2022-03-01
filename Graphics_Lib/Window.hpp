@@ -16,13 +16,13 @@ public:
 	void wait_for_key();
 
 	// setters
-	void background(unsigned char brightness) 
+	void background(u_char brightness) 
 		{ m_background_color = {brightness, brightness, brightness, 255}; };
 
-	void background(unsigned char brightness, unsigned char alpha) 
+	void background(u_char brightness, u_char alpha) 
 		{ m_background_color = {brightness, brightness, brightness, alpha}; };
 
-	void background(unsigned char r, unsigned char g, unsigned char b) 
+	void background(u_char r, u_char g, u_char b) 
 		{ m_background_color = { r, g, b, 255 }; };
 		
 	void background(const Rgba & color) 
