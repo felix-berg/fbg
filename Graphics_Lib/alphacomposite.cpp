@@ -1,4 +1,4 @@
-#include "alphacomposit.hpp"
+#include "alphacomposite.hpp"
 #include "bitsandbytes.hpp"
 #include <immintrin.h>
 
@@ -12,12 +12,17 @@ inline __m256i _mm256_combine_2_128i(const __m128i _v1, const __m128i _v2);
 	Standard CPU instructions.
 */
 void alpha_composite1(Rgba * dst, const Rgba * over) {
+	// if the alpha over the over color, 
+	// it is completely opaque, 
+	// so just return it
 	if (over->a == 255) {
 		*dst = *over;
 		return;
 	}
-	u_char rest = 255 - over->a;
 
+	// c = o * oa + d * (1 - oa)
+	// o = (o * OA + d * (255 - OA)) / 255
+	u_char rest = 255 - over->a;
 	*dst = Rgba {
 		(u_char) ((over->r * over->a + dst->r * rest) / 255),
 		(u_char) ((over->g * over->a + dst->g * rest) / 255),
