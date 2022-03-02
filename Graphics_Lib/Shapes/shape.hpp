@@ -34,6 +34,7 @@ protected:
 	Shape() { 
 		this->m_id = get_unique_id();
 	};
+	
 	Shape(std::initializer_list<V2d<int>> l) { 
 		this->m_id = get_unique_id();
 

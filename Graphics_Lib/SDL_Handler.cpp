@@ -149,3 +149,20 @@ V2d<int> SDL_Handler::get_mouse_pos_clamped() const {
 	clamp_point(res, {0, 0}, {width() - 1, height() - 1});
 	return res;
 };
+
+/*
+	Returns whether this window is in keyboard focus.
+	TODO: Untested.
+	Update: doesnt work
+*/
+bool SDL_Handler::has_keyboard_focus() const {
+	return SDL_GetKeyboardFocus() == m_window;
+}
+
+/*
+	Returns whether this window is in mouse focus.
+	TODO: Untested
+*/
+bool SDL_Handler::has_mouse_focus() const {
+	return SDL_GetMouseFocus() == m_window; 
+}

@@ -43,6 +43,9 @@ protected:
 	void poll_events();
 	void update();
 
+	bool has_keyboard_focus() const;
+	bool has_mouse_focus() const;
+
 	void clear_pixels();
 	void clear_pixels(const Rgba & col);
 	

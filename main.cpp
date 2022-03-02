@@ -31,6 +31,7 @@ int main() {
 		for (Line & l: lines) l.to(window.get_mouse_pos());
 		window.draw();
 		total_frames++;
+		window.wait_for_key();
 	}
 
 	clock_t total_time = clock() - start_time;

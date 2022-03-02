@@ -19,10 +19,10 @@ void alpha_composite1(Rgba * dst, const Rgba * over) {
 	u_char rest = 255 - over->a;
 
 	*dst = Rgba {
-		(u_char) (over->r + (dst->r * rest) / 255),
-		(u_char) (over->g + (dst->g * rest) / 255),
-		(u_char) (over->b + (dst->b * rest) / 255),
-		(u_char) (over->a + (dst->a * rest) / 255)
+		(u_char) ((over->r * over->a + dst->r * rest) / 255),
+		(u_char) ((over->g * over->a + dst->g * rest) / 255),
+		(u_char) ((over->b * over->a + dst->b * rest) / 255),
+		(u_char) ((over->a * over->a + dst->a * rest) / 255)
 	};
 }
 
@@ -30,8 +30,14 @@ void alpha_composite8(Rgba * dst, Rgba * over) {
 	const __m256i _select_alpha = _mm256_set1_epi32(0x000000FF);
 	const __m256i _255 = _mm256_set1_epi8(0xFF);
 
+	// c = (over.x * over.a + dst.x * (255 - over.a)) / 255
+	// rest = 255 - over.a;
+	// c = (over.x * over.a + dst.x * rest) / 255
+
+	// inputs
 	__m256i _dst, _over;
 
+	// copy from dst -> _dst and over -> _over
 	// structure: |R1|G1|B1|A1|R2|B2|...|G8|A8|
 	_mm256_storeu_si256(&_dst, _mm256_loadu_si256((const __m256i *) dst));
 	_mm256_storeu_si256(&_over, _mm256_loadu_si256((const __m256i *) over));
@@ -57,21 +63,29 @@ void alpha_composite8(Rgba * dst, Rgba * over) {
 	// over.x + (dst.x * _rest) / 255
 	// ******************************
 
-	// (dst.x * _rest)
-	__m256i _lres16, _hres16;
-	_mm_mult_epu8_into_2epu16(_dst, _rest, &_lres16, &_hres16);
 
-	// (dst.x * _rest) / 255 (actually 256 because its faster)
-	_lres16 = _mm256_epu16_divideby255(_lres16);
-	_hres16 = _mm256_epu16_divideby255(_hres16);
 
+	__m256i _lndst16, _hndst16; // new dst low part and high part
+	// new dst = dst.x * _rest
+	_mm_mult_epu8_into_2epu16(_dst, _rest, &_lndst16, &_hndst16);
+
+	__m256i _nover, _lnover16, _hnover16; // new over low part and high part
+	// new over = (over.x * over.a) / 255
+	_mm_mult_epu8_into_2epu16(_over, _oa, &_lnover16, &_hnover16);
+
+	// use new dst for result to save registers
+	// new dst = over.x * over.a + dst.x * rest
+	_lndst16 = _mm256_add_epi16(_lnover16, _lndst16);
+	_hndst16 = _mm256_add_epi16(_hnover16, _hndst16);
+
+	// new dst = (over.x * over.x + dst.x * rest) / 255 (actually 256 because its faster)
+	_lndst16 = _mm256_epu16_divideby255(_lndst16);
+	_hndst16 = _mm256_epu16_divideby255(_hndst16);
+	
 	// convert to 8-bit integers again
-	// use "_rest" register for result
-	// _rest = |_hres16|_lres16|
-	_rest = _mm256_combine_2_128i(_mm_convertepi16_epi8(_lres16), _mm_convertepi16_epi8(_hres16));
-
-	// over.x + (dst.x * _rest) / 255;
-	_rest = _mm256_adds_epu8(_rest, _over);
+	// use "_rest" register for result of (over.x * over.a + dst.x * rest) / 255
+	// _rest = |_hndst16|_lndst16|
+	_rest = _mm256_combine_2_128i(_mm_convertepi16_epi8(_lndst16), _mm_convertepi16_epi8(_hndst16));
 
 	_mm256_storeu_si256((__m256i *) dst, _rest);
 }
