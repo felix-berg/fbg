@@ -23,6 +23,7 @@ void Window::draw() {
 	for (int i = 0; i < size(); i++) {
 		alpha_composite1(m_pixels + i, &m_background_color);
 	}
+
 	// alpha_compositeNC(m_pixels, &m_background_color, size());
 	context.compute_lines(m_pixels, width(), height());
 

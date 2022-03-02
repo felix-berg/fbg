@@ -13,16 +13,12 @@ void test_alpha_compositing();
 void test_alpha_compositing2();
 
 int main() {
-
-	// test_alpha_compositing2();
-	// return 0;
-
 	srand(clock());
 	Window window {"uh", 640, 480};
-	window.background(0, 20);
+	window.background({0, 0, 0, 5});
 	
 	std::vector<Line> lines { 1 };
-	for (Line & l : lines) l.stroke({255, 255, 255, 255});
+	for (Line & l : lines) l.stroke({255, 255, 255, 50});
 
 	for (Line & l : lines) window.context.attach(l);
 	for (Line & l : lines) l.from({rand() % window.width(), rand() % window.height()});
@@ -40,6 +36,7 @@ int main() {
 	clock_t total_time = clock() - start_time;
 	float total_time_mcs = (float) total_time / (float) total_frames;
 	std::cout << "Average frametime: " << total_time_mcs << " µs\n";
+	std::cout << "Average framerate: " << 10e6 / total_time_mcs << " fps\n";
 
 	return 0;
 }

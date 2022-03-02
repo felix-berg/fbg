@@ -12,11 +12,10 @@ inline __m256i _mm256_combine_2_128i(const __m128i _v1, const __m128i _v2);
 	Standard CPU instructions.
 */
 void alpha_composite1(Rgba * dst, const Rgba * over) {
-	if (over->a == 255) {
-		*dst = *over;
-		return;
-	}
-
+	// if (over->a == 255) {
+	// 	*dst = *over;
+	// 	return;
+	// }
 	u_char rest = 255 - over->a;
 
 	*dst = Rgba {
@@ -92,7 +91,7 @@ void alpha_compositeN(Rgba * dst, Rgba * over, int n) {
 	}
 }
 
-void alpha_compositeNC(Rgba * dst, Rgba * over, int n) {
+void alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
 	if (n % 8 != 0)
 		throw std::runtime_error("Cannot composite color-arrays, that do not have length divisible by 8\n");
 	
