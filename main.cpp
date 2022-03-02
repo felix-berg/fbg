@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <array>
 
 #include "Graphics_Lib/Shapes/shape.hpp"
 #include "Graphics_Lib/Shapes/line.hpp"
@@ -15,10 +16,10 @@ void test_alpha_compositing2();
 int main() {
 	srand(clock());
 	Window window {"uh", 640, 480};
-	window.background({0, 0, 0, 5});
+	window.background({255, 255, 255, 254});
 	
-	std::vector<Line> lines { 1 };
-	for (Line & l : lines) l.stroke({255, 255, 255, 50});
+	std::array<Line, 100> lines;
+	for (Line & l : lines) l.stroke({0, 0, 0, 255});
 
 	for (Line & l : lines) window.context.attach(l);
 	for (Line & l : lines) l.from({rand() % window.width(), rand() % window.height()});
@@ -31,13 +32,12 @@ int main() {
 		for (Line & l: lines) l.to(window.get_mouse_pos());
 		window.draw();
 		total_frames++;
-		window.wait_for_key();
 	}
 
 	clock_t total_time = clock() - start_time;
 	float total_time_mcs = (float) total_time / (float) total_frames;
 	std::cout << "Average frametime: " << total_time_mcs << " µs\n";
-	std::cout << "Average framerate: " << 10e6 / total_time_mcs << " fps\n";
+	std::cout << "Average framerate: " << 10e5 / total_time_mcs << " fps\n";
 
 	return 0;
 }

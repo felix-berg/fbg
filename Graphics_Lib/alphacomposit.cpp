@@ -12,10 +12,10 @@ inline __m256i _mm256_combine_2_128i(const __m128i _v1, const __m128i _v2);
 	Standard CPU instructions.
 */
 void alpha_composite1(Rgba * dst, const Rgba * over) {
-	// if (over->a == 255) {
-	// 	*dst = *over;
-	// 	return;
-	// }
+	if (over->a == 255) {
+		*dst = *over;
+		return;
+	}
 	u_char rest = 255 - over->a;
 
 	*dst = Rgba {
@@ -27,7 +27,6 @@ void alpha_composite1(Rgba * dst, const Rgba * over) {
 }
 
 void alpha_composite8(Rgba * dst, Rgba * over) {
-	const __m256i _select_alpha = _mm256_set1_epi32(0x000000FF);
 	const __m256i _255 = _mm256_set1_epi8(0xFF);
 
 	// c = (over.x * over.a + dst.x * (255 - over.a)) / 255
@@ -37,11 +36,12 @@ void alpha_composite8(Rgba * dst, Rgba * over) {
 	// inputs
 	__m256i _dst, _over;
 
-	// copy from dst -> _dst and over -> _over
-	// structure: |R1|G1|B1|A1|R2|B2|...|G8|A8|
-	_mm256_storeu_si256(&_dst, _mm256_loadu_si256((const __m256i *) dst));
+	// copy from over -> _over
 	_mm256_storeu_si256(&_over, _mm256_loadu_si256((const __m256i *) over));
 
+	// get a vector _oa filled with only the over.a value
+
+	const __m256i _select_alpha = _mm256_set1_epi32(0x000000FF);
 	// _oa = over.a & _select_alpha
 	// _oa = |R1|G1|... & |00|00|00|FF| ==> |00|00|00|A1|...|00|A2|...
 	__m256i _oa = _mm256_and_si256(_over, _select_alpha);
@@ -57,7 +57,20 @@ void alpha_composite8(Rgba * dst, Rgba * over) {
 										_mm256_slli_si256(_oa, 3)  // _oa << 3 * 8
 									)));
 
+	// if (over.a == 255) return over;
+	if (_mm256_movemask_epi8(_mm256_cmpeq_epi8(_oa, _255)) == 0xFFFFFFFF) {
+		memcpy(dst, over, sizeof(Rgba) * 8);
+		return;
+	}
+	
+	// copy from dst -> _dst
+	// structure: |R1|G1|B1|A1|R2|B2|...|G8|A8|
+	_mm256_storeu_si256(&_dst, _mm256_loadu_si256((const __m256i *) dst));
+
+
+
 	// _rest = 255 - over.a
+
 	__m256i _rest = _mm256_sub_epi8(_255, _oa);
 
 	// over.x + (dst.x * _rest) / 255
