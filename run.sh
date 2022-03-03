@@ -7,5 +7,5 @@ echo "Compiling: " *.cpp Graphics_Lib/*.cpp Graphics_Lib/Shapes/*.cpp "
 
 
 "
-g++ *.cpp Graphics_Lib/*.cpp Graphics_Lib/Shapes/*.cpp -lSDL2 -mavx2 -O3
+g++ *.cpp Graphics_Lib/*.cpp Graphics_Lib/Shapes/*.cpp -lSDL2 -mavx2 -pthread -O3
 ./a.out

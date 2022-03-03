@@ -1,4 +1,4 @@
-#include "alphacomposit.hpp"
+#include "alphacomposite.hpp"
 
 #include "rgba.hpp"
 

@@ -114,19 +114,18 @@ void alpha_composite8(Rgba * dst, Rgba * over) {
 	Requires that the number of elements n is divisible by eight.
 */
 void alpha_compositeN(Rgba * dst, Rgba * over, int n) {
-	if (n % 8 != 0)
-		throw std::runtime_error("Cannot composite color-arrays, that do not have length divisible by 8\n");
-	
 	// loop through all chunks of eight in the array
 	for (int i = 0; i < n - 8; i += 8) {
 		alpha_composite8(dst + i, over + i);
 	}
+	
+	int pixels_left = n % 8;
+	for (int i = n - pixels_left; i < n; i++) {
+		alpha_composite1(dst + i, over + i);
+	}
 }
 
 void alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
-	if (n % 8 != 0)
-		throw std::runtime_error("Cannot composite color-arrays, that do not have length divisible by 8\n");
-	
 	// create array: |over|over|over|... length 8
 	Rgba over8[8];
 	std::fill(over8, over8 + 8, *over);
@@ -134,6 +133,11 @@ void alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
 	// loop through all chunks of eight in the array
 	for (int i = 0; i < n - 8; i += 8) {
 		alpha_composite8(dst + i, over8);
+	}
+
+	int pixels_left = n % 8;
+	for (int i = n - pixels_left; i < n; i++) {
+		alpha_composite1(dst + i, over);
 	}
 }
 

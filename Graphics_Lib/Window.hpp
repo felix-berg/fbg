@@ -6,11 +6,17 @@
 #include "SDL_Handler.hpp"
 
 #include <vector>
+#include "multithr_alphacomposite.hpp"
+
 
 class Window : public SDL_Handler {
 public:
-	Window() {	};
-	Window(const std::string & title, unsigned int w, unsigned int h) : SDL_Handler { title, w, h } {	};
+	Window() {
+		init_compositor_threadpool(size());
+	};
+	Window(const std::string & title, unsigned int w, unsigned int h) : SDL_Handler { title, w, h } {
+		init_compositor_threadpool(size());
+	};
 
 	void wait_for_key(int key_id);
 	void wait_for_key();

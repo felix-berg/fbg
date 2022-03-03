@@ -8,15 +8,15 @@
 #include "Graphics_Lib/Shapes/line.hpp"
 #include "Graphics_Lib/Shapes/context.hpp"
 #include "Graphics_Lib/Window.hpp"
-#include "Graphics_Lib/alphacomposit.hpp"
+#include "Graphics_Lib/alphacomposite.hpp"
 
 void test_alpha_compositing();
 void test_alpha_compositing2();
 
 int main() {
 	srand(clock());
-	Window window {"uh", 640, 480};
-	window.background({255, 255, 255, 254});
+	Window window {"uh", 1920, 1080};
+	window.background({255, 255, 255, 20});
 	
 	std::array<Line, 100> lines;
 	for (Line & l : lines) l.stroke({0, 0, 0, 255});

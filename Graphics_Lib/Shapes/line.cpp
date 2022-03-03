@@ -2,7 +2,7 @@
 #include "../V2d.hpp"
 #include "../rgba.hpp"
 #include "shape_algorithms.hpp"
-#include "../alphacomposit.hpp"
+#include "../alphacomposite.hpp"
 
 #include <iostream>
 #include <cmath>
