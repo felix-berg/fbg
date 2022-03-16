@@ -13,6 +13,27 @@ struct V2d {
 	V2d<T> operator * (const double factor) const { return { (T) x * factor, (T) y * factor };	};
 	V2d<T> operator / (const double factor) const { return { (T) x / factor, (T) y / factor };	};
 
+	V2d<T> & operator += (const V2d<T> & oth) {
+		this->x += oth.x;
+		this->y += oth.y;
+		return *this;
+	};
+	V2d<T> & operator -= (const V2d<T> & oth) {
+		this->x -= oth.x;
+		this->y -= oth.y;
+		return *this;
+	};
+	V2d<T> & operator *= (const double factor) {
+		this->x *= factor;
+		this->y *= factor;
+		return *this;
+	};
+	V2d<T> & operator /= (const double factor) {
+		this->x /= factor;
+		this->y /= factor;
+		return *this;
+	};
+
 	double size() 	  const { return std::sqrt(x*x + y*y); };
 	double size_sq() const { return x*x + y*y; };
 	bool is_bound(const V2d<T> & lower, const V2d<T> & upper) const {

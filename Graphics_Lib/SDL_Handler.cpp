@@ -117,6 +117,9 @@ bool SDL_Handler::is_key_pressed() const {
 	return !(m_keys_down.size() == 0);
 }
 
+/*
+	Get the mouse position relative to the top left corner of the screen.
+*/
 V2d<int> SDL_Handler::get_mouse_pos() const {
 	SDL_PumpEvents();
 	V2d<int> res;

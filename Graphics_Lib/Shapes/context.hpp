@@ -8,14 +8,14 @@
 class Context : public Shape {
 public:
 	Context() { };
-	void compute_lines(Rgba * pixels, int w, int h) {
+	void compute_stroke(Rgba * pixels, int w, int h) {
 		for (Shape * s : m_shapes)
-			s->compute_lines(pixels, w, h);
+			s->compute_stroke(pixels, w, h);
 	};
 
-	void compute_fillin(Rgba * pixels, int w, int h) {
+	void compute_fill(Rgba * pixels, int w, int h) {
 		for (Shape * s : m_shapes)
-			s->compute_fillin(pixels, w, h);
+			s->compute_fill(pixels, w, h);
 	}
 
 	int num_shapes() const { return m_shapes.size(); };

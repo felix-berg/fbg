@@ -1,6 +1,5 @@
 #include "Window.hpp"
 #include "alphacomposite.hpp"
-#include "multithr_alphacomposite.hpp"
 
 #define KEY_DELAY 10
 
@@ -26,12 +25,10 @@ void Window::wait_for_key(int key_id) {
 void Window::draw() {
 	// Alpha composite entire pixel area using AVX2 vector processing 
 	alpha_compositeNC(m_pixels, &m_background_color, size());
-	// multithr_alpha_compositeNC(m_pixels, &m_background_color);
-
 
 	// change m_pixels by adding the colors of the strokes within
 	// the shapes of the context object
-	context.compute_lines(m_pixels, width(), height());
+	context.compute_stroke(m_pixels, width(), height());
 	
 	// update the SDL Pixelbuffer and pull new events.
 	this->update();

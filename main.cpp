@@ -6,6 +6,7 @@
 
 #include "Graphics_Lib/Shapes/shape.hpp"
 #include "Graphics_Lib/Shapes/line.hpp"
+#include "Graphics_Lib/Shapes/rect.hpp"
 #include "Graphics_Lib/Shapes/context.hpp"
 #include "Graphics_Lib/Window.hpp"
 #include "Graphics_Lib/alphacomposite.hpp"
@@ -15,21 +16,33 @@ void test_alpha_compositing2();
 
 int main() {
 	srand(clock());
-	Window window {"uh", 1920, 1080};
-	window.background({255, 255, 255, 20});
+	Window window {"uh", 1080, 720};
+	window.background({0, 0, 0, 1});
 	
-	std::array<Line, 100> lines;
-	for (Line & l : lines) l.stroke({0, 0, 0, 255});
 
-	for (Line & l : lines) window.context.attach(l);
-	for (Line & l : lines) l.from({rand() % window.width(), rand() % window.height()});
+	std::array<Rectangle, 1> rects;
+	std::array<V2d<float>, 1> positions;
 
-	int total_frames = 0;
+	for (Rectangle & r : rects) {
+		r.stroke(255);
+		r.pos(rand() % window.width(), rand() % window.height());
+		r.width(50);
+		r.height(50);
+		window.attach(r);
+	}
 
-	clock_t start_time = clock();
+	for (V2d<float> & v : positions)
+		v = {rand() % window.width(), rand() % window.height()};
 
+	int total_frames = 0; clock_t start_time = clock();
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
-		for (Line & l: lines) l.to(window.get_mouse_pos());
+		V2d<int> mouse = window.get_mouse_pos();
+
+		for (int i = 0; i < rects.size(); i++)  {
+			positions[i] += (V2d<float> {mouse.x, mouse.y} - positions[i]) * (float(rand() % 100000) / 10000000.0f);
+			rects[i].pos(positions[i].x, positions[i].y);
+		}
+
 		window.draw();
 		total_frames++;
 	}

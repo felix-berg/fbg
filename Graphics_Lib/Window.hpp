@@ -34,8 +34,9 @@ public:
 	Rgba background() const { return m_background_color; };
 
 	void draw();
+	void attach(Shape & s) { this->context.attach(s); };
 
-	Context context;
+	Context context; 
 
 private:
 	std::vector<Shape *> m_shapes;

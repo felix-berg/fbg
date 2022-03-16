@@ -12,8 +12,8 @@ public:
 	Shape(const Shape &) = delete;
 	Shape & operator = (const Shape &) = delete;
 
-	virtual void compute_lines(Rgba * pixels, int w, int h)  { };
-	virtual void compute_fillin(Rgba * pixels, int w, int h) { };
+	virtual void compute_stroke(Rgba * pixels, int w, int h)  { };
+	virtual void compute_fill(Rgba * pixels, int w, int h) { };
 
 	V2d<int> get_point(int i) const { return m_points[i]; };
 	
@@ -21,9 +21,11 @@ public:
 	const Rgba & stroke() const { return m_stroke; };
 	int stroke_weight() const { return m_stroke_weight; };
 	
-	void fill(const Rgba & f) { m_fill = f; };
+	void fill(const Rgba & f)   { m_fill = f; };
 	void stroke(const Rgba & s) { m_stroke = s; };
-	void strokeweight(int sw) { m_stroke_weight = sw; };
+	void fill(u_char brightness)   { m_fill 	= {brightness, brightness, brightness, 255}; };
+	void stroke(u_char brightness) { m_stroke = {brightness, brightness, brightness, 255}; };
+	void strokeweight(int sw)   { m_stroke_weight = sw; };
 
 	unsigned int id() const { return m_id; };
 
