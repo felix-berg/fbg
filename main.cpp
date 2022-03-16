@@ -32,14 +32,14 @@ int main() {
 	}
 
 	for (V2d<float> & v : positions)
-		v = {rand() % window.width(), rand() % window.height()};
+		v = {float(rand() % window.width()), float(rand() % window.height())};
 
 	int total_frames = 0; clock_t start_time = clock();
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
 		V2d<int> mouse = window.get_mouse_pos();
 
 		for (int i = 0; i < rects.size(); i++)  {
-			positions[i] += (V2d<float> {mouse.x, mouse.y} - positions[i]) * (float(rand() % 100000) / 10000000.0f);
+			positions[i] += (V2d<float> {float(mouse.x), float(mouse.y)} - positions[i]) * (float(rand() % 100000) / 10000000.0f);
 			rects[i].pos(positions[i].x, positions[i].y);
 		}
 
