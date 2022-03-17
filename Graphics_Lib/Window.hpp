@@ -7,7 +7,6 @@
 
 #include <vector>
 
-
 class Window : public SDL_Handler {
 public:
 	Window() {	};

@@ -4,8 +4,15 @@
 void compute_stroke_low(Rgba * pixels, const V2d<int> & f, const V2d<int> & t, const Rgba & color, int scr_w, int scr_h);
 void compute_stroke_hi(Rgba * pixels, const V2d<int> & f, const V2d<int> & t, const Rgba & color, int scr_w, int scr_h);
 
-void set_pixel(Rgba * pixels, const V2d<int> & p, const Rgba & color, int scr_w) {
-	alpha_composite1(&pixels[p.y * scr_w + p.x], &color);
+template <typename T>
+bool in_bound(T x, T y, T lx, T ly, T ux, T uy) {
+	return ! (x < lx || x > ux ||
+				 y < ly || y > uy);
+}
+
+void set_pixel(Rgba * pixels, const V2d<int> & p, const Rgba & color, int scr_w, int scr_h) {
+	if (in_bound(p.x, p.y, 0, 0, scr_w, scr_h))
+		alpha_composite1(&pixels[p.y * scr_w + p.x], &color);
 }
 
 /*
@@ -46,7 +53,7 @@ void compute_stroke_low(Rgba * pixels, const V2d<int> & f, const V2d<int> & t, c
 
 	// loop along x-axis: from.x -> to.y
 	for (int x = f.x; x <= t.x; x++) {
-		set_pixel(pixels, {x, y}, color, scr_w);
+		set_pixel(pixels, {x, y}, color, scr_w, scr_h);
 		if (D > 0) { // the point is under the line, the error is positive. Step one pixel vertically
 			y += y_dir;
 			D -= 2 * dx;
@@ -77,7 +84,7 @@ void compute_stroke_hi(Rgba * pixels, const V2d<int> & f, const V2d<int> & t, co
 	int x = f.x;
 
 	for (int y = f.y; y <= t.y; y++) {
-		set_pixel(pixels, {x, y}, color, scr_w);
+		set_pixel(pixels, {x, y}, color, scr_w, scr_h);
 		if (D > 0) {
 			x += x_dir;
 			D -= 2 * dy;
