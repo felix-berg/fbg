@@ -19,15 +19,12 @@ int main() {
 	window.background(0, 255);
 	
 	std::array<Circle, 100> circles;
-	std::array<Point, 100 > points;
 
 	for (int i = 0; i < circles.size(); i++) {
 		Circle & c = circles[i];
 		c.pos(rand() % window.width(), rand() % window.height());
-		points[i].pos(c.pos());
 		c.radius(100);
 		window.attach(c);
-		window.attach(points[i]);
 	}
 		
 
