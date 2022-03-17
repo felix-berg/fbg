@@ -14,7 +14,7 @@
 int main() {
 	srand(clock());
 	Window window {"uh", 1080, 720};
-	window.background({0, 0, 0, 255});
+	window.background(120, 20);
 	
 	std::array<Line, 100> lines;
 	

@@ -1,3 +1,1 @@
 #include "circle.hpp"
-
-void
