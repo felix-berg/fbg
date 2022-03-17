@@ -24,7 +24,7 @@ public:
 	// get stroke color of shape
 	const Rgba & stroke() const { return m_stroke; };
 	// get stroke weight
-	int stroke_weight() const { return m_stroke_weight; };
+	int strokeweight() const { return m_stroke_weight; };
 	
 
 	// set fill color of object

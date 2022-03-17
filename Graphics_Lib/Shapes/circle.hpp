@@ -1,5 +1,5 @@
-#ifndef RECT_HPP
-#define RECT_HPP
+#ifndef CIRCLE_HPP
+#define CIRCLE_HPP
 
 #include "shape.hpp"
 #include "../V2d.hpp"
@@ -14,8 +14,8 @@ public:
 	Circle() 
 		: Circle({0, 0}, 1) { };
 
-	void compute_stroke(Rgba *, int w, int h);
-	void compute_fill(Rgba *, int w, int h);
+	void compute_stroke(Rgba * pxs, int w, int h);
+	void compute_fill(Rgba *, int w, int h) { };
 
 	// getters
 	V2d<int> pos() const { return get_point(0); };
