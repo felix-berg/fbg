@@ -10,8 +10,8 @@ struct V2d {
 
 	V2d<T> operator + (const V2d<T> & oth)  const { return { x + oth.x, y + oth.y }; };
 	V2d<T> operator - (const V2d<T> & oth)  const { return { x - oth.x, y - oth.y }; };
-	V2d<T> operator * (const double factor) const { return { (T) x * factor, (T) y * factor };	};
-	V2d<T> operator / (const double factor) const { return { (T) x / factor, (T) y / factor };	};
+	V2d<T> operator * (const double factor) const { return { (T) (x * factor), (T) (y * factor) };	};
+	V2d<T> operator / (const double factor) const { return { (T) (x / factor), (T) (y / factor) };	};
 
 	V2d<T> & operator += (const V2d<T> & oth) {
 		this->x += oth.x;

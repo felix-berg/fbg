@@ -22,7 +22,7 @@ public:
 	int width()	 	const { return m_w; };
 	int height() 	const { return m_h; };
 	
-	// // setters
+	// setters
 	void pos(V2d<int> p) { set_point(0, p); };
 	void pos(int x, int y) { set_point(0, V2d<int> {x, y}); };
 	void width(int w) 	{ m_w = w; 			 };

@@ -1,6 +1,4 @@
-#include <vector>
-#include "../V2d.hpp"
-#include "shape_algorithms.hpp"
+#include "line.hpp"
 
 std::vector<V2d<int>> got_points_for_line_low(const V2d<int> & f, const V2d<int> & t);
 std::vector<V2d<int>> get_points_for_line_high(const V2d<int> & f, const V2d<int> & t);
@@ -48,10 +46,11 @@ std::vector<V2d<int>> got_points_for_line_low(const V2d<int> & f, const V2d<int>
 	// loop along x-axis: from.x -> to.y
 	for (int x = f.x; x <= t.x; x++) {
 		points.push_back({x, y});
-		if (D > 0) { // the point is under the line, the error is positive. Step one pixel down (or up if y_dir is negative)	
+		if (D > 0) { // the point is under the line, the error is positive. Step one pixel vertically
 			y += y_dir;
 			D -= 2 * dx;
 		}
+		// no vertical step
 		D += 2 * dy;
 	}
 

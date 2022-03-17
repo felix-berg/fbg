@@ -11,8 +11,10 @@ public:
 	V2d<int> from() const { return get_point(0); };
 	V2d<int> to()   const { return get_point(1); };
 	
-	void from(V2d<int> f) { set_point(0, f); };
-	void to(const V2d<int> & p) { set_point(1, p); };
+	void from(V2d<int> f) 		 { set_point(0, f); 			};
+	void from(int x, int y) 	 { set_point(0, {x, y});	};
+	void to(const V2d<int> & p) { set_point(1, p); 			};
+	void to(int x, int y) 		 { set_point(1, {x, y});	};
 };
 
 #endif

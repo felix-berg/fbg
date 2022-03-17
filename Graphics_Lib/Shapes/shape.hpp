@@ -36,13 +36,19 @@ public:
 	// set stroke weight for object
 	void strokeweight(int sw)   { m_stroke_weight = sw; };
 
+	// get current rotation in radians
+	float angle() const { return m_angle; };
+	// get current rotation in degrees
+	float angle_degrees() const { return (m_angle / 6.28318530717958f) * 360.0f; }
 
-	void add_point(const V2d<int> & p) { m_points.push_back(p); };
+	// set rotation in radians
+	void angle(float a) { m_angle = a; };
+	// set rotation in degrees
+	void angle_degrees(float a) { m_angle = (a / 360.0f) * 6.28318530717958f; };
+
 	bool operator == (const Shape & other) { return this->id() == other.id(); };
 
 protected:
-	float rotation = 0; // current rotation of given shape
-
 	// Default constructor
 	Shape() { 
 		this->m_id = get_unique_id();
@@ -56,22 +62,25 @@ protected:
 			add_point(p);
 	};
 	
-	void set_point(int i, const V2d<int> & p) { m_points[i] = p; }; // m_points[i] = p
+	// add given point to shape
+	void add_point(const V2d<int> & p) 			{ m_points.push_back(p); };
+	void set_point(int i, const V2d<int> & p) { m_points[i] = p; };	
 
 	// get unique id
 	unsigned int id() const { return m_id; };
 	// generate a new id
 	void generate_id() { m_id = clock(); };
-
+	
 private:
 	std::vector<V2d<int>> m_points; // storage for the points of this shape
 	unsigned int m_id; // unique id for identification
 
-	Rgba m_fill = {255, 255, 255, 255};
-	Rgba m_stroke = {255, 255, 255, 255};
+	Rgba m_fill = {255, 255, 255, 255};   // fill-in color
+	Rgba m_stroke = {255, 255, 255, 255}; // color of stroke
 
-	int m_stroke_weight = 1;
+	int m_stroke_weight = 1; // pixel width of stroke
 
+	float m_angle = 0; // current rotation of shape
 };
 
 #endif
