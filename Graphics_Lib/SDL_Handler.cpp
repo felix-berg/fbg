@@ -36,6 +36,9 @@ SDL_Handler::SDL_Handler()
 	: SDL_Handler { "Window", {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, 640, 480 }
 { }
 
+/*
+	Destructor
+*/
 SDL_Handler::~SDL_Handler() {
 	SDL_DestroyTexture(m_texture);
 	SDL_DestroyRenderer(m_renderer);
