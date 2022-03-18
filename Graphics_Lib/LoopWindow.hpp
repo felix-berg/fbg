@@ -7,7 +7,7 @@
 
 #include "Window.hpp"
 
-using std::chrono::system_clock;
+using std::chrono::high_resolution_clock;
 
 class LoopWin : public Window {
 public:
@@ -51,12 +51,12 @@ public:
 		Run gameloop. Stop execution until window closes.
 	*/
 	void run() { 
-		m_start_time = system_clock::now();
-		m_last_frame = m_start_time;
-
 		// user defined function
 		if (before_run != nullptr)
 			before_run();
+
+		m_start_time = high_resolution_clock::now();
+		m_last_frame = m_start_time;
 
 		while (is_open()) {
 			// update timer
@@ -78,7 +78,7 @@ public:
 		}
 
 		// TODO: Remove
-		std::chrono::microseconds duration = std::chrono::duration_cast<std::chrono::microseconds>(system_clock::now() - m_start_time);
+		std::chrono::microseconds duration = std::chrono::duration_cast<std::chrono::microseconds>(high_resolution_clock::now() - m_start_time);
 		std::cout << "Wanted frametime: " << m_frametime.count()						 			<< '\n'
 					 << "Actual frametime: " << float(duration.count()) / float(m_num_frames) << '\n';
 	}
@@ -86,7 +86,7 @@ public:
 private:
 	std::chrono::microseconds m_frametime { 1000000 / 60 }; // µs
 
-	system_clock::time_point m_last_frame, m_start_time;
+	high_resolution_clock::time_point m_last_frame, m_start_time;
 
 	int m_num_frames = 0;
 };
