@@ -78,3 +78,11 @@ void compute_AA_rect_stroke(Frame & frame, Rectangle & r) {
 		}
 	}
 }
+
+void compute_AA_rect_fill(Frame & f, Rectangle & r) {
+	V2d<int> tl, br; // top left, bottom right
+	tl = r.pos();
+	br = r.pos() + V2d<int> {r.width(), r.height()};
+	for (int y = tl.y; y < br.y; y++)
+		alpha_compositeNC(&f.pixels[y * f.w + tl.x], &r.stroke(), r.width());
+}

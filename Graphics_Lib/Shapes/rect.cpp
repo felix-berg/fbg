@@ -10,5 +10,5 @@ void Rectangle::compute_stroke(Frame & f) {
 
 
 void Rectangle::compute_fill(Frame & f) {
-
+	compute_AA_rect_fill(f, *this);
 }

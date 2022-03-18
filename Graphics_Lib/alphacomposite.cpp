@@ -136,6 +136,9 @@ void alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
 	}
 
 	int pixels_left = n % 8;
+	if (pixels_left == 0)
+		alpha_composite8(dst + n - 8, over8);
+
 	for (int i = n - pixels_left; i < n; i++) {
 		alpha_composite1(dst + i, over);
 	}

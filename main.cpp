@@ -12,20 +12,18 @@ int main() {
 	Window window {"uh", 1080, 720};
 	window.background(0, 50);
 	
-	std::array<Circle, 100> circles;
-	for (Circle & c : circles) {
-		c.pos(rand() % window.width(), rand() % window.height());
-		window.attach(c);
-	}	
+	Rectangle rect {{100, 100}, 200, 142};
+	window.attach(rect);
 
 	int total_frames = 0; clock_t start_time = clock();
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
 		V2d<int> mouse = window.get_mouse_pos();
 
-		for (Circle & c : circles)
-			c.radius((mouse - c.pos()).size());
+		rect.width(mouse.x - rect.pos().x);
+		rect.height(mouse.y - rect.pos().y);
 
 		window.draw();
+
 		total_frames++;
 	}
 

@@ -28,6 +28,8 @@ void Window::draw() {
 	// change m_pixels by adding the colors of the strokes within
 	// the shapes of the context object
 	context.compute_stroke(frame);
+
+	context.compute_fill(frame);
 	
 	// update the SDL Pixelbuffer and pull new events.
 	this->update();
