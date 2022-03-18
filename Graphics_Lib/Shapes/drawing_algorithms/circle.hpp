@@ -5,5 +5,6 @@
 #include "../../frame.hpp"
 
 void compute_circle_stroke(Frame & f, Circle & c);
+void compute_circle_fill(Frame & f, Circle & c);
 
 #endif

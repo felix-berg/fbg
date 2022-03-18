@@ -126,6 +126,9 @@ void alpha_compositeN(Rgba * dst, Rgba * over, int n) {
 }
 
 void alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
+	if (n <= 0)
+		return;
+
 	// create array: |over|over|over|... length 8
 	Rgba over8[8];
 	std::fill(over8, over8 + 8, *over);

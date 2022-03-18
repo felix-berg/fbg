@@ -83,6 +83,11 @@
 		"typeindex": "cpp",
 		"valarray": "cpp",
 		"variant": "cpp",
-		"ios": "cpp"
+		"ios": "cpp",
+		"__hash_table": "cpp",
+		"__split_buffer": "cpp",
+		"__tree": "cpp",
+		"queue": "cpp",
+		"stack": "cpp"
 	}
 }

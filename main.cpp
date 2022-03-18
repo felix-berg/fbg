@@ -10,20 +10,20 @@
 int main() {
 	srand(clock());
 	Window window {"uh", 1080, 720};
-	window.background(0, 50);
+	window.background(0, 2);
 	
-	Rectangle rect {{100, 100}, 200, 142};
-	window.attach(rect);
+	Circle c {{200, 200}, 5};
+	c.stroke({255, 0, 0, 255});
+
+	window.attach(c);
 
 	int total_frames = 0; clock_t start_time = clock();
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
 		V2d<int> mouse = window.get_mouse_pos();
 
-		rect.width(mouse.x - rect.pos().x);
-		rect.height(mouse.y - rect.pos().y);
+		c.radius((mouse - c.pos()).size());
 
 		window.draw();
-
 		total_frames++;
 	}
 

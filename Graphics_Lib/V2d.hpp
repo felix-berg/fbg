@@ -18,16 +18,19 @@ struct V2d {
 		this->y += oth.y;
 		return *this;
 	};
+
 	V2d<T> & operator -= (const V2d<T> & oth) {
 		this->x -= oth.x;
 		this->y -= oth.y;
 		return *this;
 	};
+
 	V2d<T> & operator *= (const double factor) {
 		this->x *= factor;
 		this->y *= factor;
 		return *this;
 	};
+
 	V2d<T> & operator /= (const double factor) {
 		this->x /= factor;
 		this->y /= factor;
@@ -41,6 +44,25 @@ struct V2d {
 					 y < lower.y || y > upper.y);
 	};
 };
+
+/*
+	Return to added vectors, resulting in a vector of type T.
+*/
+template <typename T, typename S>
+V2d<T> operator + (const V2d<T> & v1, const V2d<S> & v2) {
+	return {
+		v1.x + static_cast<T> ( v2.x ),
+		v1.y + static_cast<T> ( v2.y )
+	};
+}
+
+template <typename T, typename S>
+V2d<T> operator - (const V2d<T> & v1, const V2d<S> & v2) {
+	return {
+		v1.x - static_cast<T> ( v2.x ),
+		v1.y - static_cast<T> ( v2.y )
+	};
+}
 
 template <typename T> 
 double dot_prod(const V2d<T> & v1, const V2d<T> & v2) {

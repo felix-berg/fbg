@@ -16,7 +16,7 @@ public:
 		: Circle({0, 0}, 1) { };
 
 	void compute_stroke(Frame & f);
-	void compute_fill(Frame & f) { };
+	void compute_fill(Frame & f);
 
 	// getters
 	V2d<int> pos() const { return get_point(0); };

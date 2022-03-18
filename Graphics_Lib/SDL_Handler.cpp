@@ -124,6 +124,9 @@ bool SDL_Handler::is_key_pressed(int key_id) const {
 	return false;
 }
 
+/*
+	TODO: iterally doesn't work
+*/
 bool SDL_Handler::is_key_pressed() const {
 	return !(m_keys_down.size() == 0);
 }

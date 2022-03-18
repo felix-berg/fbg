@@ -7,7 +7,7 @@
 
 class Rectangle : public Shape {
 public:
-	Rectangle(const V2d<int> & p, int w, int h) 
+	Rectangle(const V2d<int> & p, u_int w, u_int h) 
 	: m_w { w }, m_h { h }	{
 		add_point(p);
 	}
@@ -19,19 +19,25 @@ public:
 	void compute_fill(Frame & f);
 
 	// getters
-	V2d<int> pos() const { return get_point(0); };
-	int width()	 	const { return m_w; };
-	int height() 	const { return m_h; };
+	V2d<int> pos() 	const { return get_point(0); };
+	u_int width()	 	const { return m_w; };
+	u_int height() 	const { return m_h; };
 	
 	// setters
 	void pos(V2d<int> p) { set_point(0, p); };
 	void pos(int x, int y) { set_point(0, V2d<int> {x, y}); };
-	void width(int w) 	{ m_w = w; 			 };
-	void height(int h)	{ m_h = h; 			 };
+	void width(int w) 	{
+		if (w <= 0) throw std::runtime_error("Rectangle cannot have negative or zero width.\n");
+		m_w = static_cast<u_int> ( w ); 			 
+	};
+	void height(int h)	{ 
+		if (h <= 0) throw std::runtime_error("Rectangle cannot have negative or zero height.\n");
+		m_h = static_cast<u_int> ( h );
+	};
 
 private:
-	int m_w = 0, 
-		 m_h = 0;
+	u_int m_w = 0, 
+		   m_h = 0;
 };
 
 #endif
