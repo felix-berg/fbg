@@ -19,10 +19,9 @@ int main() {
 	Window window {"uh", 1080, 720};
 	window.background(0, 255);
 	
-	std::array<Circle, 1> circles;
+	std::array<Circle, 100> circles;
 	for (Circle & c : circles) {
-		c.pos(window.width() / 2, window.height() / 2);
-		c.radius(100);
+		c.pos(rand() % window.width(), rand() % window.height());
 		window.attach(c);
 	}
 		
@@ -34,11 +33,9 @@ int main() {
 		for (Circle & c : circles)
 			c.radius((mouse - c.pos()).size());
 
-		SDL_Delay(100);
 		window.draw();
 		total_frames++;
 	}
-	throw std::runtime_error("");
 
 
 	clock_t total_time = clock() - start_time;
