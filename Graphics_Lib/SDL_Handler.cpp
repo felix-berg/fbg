@@ -138,9 +138,11 @@ V2d<int> SDL_Handler::get_mouse_pos() const {
 	SDL_PumpEvents();
 	V2d<int> res;
 	V2d<int> window_pos;
+
 	SDL_GetGlobalMouseState(&res.x, &res.y);
 	SDL_GetWindowPosition(m_window, &window_pos.x, &window_pos.y);
 	res = res - window_pos;
+	
 	return res;
 }
 

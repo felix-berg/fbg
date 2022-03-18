@@ -8,29 +8,15 @@
 #include "2D_Graphics_Lib.hpp"
 
 int main() {
-	srand(clock());
-	Window window {"uh", 1080, 720};
-	window.background(0, 2);
-	
-	Circle c {{200, 200}, 5};
-	c.stroke({255, 0, 0, 255});
+	LoopWin win { "Test Window", 1280, 720 };
+	win.background({0, 0, 0, 20});
+	win.framerate(144.0f);
 
-	window.attach(c);
+	// definition of game loop -> called every frame.
+	win.before_draw = [&](int dt) -> void {
+		
+	};
 
-	int total_frames = 0; clock_t start_time = clock();
-	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
-		V2d<int> mouse = window.get_mouse_pos();
-
-		c.radius((mouse - c.pos()).size());
-
-		window.draw();
-		total_frames++;
-	}
-
-	clock_t total_time = clock() - start_time;
-	float total_time_mcs = (float) total_time / (float) total_frames;
-	std::cout << "Average frametime: " << total_time_mcs << " µs\n";
-	std::cout << "Average framerate: " << 10e5 / total_time_mcs << " fps\n";
-
+	win.run(); // sits here until window is closed
 	return 0;
 }

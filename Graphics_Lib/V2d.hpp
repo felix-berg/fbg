@@ -79,4 +79,12 @@ V2d<T> operator * (const double factor, const V2d<T> & v) {
 	return v * factor;
 }
 
+template <typename T>
+V2d<T> random_vector(T max_x, T max_y) {
+	return { 
+		static_cast<T>((static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) * static_cast<double> (max_x)), 
+		static_cast<T>((static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) * static_cast<double> (max_y)) 
+	};
+};
+
 #endif

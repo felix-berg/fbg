@@ -25,7 +25,6 @@ void Window::wait_for_key(int key_id) {
 void Window::draw() {
 	// Alpha composite entire pixel area using AVX2 vector processing 
 	alpha_compositeNC(frame.pixels, &m_background_color, size());
-
 	
 	// change m_pixels by adding the colors of the strokes and fills within
 	// the shapes of the context object

@@ -4,5 +4,6 @@
 #include "Graphics_Lib/V2d.hpp"
 #include "Graphics_Lib/shapes.hpp"
 #include "Graphics_Lib/Window.hpp"
+#include "Graphics_Lib/LoopWindow.hpp"
 
 #endif
