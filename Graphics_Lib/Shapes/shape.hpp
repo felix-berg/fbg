@@ -4,6 +4,7 @@
 #include <vector>
 #include "../V2d.hpp"
 #include "../rgba.hpp"
+#include "../frame.hpp"
 
 unsigned int get_unique_id();
 
@@ -14,8 +15,8 @@ public:
 	Shape & operator = (const Shape &) = delete; 
 
 	// virtual function: to be defined by subclasses
-	virtual void compute_stroke(Rgba * pixels, int w, int h)  { };
-	virtual void compute_fill(Rgba * pixels, int w, int h) { };
+	virtual void compute_stroke(Frame & f)  { };
+	virtual void compute_fill(Frame & f) { };
 
 	V2d<int> get_point(int i) const { return m_points[i]; };
 

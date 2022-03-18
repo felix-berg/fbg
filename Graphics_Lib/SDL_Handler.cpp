@@ -1,8 +1,11 @@
 #include "SDL_Handler.hpp"
 #include <iostream>
 
+/*
+	Primary constructor for SDL_Handler.
+*/
 SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point, unsigned int w, unsigned int h) 
-	: m_width { w }, m_height { h }
+	: m_width { w }, m_height { h }, frame { w, h } // initiate pixel buffer with provided width and height
 {
 	// create SDL instances
 	m_window = SDL_CreateWindow(title.c_str(), start_point.x, start_point.y, width(), height(), SDL_WINDOW_SHOWN);
@@ -12,9 +15,6 @@ SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point
 	// check for error in initialization
 	if (m_window == nullptr || m_renderer == nullptr || m_texture == nullptr)
 		throw std::runtime_error("Error in initializing SDL window, renderer or texture" + (std::string) SDL_GetError());
-
-	// allocate pixel buffer
-	m_pixels = (Rgba *) malloc(sizeof(Rgba) * size());
 	
 	clear_pixels({0, 0, 0, 255});
 
@@ -50,19 +50,27 @@ SDL_Handler::~SDL_Handler() {
 */
 void SDL_Handler::set_pixel(const V2d<int> & p, const Rgba & px) {
 	static int i = 0;
-	m_pixels[p.y * width() + p.x] = px;
+	frame.pixels[p.y * width() + p.x] = px;
 }
-
+/*
+	Set all pixel to color
+*/
 void SDL_Handler::clear_pixels(const Rgba & color) {
-	std::fill(m_pixels, m_pixels + size(), color);
+	std::fill(frame.pixels, frame.pixels + size(), color);
 }
 
+/*
+	Clear pixels of pixelarray to black.
+*/
 void SDL_Handler::clear_pixels() {
-	memset(m_pixels, 0, sizeof(Rgba) * size());
+	memset(frame.pixels, 0, sizeof(Rgba) * size());
 }
 
-void SDL_Handler::push_pixels(const Rgba * pxs) {
-	if (SDL_UpdateTexture(m_texture, NULL, pxs, sizeof(Rgba) * width()) != 0)
+/*
+	Push frame to SDL Texture
+*/
+void SDL_Handler::push_frame(const Frame & f) {
+	if (SDL_UpdateTexture(m_texture, NULL, f.pixels, sizeof(Rgba) * width()) != 0)
 		throw std::runtime_error("Error on updating texture.\n");
 }
 
@@ -100,7 +108,7 @@ void SDL_Handler::update() {
 	poll_events();
 
 	// push pixelbuffer to the screen
-	push_pixels(m_pixels);
+	push_frame(frame);
 	// clear renderer
 	SDL_RenderClear(m_renderer);
 	// copy the texture into the renderer

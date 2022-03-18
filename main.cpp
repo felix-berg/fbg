@@ -10,6 +10,7 @@
 #include "Graphics_Lib/Shapes/circle.hpp"
 #include "Graphics_Lib/Shapes/rect.hpp"
 #include "Graphics_Lib/Shapes/context.hpp"
+
 #include "Graphics_Lib/Window.hpp"
 #include "Graphics_Lib/alphacomposite.hpp"
 
@@ -18,11 +19,9 @@ int main() {
 	Window window {"uh", 1080, 720};
 	window.background(0, 255);
 	
-	std::array<Circle, 100> circles;
-
-	for (int i = 0; i < circles.size(); i++) {
-		Circle & c = circles[i];
-		c.pos(rand() % window.width(), rand() % window.height());
+	std::array<Circle, 1> circles;
+	for (Circle & c : circles) {
+		c.pos(window.width() / 2, window.height() / 2);
 		c.radius(100);
 		window.attach(c);
 	}
@@ -35,9 +34,11 @@ int main() {
 		for (Circle & c : circles)
 			c.radius((mouse - c.pos()).size());
 
+		SDL_Delay(100);
 		window.draw();
 		total_frames++;
 	}
+	throw std::runtime_error("");
 
 
 	clock_t total_time = clock() - start_time;

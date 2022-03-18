@@ -1,29 +1,29 @@
 #include "circle.hpp"
+#include "../../rgba.hpp"
 #include "../../alphacomposite.hpp"
+#include "../../frame.hpp"
+#include "pixel.hpp"
 
-template <typename T>
-bool in_bound(T x, T y, T lx, T ly, T ux, T uy) {
-	return ! (x < lx || x > ux ||
-				 y < ly || y > uy);
+/*
+	Draw a point (x, y) from the first octant to every octant, with (cx, cy)
+	as a referencepoint.
+*/
+void draw_8_octants(Frame & frame, int cx, int cy, int x, int y, const Rgba & color) {
+	set_pixel(frame, cx + x, cy + y, color); // Octants ((x, y) is normally in the "1" octant):
+	set_pixel(frame, cx - x, cy + y, color); //			 |
+	set_pixel(frame, cx + x, cy - y, color); //       8 | 6   
+	set_pixel(frame, cx - x, cy - y, color); //   4     |     3
+	set_pixel(frame, cx + y, cy + x, color); // --------+------- +x 
+	set_pixel(frame, cx - y, cy + x, color); //   2     |     1
+	set_pixel(frame, cx + y, cy - x, color); //       7 | 5
+	set_pixel(frame, cx - y, cy - x, color); //  		 | 
+	                                         // 			 +y
 }
 
-void set_pixel(Rgba * pixels, int x, int y, const Rgba & color, int scr_w, int scr_h) {
-	if (in_bound(x, y, 0, 0, scr_w, scr_h))
-		alpha_composite1(&pixels[y * scr_w + x], &color);
-}
-
-void draw_8_octants(Rgba * pixels, int cx, int cy, int x, int y, const Rgba & color, int scr_w, int scr_h) {
-	set_pixel(pixels, cx + x, cy + y, color, scr_w, scr_h);
-	set_pixel(pixels, cx - x, cy + y, color, scr_w, scr_h);
-	set_pixel(pixels, cx + x, cy - y, color, scr_w, scr_h);
-	set_pixel(pixels, cx - x, cy - y, color, scr_w, scr_h);
-	set_pixel(pixels, cx + y, cy + x, color, scr_w, scr_h);
-	set_pixel(pixels, cx - y, cy + x, color, scr_w, scr_h);
-	set_pixel(pixels, cx + y, cy - x, color, scr_w, scr_h);
-	set_pixel(pixels, cx - y, cy - x, color, scr_w, scr_h);
-}
-
-void compute_circle_stroke(Rgba * pixels, Circle & c, int scr_w, int scr_h) {
+/*
+	Draw pixels of given circle to the given frame.
+*/
+void compute_circle_stroke(Frame & frame, Circle & c) {
 	int x = c.radius();
 	int y = 0;
 
@@ -33,7 +33,7 @@ void compute_circle_stroke(Rgba * pixels, Circle & c, int scr_w, int scr_h) {
 	int D = 3 - 2 * c.radius();
 
 	while (x > y) {
-		draw_8_octants(pixels, cx, cy, x, y, c.stroke(), scr_w, scr_h);
+		draw_8_octants(frame, cx, cy, x, y, c.stroke());
 		if (D > 0) {
 			D = D + 4 * (y - x) + 10;
 			x = x - 1;

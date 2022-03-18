@@ -8,6 +8,7 @@
 
 #include "V2d.hpp"
 #include "rgba.hpp"
+#include "frame.hpp"
 
 class SDL_Handler {
 public:
@@ -29,9 +30,9 @@ public:
 	bool is_open() const { return m_is_open; };
 
 protected:
-	Rgba get_pixel(unsigned int n) 					  const { return m_pixels[n]; };
-	Rgba get_pixel(unsigned int x, unsigned int y) const { return m_pixels[y   * width() + x  ]; };
-	Rgba get_pixel(const V2d<int> p)					  const { return m_pixels[p.y * width() + p.x]; };
+	const Rgba & get_pixel(unsigned int n) 					  const { return frame.pixels[n]; };
+	const Rgba & get_pixel(unsigned int x, unsigned int y)  const { return frame.pixels[y   * width() + x  ]; };
+	const Rgba & get_pixel(const V2d<int> p)					  const { return frame.pixels[p.y * width() + p.x]; };
 
 	void set_pixel(const V2d<int> & p, const Rgba & px);
 
@@ -49,7 +50,7 @@ protected:
 	void clear_pixels();
 	void clear_pixels(const Rgba & col);
 	
-	Rgba * m_pixels;
+	Frame frame; // container for all pixels on screen
 
 private:
 	SDL_Window * m_window;
@@ -58,7 +59,7 @@ private:
 
 	const unsigned int m_width, m_height;
 
-	void push_pixels(const Rgba * pxs);
+	void push_frame(const Frame & f);
 };
 
 

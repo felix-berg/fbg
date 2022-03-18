@@ -11,8 +11,8 @@ public:
 	
 	Point() : Shape { V2d<int> {0, 0} } { };
 
-	void compute_stroke(Rgba * pxs, int w, int h) {
-		alpha_composite1(&pxs[pos().x + pos().y * w], &stroke()); 
+	void compute_stroke(Frame & f) {
+		alpha_composite1(&f.pixels[pos().x + pos().y * f.w], &stroke()); 
 	}
 
 	void compute_fill(Rgba *, int, int) { return; };

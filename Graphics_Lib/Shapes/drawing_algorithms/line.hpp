@@ -3,8 +3,8 @@
 
 #include <vector>
 #include "../../V2d.hpp"
-#include "../../rgba.hpp"
+#include "../../frame.hpp"
 
-void compute_line_stroke(Rgba * pixels, const V2d<int> & f, const V2d<int> & t, const Rgba & color, int scr_w, int scr_h);
+void compute_line_stroke(Frame & frame, const V2d<int> & f, const V2d<int> & t, const Rgba & color);
 
 #endif

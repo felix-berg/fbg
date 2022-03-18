@@ -4,11 +4,11 @@
 
 
 
-void Rectangle::compute_stroke(Rgba * pixels, int w, int h) {
-	compute_AA_rect_stroke(pixels, *this, w, h);
+void Rectangle::compute_stroke(Frame & f) {
+	compute_AA_rect_stroke(f, *this);
 }
 
 
-void Rectangle::compute_fill(Rgba * pixels, int w, int h) {
+void Rectangle::compute_fill(Frame & f) {
 
 }

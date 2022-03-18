@@ -14,6 +14,6 @@ Line::Line(const V2d<int> & f, const V2d<int> & t)
 /*
 	Change given pixelbuffer based on the pixels of the line.
 */
-void Line::compute_stroke(Rgba * pixels, int width, int height) {
-	compute_line_stroke(pixels, from(), to(), stroke(), width, height);
+void Line::compute_stroke(Frame & f) {
+	compute_line_stroke(f, from(), to(), stroke());
 }

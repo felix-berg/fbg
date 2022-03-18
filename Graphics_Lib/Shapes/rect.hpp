@@ -3,6 +3,7 @@
 
 #include "shape.hpp"
 #include "../V2d.hpp"
+#include "../frame.hpp"
 
 class Rectangle : public Shape {
 public:
@@ -14,8 +15,8 @@ public:
 	Rectangle() 
 		: Rectangle({0, 0}, 1, 1) { };
 
-	void compute_stroke(Rgba *, int w, int h);
-	void compute_fill(Rgba *, int w, int h);
+	void compute_stroke(Frame & f);
+	void compute_fill(Frame & f);
 
 	// getters
 	V2d<int> pos() const { return get_point(0); };
