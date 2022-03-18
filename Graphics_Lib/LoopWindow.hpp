@@ -25,8 +25,12 @@ public:
 	std::function<void()> before_run = nullptr;
 
 	/* This function is called immediately before the
-		window::draw() method is called. */
+		window::draw() method is called.
+		Provides the expected frametime. */
 	std::function<void(int)> before_draw = nullptr;
+
+	/* Same as before_draw, but after. */
+	std::function<void(int)> after_draw = nullptr;
 
 	// getter and setter for the framerate 
 	float framerate() const { 
@@ -68,6 +72,9 @@ public:
 			// draw frame
 			draw();
 			m_num_frames++;
+
+			if (after_draw != nullptr)
+				after_draw(m_frametime.count());
 		}
 
 		// TODO: Remove

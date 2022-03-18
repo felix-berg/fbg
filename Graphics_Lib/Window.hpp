@@ -35,7 +35,9 @@ public:
 	Rgba background() const { return m_background_color; };
 
 	void draw();
+	
 	void attach(Shape & s) { this->context.attach(s); };
+	void detach(Shape & s) { this->context.detach(s); };
 
 	Context context; 
 
