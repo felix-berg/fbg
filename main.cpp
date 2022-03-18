@@ -3,28 +3,20 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <functional>
 
-#include "Graphics_Lib/Shapes/shape.hpp"
-#include "Graphics_Lib/Shapes/line.hpp"
-#include "Graphics_Lib/Shapes/point.hpp"
-#include "Graphics_Lib/Shapes/circle.hpp"
-#include "Graphics_Lib/Shapes/rect.hpp"
-#include "Graphics_Lib/Shapes/context.hpp"
-
-#include "Graphics_Lib/Window.hpp"
-#include "Graphics_Lib/alphacomposite.hpp"
+#include "2D_Graphics_Lib.hpp"
 
 int main() {
 	srand(clock());
 	Window window {"uh", 1080, 720};
-	window.background(0, 255);
+	window.background(0, 50);
 	
 	std::array<Circle, 100> circles;
 	for (Circle & c : circles) {
 		c.pos(rand() % window.width(), rand() % window.height());
 		window.attach(c);
-	}
-		
+	}	
 
 	int total_frames = 0; clock_t start_time = clock();
 	while (window.is_open() && !window.is_key_pressed(SDL_SCANCODE_ESCAPE)) {
@@ -36,7 +28,6 @@ int main() {
 		window.draw();
 		total_frames++;
 	}
-
 
 	clock_t total_time = clock() - start_time;
 	float total_time_mcs = (float) total_time / (float) total_frames;
