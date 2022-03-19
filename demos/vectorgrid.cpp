@@ -93,7 +93,6 @@ int main() {
 		win.attach(p.circle);
 	}
 
-
 	// definition of game loop -> called every frame.
 	win.before_draw = [&](float dt) -> void {
 		V2d<int> mouse = win.get_mouse_pos_clamped();

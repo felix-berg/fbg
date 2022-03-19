@@ -12,6 +12,7 @@ public:
 		add_point(p);
 	}
 
+	Circle(int x, int y, int r) : Circle { {x, y}, r} { };
 	Circle() 
 		: Circle({0, 0}, 1) { };
 

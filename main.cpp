@@ -1,6 +1,3 @@
-# 2D Graphics Library using SDL!
-Example usage:
-```C++
 #include "2D_Graphics_Lib.hpp"
 
 int main() {
@@ -8,7 +5,7 @@ int main() {
 	LoopWin window { "Window Title", 1280, 720 };
 
 	// set window attributes:
-	window.background(0, 20); // black with alpha 20
+	window.background(0, 20);
 	window.framerate(144);
 	
 	// Create circle object at (0, 0) with radius 50
@@ -33,4 +30,3 @@ int main() {
 
 	return 0; // :)
 }
-```
