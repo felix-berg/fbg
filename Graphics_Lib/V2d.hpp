@@ -64,6 +64,10 @@ namespace fbg {
 						y < lower.y || y > upper.y);
 		};
 
+		V2d<T> normal() const {
+			return *this / size();
+		}
+
 		void normalize() {
 			*this /= this->size();
 		}
