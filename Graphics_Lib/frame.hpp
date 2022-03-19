@@ -9,10 +9,10 @@
 struct Frame { 
 	Rgba * pixels;
 
-	const u_int w, 
-				   h;
+	const int w, 
+				 h;
 
-	Frame(u_int w, u_int h) 
+	Frame(int w, int h) 
 		: w { w }, h { h }
 	{
 		pixels = (Rgba *) malloc(sizeof(Rgba) * w * h);

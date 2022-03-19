@@ -13,8 +13,8 @@
 class SDL_Handler {
 public:
 	SDL_Handler();
-	SDL_Handler(const std::string & title, const V2d<int> & start_point, unsigned int w, unsigned int h);
-	SDL_Handler(const std::string & title, unsigned int w, unsigned int h);
+	SDL_Handler(const std::string & title, const V2d<int> & start_point, int w, int h);
+	SDL_Handler(const std::string & title, int w, int h);
 	~SDL_Handler();
 
 	int width()  const { return m_width; };
@@ -57,7 +57,7 @@ private:
 	SDL_Renderer * m_renderer;
 	SDL_Texture * m_texture;
 
-	const unsigned int m_width, m_height;
+	const int m_width, m_height;
 
 	void push_frame(const Frame & f);
 };

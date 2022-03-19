@@ -4,7 +4,7 @@
 /*
 	Primary constructor for SDL_Handler.
 */
-SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point, unsigned int w, unsigned int h) 
+SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point, int w, int h) 
 	: m_width { w }, m_height { h }, frame { w, h } // initiate pixel buffer with provided width and height
 {
 	// create SDL instances
@@ -25,7 +25,7 @@ SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point
 /*
 	Creates window in the middle of the screen with the given width and height
 */
-SDL_Handler::SDL_Handler(const std::string & title, unsigned int w, unsigned int h) 
+SDL_Handler::SDL_Handler(const std::string & title, int w, int h) 
 	: SDL_Handler { title, {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, w, h }
 { }
 

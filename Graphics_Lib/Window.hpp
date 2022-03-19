@@ -10,7 +10,7 @@
 class Window : public SDL_Handler {
 public:
 	Window() {	};
-	Window(const std::string & title, unsigned int w, unsigned int h) : SDL_Handler { title, w, h } {	};
+	Window(const std::string & title, int w, int h) : SDL_Handler { title, w, h } {	};
 
 	void wait_for_key(int key_id);
 	void wait_for_key();

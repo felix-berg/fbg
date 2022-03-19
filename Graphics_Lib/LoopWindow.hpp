@@ -13,7 +13,7 @@ class LoopWin : public Window {
 public:
 
 	/* Constructor for looping window */
-	LoopWin(const std::string & title, unsigned int w, unsigned int h) : Window { title, w, h } { };
+	LoopWin(const std::string & title, int w, int h) : Window { title, w, h } { };
 
 	/* Default constructor: Applies sensible defaults */
 	LoopWin() : LoopWin { "Looping Window", 640, 480 } { };
