@@ -4,7 +4,7 @@
 #include "shape.hpp"
 
 #include <vector>
-
+namespace fbg {
 class Context : public Shape {
 public:
 	Context() { };
@@ -28,5 +28,5 @@ public:
 private:
 	std::vector<Shape *> m_shapes;
 };
-
+};
 #endif

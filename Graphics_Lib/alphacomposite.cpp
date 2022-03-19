@@ -2,6 +2,8 @@
 #include "bitsandbytes.hpp"
 #include <immintrin.h>
 
+using namespace fbg;
+
 void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lres, __m256i * _hres);
 inline __m256i _mm256_epu16_divideby255(const __m256i _v);
 inline __m128i _mm_convertepi16_epi8(const __m256i _v);
@@ -11,7 +13,7 @@ inline __m256i _mm256_combine_2_128i(const __m128i _v1, const __m128i _v2);
 	Alpha composit two colors. Add over to dst.
 	Standard CPU instructions.
 */
-void alpha_composite1(Rgba * dst, const Rgba * over) {
+void fbg::alpha_composite1(Rgba * dst, const Rgba * over) {
 	// if the alpha over the over color, 
 	// it is completely opaque, 
 	// so just return it
@@ -31,7 +33,7 @@ void alpha_composite1(Rgba * dst, const Rgba * over) {
 	};
 }
 
-void alpha_composite8(Rgba * dst, Rgba * over) {
+void fbg::alpha_composite8(Rgba * dst, Rgba * over) {
 	const __m256i _255 = _mm256_set1_epi8(0xFF);
 
 	// c = (over.x * over.a + dst.x * (255 - over.a)) / 255
@@ -113,7 +115,7 @@ void alpha_composite8(Rgba * dst, Rgba * over) {
 	Calls alpha_composite8 with chunks of eight.
 	Requires that the number of elements n is divisible by eight.
 */
-void alpha_compositeN(Rgba * dst, Rgba * over, int n) {
+void fbg::alpha_compositeN(Rgba * dst, Rgba * over, int n) {
 	// loop through all chunks of eight in the array
 	for (int i = 0; i < n - 8; i += 8) {
 		alpha_composite8(dst + i, over + i);
@@ -125,7 +127,7 @@ void alpha_compositeN(Rgba * dst, Rgba * over, int n) {
 	}
 }
 
-void alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
+void fbg::alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
 	if (n <= 0)
 		return;
 

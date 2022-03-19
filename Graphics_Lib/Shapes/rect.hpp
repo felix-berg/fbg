@@ -4,7 +4,7 @@
 #include "shape.hpp"
 #include "../V2d.hpp"
 #include "../frame.hpp"
-
+namespace fbg {
 class Rect : public Shape {
 public:
 	Rect(const V2d<float> & p, u_int w, u_int h) 
@@ -38,6 +38,7 @@ public:
 private:
 	u_int m_w = 0, 
 		   m_h = 0;
+};
 };
 
 #endif

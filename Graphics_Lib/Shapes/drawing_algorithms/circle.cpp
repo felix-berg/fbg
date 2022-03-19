@@ -5,6 +5,8 @@
 #include "pixel.hpp"
 #include "line.hpp"
 
+using namespace fbg;
+
 /*
 	Draw a point (x, y) from the first octant to every octant, with (cx, cy)
 	as a referencepoint.
@@ -47,7 +49,7 @@ void draw_circle_line_from_octant_point(Frame & frame, int cx, int cy, int x, in
 /*
 	Draw pixels of given circle to the given frame.
 */
-void compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba & color, int sw) {
+void fbg::compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba & color, int sw) {
 	int x = r;
 	int y = 0;
 
@@ -73,7 +75,7 @@ void compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba & co
 /*
 	Draw pixels of given circles fill to the given frame
 */
-void compute_circle_fill(Frame & frame, int cx, int cy, int r, const Rgba & color) {
+void fbg::compute_circle_fill(Frame & frame, int cx, int cy, int r, const Rgba & color) {
 	int x = r;
 	int y = 0;
 	int D = 3 - 2 * r;

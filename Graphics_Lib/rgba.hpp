@@ -8,6 +8,7 @@ using std::ostream;
 /*
 	A color given by a red, green, blue and alpha value.
 */
+namespace fbg {
 struct Rgba {
 	u_char a, b, g, r; // must be opposite because of memory 
 
@@ -17,5 +18,5 @@ struct Rgba {
 }; 
 
 ostream & operator << (ostream & os, const Rgba & color);
-
+};
 #endif

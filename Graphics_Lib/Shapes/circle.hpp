@@ -4,7 +4,7 @@
 #include "shape.hpp"
 #include "../V2d.hpp"
 #include "../frame.hpp"
-
+namespace fbg {
 class Circle : public Shape {
 public:
 	Circle(const V2d<float> & p, float r) 
@@ -26,10 +26,10 @@ public:
 	// setters
 	void pos(V2d<float> p) 		{ set_point(0, p); };
 	void pos(float x, float y) { set_point(0, V2d<float> {x, y}); };
-	void radius(float r) 			{ m_radius = r; };
+	void radius(float r) 		{ m_radius = r; };
 
 private:
 	float m_radius;
 };
-
+};
 #endif

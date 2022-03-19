@@ -2,7 +2,7 @@
 #define LINE_HPP
 
 #include "shape.hpp"
-
+namespace fbg {
 class Line : public Shape {
 public:
 	Line(const V2d<float> & f, const V2d<float> & t)
@@ -22,5 +22,5 @@ public:
 	void to(const V2d<float> & p) { set_point(1, p); 			};
 	void to(float x, float y) 		 { set_point(1, {x, y});	};
 };
-
+};
 #endif

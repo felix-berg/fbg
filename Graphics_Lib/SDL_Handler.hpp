@@ -10,6 +10,7 @@
 #include "rgba.hpp"
 #include "frame.hpp"
 
+namespace fbg {
 class SDL_Handler {
 public:
 	SDL_Handler();
@@ -20,6 +21,9 @@ public:
 	int width()  const { return m_width; };
 	int height() const { return m_height; };
 	int size()   const { return m_width * m_height; };
+	
+	V2d<int> dimensions() const { return { m_width, m_height }; }
+	
 
 	const std::vector<int> & get_pressed_keys() const { return m_keys_down; };
 	bool is_key_pressed(int key_id) const;
@@ -61,6 +65,6 @@ private:
 
 	void push_frame(const Frame & f);
 };
-
+};
 
 #endif

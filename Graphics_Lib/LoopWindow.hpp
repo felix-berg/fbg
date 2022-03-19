@@ -8,7 +8,7 @@
 #include "Window.hpp"
 
 using std::chrono::high_resolution_clock;
-
+namespace fbg {
 class LoopWin : public Window {
 public:
 
@@ -88,6 +88,7 @@ private:
 	high_resolution_clock::time_point m_last_frame, m_start_time;
 
 	int m_num_frames = 0; // total number of frames elapsed
+};
 };
 
 #endif

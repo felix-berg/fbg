@@ -3,13 +3,15 @@
 #include "../../alphacomposite.hpp"
 #include "../../V2d.hpp"
 
+using namespace fbg;
+
 /*	
 	Returns a boolean indicating whether the point (x, y) is
 	within the bounds of (lx, ly) to (ux, uy).
 	Inclusive!
 */
 template <typename T>
-bool in_bound(T x, T y, T lx, T ly, T ux, T uy) {
+bool fbg::in_bound(T x, T y, T lx, T ly, T ux, T uy) {
 	return ! (x < lx || x > ux  ||
 				 y < ly || y > uy);
 }
@@ -18,7 +20,7 @@ bool in_bound(T x, T y, T lx, T ly, T ux, T uy) {
 	Draw color to pixel at the given x, y coordinate.
 	Doesn't draw, if the point is out of bounds.
 */
-void set_pixel(Frame & frame, int x, int y, const Rgba & color) {
+void fbg::set_pixel(Frame & frame, int x, int y, const Rgba & color) {
 	if (in_bound(x, y, 0, 0, (int) frame.w - 1, (int) frame.h - 1)) 
 		alpha_composite1(&frame.pixels[y * frame.w + x], &color);
 }
@@ -26,7 +28,7 @@ void set_pixel(Frame & frame, int x, int y, const Rgba & color) {
 /*
 	TODO: Untested
 */
-void set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void fbg::set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
 	if (sw == 1)
 		set_pixel(frame, x, y, color);
 	else
@@ -37,7 +39,7 @@ void set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
 	Get the right and left pixel offsets based on given
 	strokeweight
 */
-void offsets_from_strokeweight(int sw, int * loff, int * roff) {
+void fbg::offsets_from_strokeweight(int sw, int * loff, int * roff) {
 	if (sw % 2 == 0) { // even
 		*loff = sw / 2;
 		*roff = sw / 2 - 1;
@@ -51,7 +53,7 @@ void offsets_from_strokeweight(int sw, int * loff, int * roff) {
 	Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
 	Inclusive of tx
 */
-void compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
+void fbg::compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
 	int ll = tx - fx + 1;		  	// length of line
 
 	// y value

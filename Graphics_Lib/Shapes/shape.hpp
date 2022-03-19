@@ -7,7 +7,7 @@
 #include "../frame.hpp"
 
 unsigned int get_unique_id();
-
+namespace fbg {
 class Shape {
 public:
 	// make sure, a standalone "Shape" Object is not possible -> no constructor.
@@ -83,11 +83,12 @@ private:
 	unsigned int m_id; // unique id for identification
 
 	Rgba m_fill = {255, 255, 255, 255};   // fill-in color
-	Rgba m_stroke = {255, 255, 255, 255}; // color of stroke
+	Rgba m_stroke = {0, 0, 0, 255}; // color of stroke
+	bool m_do_stroke = true, m_do_fill = true;
 
 	int m_stroke_weight = 1; // pixel width of stroke
 
 	float m_angle = 0; // current rotation of shape
 };
-
+};
 #endif

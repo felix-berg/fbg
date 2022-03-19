@@ -3,6 +3,8 @@
 
 #define KEY_DELAY 10
 
+using namespace fbg;
+
 /*
 	Stop the current process, until user enters any key.
 */

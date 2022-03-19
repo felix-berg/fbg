@@ -1,6 +1,8 @@
 #include "SDL_Handler.hpp"
 #include <iostream>
 
+using namespace fbg;
+
 /*
 	Primary constructor for SDL_Handler.
 */

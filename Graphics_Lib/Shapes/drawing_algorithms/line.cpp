@@ -3,6 +3,8 @@
 #include "../../alphacomposite.hpp"
 
 
+using namespace fbg;
+
 void compute_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw);
 void compute_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw);
 
@@ -10,7 +12,7 @@ void compute_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba
 	Compute the colors of the lines stroke and output onto "frame".
 	Line defined by fx, fy -> tx, ty (inclusive)
 */
-void compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
+void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
 	if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
 		if (fx > tx) // if points are the opposite way round
 			compute_stroke_low(frame, tx, ty, fx, fy, color, sw);
@@ -26,7 +28,7 @@ void compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rg
 /*
 	Compute the vertical pixels for a given pixel with the correct stroke
 */
-void compute_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void fbg::compute_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) {
 	int loff, roff;
 	offsets_from_strokeweight(sw, &loff, &roff);
 
@@ -40,7 +42,7 @@ void compute_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & colo
 /*
 	Compute the horisontal pixels for a given pixel with the correct stroke
 */
-void compute_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void fbg::compute_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
 	int loff, roff;
 	offsets_from_strokeweight(sw, &loff, &roff);
 	int fx = x - loff; 

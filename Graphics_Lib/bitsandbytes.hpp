@@ -2,7 +2,7 @@
 #define BITSANDBYTES_HPP
 
 typedef unsigned char u_char;
-
+namespace fbg {
 template <typename T, typename F>
 	inline T * force_into(F * v) {
 		return ((T *) v);
@@ -40,5 +40,5 @@ void print_bits(const T v, int bits, int bits_per_line) {
 	}
 	printf("\n");
 }
-
+};
 #endif

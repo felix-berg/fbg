@@ -7,6 +7,7 @@
 
 #include <vector>
 
+namespace fbg {
 class Window : public SDL_Handler {
 public:
 	Window() {	};
@@ -20,15 +21,17 @@ public:
 		{ m_background_color = {brightness, brightness, brightness, 255}; };
 
 	void background(u_char brightness, u_char alpha) 
-		{ m_background_color = {brightness, brightness, brightness, alpha};
-		  clear_pixels({brightness, brightness, brightness, alpha}); };
+		{ 
+			m_background_color = {brightness, brightness, brightness, alpha};
+		clear_pixels({brightness, brightness, brightness, alpha}); 
+		};
 
 	void background(u_char r, u_char g, u_char b) 
 		{ m_background_color = { r, g, b, 255 }; };
 		
 	void background(const Rgba & color) 
 		{ m_background_color = color;
-		  clear_pixels(color); };
+		clear_pixels(color); };
 
 	
 	// getters
@@ -44,6 +47,7 @@ public:
 private:
 	std::vector<Shape *> m_shapes;
 	Rgba m_background_color = {0, 0, 0, 255};
+};
 };
 
 #endif

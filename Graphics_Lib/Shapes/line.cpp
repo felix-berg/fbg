@@ -7,6 +7,8 @@
 #include <iostream>
 #include <cmath>
 
+using namespace fbg;
+
 /*
 	Change given pixelbuffer based on the pixels of the line.
 */

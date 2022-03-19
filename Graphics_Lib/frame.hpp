@@ -6,6 +6,7 @@
 /*
 	Container for Rgba pixelbuffer that includes width and height
 */
+namespace fbg {
 struct Frame { 
 	Rgba * pixels;
 
@@ -22,6 +23,7 @@ struct Frame {
 		if (pixels != nullptr) 
 			free(pixels);
 	}
+};
 };
 
 #endif

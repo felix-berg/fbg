@@ -2,7 +2,7 @@
 #include "../alphacomposite.hpp"
 #include "drawing_algorithms/rect.hpp"
 
-
+using namespace fbg;
 
 void Rect::compute_stroke(Frame & f) {
 	V2d<int> p = pos();

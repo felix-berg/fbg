@@ -5,10 +5,12 @@
 #include "../../alphacomposite.hpp"
 #include "pixel.hpp"
 
+using namespace fbg;
+
 /*
 	Draws stroke of axis aligned rectangle r on pixel grid.
 */
-void compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
+void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
 	// take stroke width into account
 	int loff, roff; // offsets created by strokeweight
 
@@ -41,7 +43,7 @@ void compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const
 	}
 }
 
-void compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) {
+void fbg::compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) {
 	// bottom right point
 	const int brx = rx + rw;
 	const int bry = ry + rh;

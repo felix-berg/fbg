@@ -3,7 +3,7 @@
 
 #include "shape.hpp"
 #include "drawing_algorithms/pixel.hpp"
-
+namespace fbg {
 class Point : public Shape {
 public:
 	Point(const V2d<float> & p) :
@@ -24,6 +24,7 @@ public:
 	// set position
 	void pos(V2d<float> p)   { set_point(0, p); 	  };
 	void pos(float x, float y) { set_point(0, {x, y}); };
+};
 };
 
 #endif
