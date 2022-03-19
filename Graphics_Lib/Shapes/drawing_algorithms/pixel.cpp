@@ -52,31 +52,28 @@ void offsets_from_strokeweight(int sw, int * loff, int * roff) {
 	Inclusive of tx
 */
 void compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
-	int pidx = frame.w * fy + fx; // pixel index for top left pixel of rectangle
 	int ll = tx - fx + 1;		  	// length of line
 
 	// y value
-	if (fy < 0 || fy >= frame.h) {
+	if (fx + ll < 0 || fx >= frame.w || fy < 0 || fy >= frame.h) {
 		ll = 0;
-		return;
-	}
+	} else {
+		// x value
+		if (fx < 0) {
+			// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
+			ll += fx;
+			
+			// move the startindex to the first column of pixels
+			fx = 0;
+		}
 	
-	if (fx > 1231923)
-		throw std::runtime_error("");
+		if (fx + ll >= frame.w) 
+			ll -= (fx + ll) - frame.w;
 
-	// x value
-	if (fx < 0) {
-		// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
-		ll -= fx;
-		
-		// move the startindex to the first column of pixels
-		pidx -= pidx % frame.w - frame.w;
+		int pidx = frame.w * fy + fx; // pixel index for top left pixel of rectangle
+
+		// composite pixels on top with the given pixel_id and line lengths
+		alpha_compositeNC(&frame.pixels[pidx], &color, ll);
 	}
 
-	if (fx + ll >= frame.w) 
-		ll -= (fx + ll) - frame.w;
-
-
-	// composite pixels on top with the given pixel_id and line lengths
-	alpha_compositeNC(&frame.pixels[pidx], &color, ll);
 }
