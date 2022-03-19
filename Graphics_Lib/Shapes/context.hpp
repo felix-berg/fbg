@@ -8,14 +8,13 @@
 class Context : public Shape {
 public:
 	Context() { };
-	void compute_stroke(Frame & f) {
-		for (Shape * s : m_shapes)
-			s->compute_stroke(f);
-	};
+	void compute_stroke(Frame & f) {	};
 
 	void compute_fill(Frame & f) {
-		for (Shape * s : m_shapes)
+		for (Shape * s : m_shapes) {
 			s->compute_fill(f);
+			s->compute_stroke(f);
+		}
 	}
 
 	int num_shapes() const { return m_shapes.size(); };

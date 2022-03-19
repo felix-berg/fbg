@@ -1,4 +1,5 @@
 #include "pixel.hpp"
+#include "circle.hpp"
 #include "../../alphacomposite.hpp"
 #include "../../V2d.hpp"
 
@@ -20,6 +21,16 @@ bool in_bound(T x, T y, T lx, T ly, T ux, T uy) {
 void set_pixel(Frame & frame, int x, int y, const Rgba & color) {
 	if (in_bound(x, y, 0, 0, (int) frame.w - 1, (int) frame.h - 1)) 
 		alpha_composite1(&frame.pixels[y * frame.w + x], &color);
+}
+
+/*
+	TODO: Untested
+*/
+void set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
+	if (sw == 1)
+		set_pixel(frame, x, y, color);
+	else
+		compute_circle_fill(frame, x, y, sw, color);
 }
 
 /*

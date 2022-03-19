@@ -3,21 +3,26 @@
 #include "../../alphacomposite.hpp"
 #include "../../frame.hpp"
 #include "pixel.hpp"
+#include "line.hpp"
 
 /*
 	Draw a point (x, y) from the first octant to every octant, with (cx, cy)
 	as a referencepoint.
 */
-void draw_8_octants(Frame & frame, int cx, int cy, int x, int y, const Rgba & color) {
-	set_pixel(frame, cx + x, cy + y, color); // Octants ((x, y) is normally in the "1" octant):
-	set_pixel(frame, cx - x, cy + y, color); //			 |
-	set_pixel(frame, cx + x, cy - y, color); //       8 | 7   
-	set_pixel(frame, cx - x, cy - y, color); //   4     |     3
-	set_pixel(frame, cx + y, cy + x, color); // --------+------- +x 
-	set_pixel(frame, cx - y, cy + x, color); //   2     |     1
-	set_pixel(frame, cx + y, cy - x, color); //       6 | 5
-	set_pixel(frame, cx - y, cy - x, color); //  		 | 
-	                                         // 			 +y
+void draw_8_octants(Frame & frame, int cx, int cy, int x, int y, const Rgba & color, int sw) {
+	compute_stroke_part_horisontal(frame, cx + x, cy + y, color, sw);	// Octants ((x, y) is normally in the "1" octant):
+	compute_stroke_part_horisontal(frame, cx - x, cy + y, color, sw);	//			  |
+	compute_stroke_part_horisontal(frame, cx + x, cy - y, color, sw);	//       8 | 7   
+	compute_stroke_part_horisontal(frame, cx - x, cy - y, color, sw);	//   4     |     3
+	compute_stroke_part_vertical(frame, cx + y, cy + x, color, sw);	// --------+------- +x 
+	compute_stroke_part_vertical(frame, cx - y, cy + x, color, sw);	//   2     |     1
+	compute_stroke_part_vertical(frame, cx + y, cy - x, color, sw);	//       6 | 5
+	compute_stroke_part_vertical(frame, cx - y, cy - x, color, sw);	//  		  | 
+	                                        							  		// 			 +y
+	// Note: Octants 5 - 8 are vertical, 	because their gradients are, by definition, less than 1.
+	//			Octants 1 - 4 are horisontal, because their gradients are, by definition, greater than 1.
+
+	// TODO: Make sure this is right.
 }
 
 /*
@@ -35,26 +40,23 @@ void draw_circle_line_from_octant_point(Frame & frame, int cx, int cy, int x, in
 	// 		  +y
 
 	// draw lines horisontally
-	compute_horisontal_line(frame, cx - x, cy + y, cx + x, cy + y, color); // 2 -> 1
-	compute_horisontal_line(frame, cx - x, cy - y, cx + x, cy - y, color); // 4 -> 3
-	compute_horisontal_line(frame, cx - y, cy + x, cx + y, cy + x, color); // 6 -> 5
-	compute_horisontal_line(frame, cx - y, cy - x, cx + y, cy - x, color); // 8 -> 7
+	compute_horisontal_line(frame, cx - x + 1, cy + y, cx + x - 1, cy + y, color); // 2 -> 1
+	compute_horisontal_line(frame, cx - x + 1, cy - y, cx + x - 1, cy - y, color); // 4 -> 3
+	compute_horisontal_line(frame, cx - y + 1, cy + x, cx + y - 1, cy + x, color); // 6 -> 5
+	compute_horisontal_line(frame, cx - y + 1, cy - x, cx + y - 1, cy - x, color); // 8 -> 7
 }
 
 /*
 	Draw pixels of given circle to the given frame.
 */
-void compute_circle_stroke(Frame & frame, Circle & c) {
-	int x = c.radius();
+void compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba & color, int sw) {
+	int x = r;
 	int y = 0;
 
-	int cx = c.pos().x;
-	int cy = c.pos().y;
-
-	int D = 3 - 2 * c.radius();
+	int D = 3 - 2 * r;
 
 	while (x >= y) {
-		draw_8_octants(frame, cx, cy, x, y, c.stroke());
+		draw_8_octants(frame, cx, cy, x, y, color, sw);
 		if (D > 0) {
 			D = D + 4 * (y - x) + 10;
 			x = x - 1;
@@ -68,17 +70,13 @@ void compute_circle_stroke(Frame & frame, Circle & c) {
 /*
 	Draw pixels of given circles fill to the given frame
 */
-void compute_circle_fill(Frame & frame, Circle & c) {
-	int x = c.radius();
+void compute_circle_fill(Frame & frame, int cx, int cy, int r, const Rgba & color) {
+	int x = r;
 	int y = 0;
-
-	int cx = c.pos().x;
-	int cy = c.pos().y;
-
-	int D = 3 - 2 * c.radius();
+	int D = 3 - 2 * r;
 
 	while (x >= y) {
-		draw_circle_line_from_octant_point(frame, cx, cy, x, y, c.fill());
+		draw_circle_line_from_octant_point(frame, cx, cy, x, y, color);
 		if (D > 0) {
 			D = D + 4 * (y - x) + 10;
 			x = x - 1;
