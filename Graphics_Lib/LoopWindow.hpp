@@ -9,9 +9,10 @@
 
 using std::chrono::high_resolution_clock;
 namespace fbg {
+
+/* Class for running animations inside a Window */
 class LoopWin : public Window {
 public:
-
 	/* Constructor for looping window */
 	LoopWin(const std::string & title, int w, int h) : Window { title, w, h } { };
 
