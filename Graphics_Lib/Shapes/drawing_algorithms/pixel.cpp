@@ -40,7 +40,7 @@ void set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
 void offsets_from_strokeweight(int sw, int * loff, int * roff) {
 	if (sw % 2 == 0) { // even
 		*loff = sw / 2;
-		*roff = sw / 2 + 1;
+		*roff = sw / 2 - 1;
 	} else { // odd
 		*loff = (sw - 1) / 2;
 		*roff = *loff;
