@@ -80,11 +80,6 @@ public:
 			if (after_draw != nullptr)
 				after_draw(frametime());
 		}
-
-		// TODO: Remove
-		std::chrono::microseconds duration = std::chrono::duration_cast<std::chrono::microseconds>(high_resolution_clock::now() - m_start_time);
-		std::cout << "Wanted frametime: " << m_frametime.count()						 			<< '\n'
-					 << "Actual frametime: " << float(duration.count()) / float(m_num_frames) << '\n';
 	}
 
 private:
