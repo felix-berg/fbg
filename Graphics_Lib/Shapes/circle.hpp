@@ -7,12 +7,12 @@
 
 class Circle : public Shape {
 public:
-	Circle(const V2d<float> & p, int r) 
+	Circle(const V2d<float> & p, float r) 
 	: m_radius { r }	{
 		add_point(p);
 	}
 
-	Circle(float x, float y, int r) : Circle { {x, y}, r} { };
+	Circle(float x, float y, float r) : Circle { {x, y}, r} { };
 	Circle() 
 		: Circle({0, 0}, 1) { };
 
@@ -20,16 +20,16 @@ public:
 	void compute_fill(Frame & f);
 
 	// getters
-	V2d<float> pos() const { return get_point(0); };
-	int radius() 	  const { return m_radius; };
+	V2d<float> pos() 	  const { return get_point(0); };
+	float radius() 	  const { return m_radius; };
 	
 	// setters
 	void pos(V2d<float> p) 		{ set_point(0, p); };
 	void pos(float x, float y) { set_point(0, V2d<float> {x, y}); };
-	void radius(int r) 			{ m_radius = r; };
+	void radius(float r) 			{ m_radius = r; };
 
 private:
-	int m_radius;
+	float m_radius;
 };
 
 #endif
