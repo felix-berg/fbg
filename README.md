@@ -23,7 +23,8 @@ int main() {
 		// grab the mouse position from the window
 		V2d<int> mpos = window.get_mouse_pos();
 
-		// set the position of the radius to the
+	
+	// set the position of the radius to the
 		// current mouse position
 		circle.pos(mpos);
 	};
@@ -34,3 +35,6 @@ int main() {
 	return 0; // :)
 }
 ```
+
+Produces output:
+![Screenshot from 2022-03-19 01-28-21](https://user-images.githubusercontent.com/93908883/159099446-f5976859-6240-45c8-a9e5-a05dad4b5cb2.png)
