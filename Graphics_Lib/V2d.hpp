@@ -4,6 +4,8 @@
 #include <cmath>
 #include <ostream>
 
+#include "maths.hpp"
+
 template <typename T>
 struct V2d {
 	T x, y;
@@ -35,6 +37,22 @@ struct V2d {
 		this->x /= factor;
 		this->y /= factor;
 		return *this;
+	};
+	
+	template <typename S>
+	V2d<T> & operator = (const V2d<S> & oth) { 
+		this->x = static_cast<T> (oth.x);
+		this->y = static_cast<T> (oth.y);
+
+		return *this;
+	}
+
+	template <typename S>
+	operator V2d<S>() const { 
+		return { 
+			static_cast<S>(x), 
+			static_cast<S>(y)
+		};
 	};
 
 	double size() 	  const { return std::sqrt(x*x + y*y); };
@@ -81,9 +99,11 @@ V2d<T> operator * (const double factor, const V2d<T> & v) {
 
 template <typename T>
 V2d<T> random_vector(T max_x, T max_y) {
+	int xsign = (rand() % 2) * 2 - 1;
+	int ysign = (rand() % 2) * 2 - 1;
 	return { 
-		static_cast<T>((static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) * static_cast<double> (max_x)), 
-		static_cast<T>((static_cast<double>(rand()) / static_cast<double>(RAND_MAX)) * static_cast<double> (max_y)) 
+		T(xsign) * fbpm::random<T>(max_x), 
+		T(ysign) * fbpm::random<T>(max_y) 
 	};
 };
 

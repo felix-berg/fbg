@@ -1,6 +1,5 @@
 rm a.out
-echo "
-"
+
 echo "Lines of code: " $(wc -l *.cpp Graphics_Lib/*.cpp Graphics_Lib/Shapes/*.cpp Graphics_Lib/*.hpp Graphics_Lib/Shapes/*.hpp Graphics_Lib/Shapes/drawing_algorithms/*.cpp Graphics_Lib/Shapes/drawing_algorithms/*.hpp) "
 "
 echo "Compiling: " *.cpp Graphics_Lib/*.cpp Graphics_Lib/Shapes/*.cpp Graphics_Lib/Shapes/drawing_algorithms/*.cpp"

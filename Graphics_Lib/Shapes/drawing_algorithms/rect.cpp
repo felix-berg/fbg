@@ -64,6 +64,6 @@ void compute_AA_rect_fill(Frame & f, Rectangle & r) {
 		if (y > f.h - 1)
 			return;
 
-		compute_horisontal_line(f, {tl.x, y}, {br.x, y}, r.stroke());
+		compute_horisontal_line(f, {tl.x, y}, {br.x, y}, r.fill());
 	}
 }

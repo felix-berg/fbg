@@ -26,16 +26,15 @@ public:
 
 	/* This function is called immediately before the
 		window::draw() method is called.
-		Provides the expected frametime. */
-	std::function<void(int)> before_draw = nullptr;
+		Provides the expected frametime in seconds. */
+	std::function<void(float)> before_draw = nullptr;
 
 	/* Same as before_draw, but after. */
-	std::function<void(int)> after_draw = nullptr;
+	std::function<void(float)> after_draw = nullptr;
 
 	// getter and setter for the framerate 
 	float framerate() const { 
-		// convert frametime from microseconds 64 int -> seconds in float
-		float dt = std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>> (m_frametime).count(); // why
+		float dt = frametime();
 		return 1.0f / dt;  // return 1.0f / frametime
 	};
 
@@ -43,6 +42,11 @@ public:
 		// convert floating point framerate into microseconds in 64 bit integer format
 		m_frametime = std::chrono::duration_cast<std::chrono::duration<int, std::micro>> (std::chrono::duration<float, std::micro> (1000000.0f / f));
 	};
+
+	float frametime() const {
+		// convert frametime from microseconds 64 int -> seconds in float
+		return std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>> (m_frametime).count(); // why
+	}
 
 	/* Return number of frames completed since run() was called. */
 	int frames_elapsed() const { return m_num_frames; };
@@ -67,14 +71,14 @@ public:
 
 			// user defined function
 			if (before_draw != nullptr) 
-				before_draw(m_frametime.count());
+				before_draw(frametime());
 
 			// draw frame
 			draw();
 			m_num_frames++;
 
 			if (after_draw != nullptr)
-				after_draw(m_frametime.count());
+				after_draw(frametime());
 		}
 
 		// TODO: Remove
