@@ -29,14 +29,16 @@ public:
 	
 
 	// set fill color of object
-	void fill(const Rgba & f)   	{ m_fill = f; };
-	void fill(u_char b)   			{ m_fill 	= {b, b, b, 255}; };
-	void fill(u_char b, u_char a) { m_fill = {b, b, b, a}; };
+	void fill(const Rgba & f)   					{ m_fill = f; };
+	void fill(u_char b)   							{ m_fill = {b, b, b, 255}; };
+	void fill(u_char b, u_char a) 				{ m_fill = {b, b, b, a}; };
+	void fill(u_char r, u_char g, u_char b) { m_fill = {r, g, b, 255}; 	};
 
 	// set stroke color of object
-	void stroke(const Rgba & s) 		{ m_stroke = s; };
-	void stroke(u_char b) 				{ m_stroke = {b, b, b, 255}; };
-	void stroke(u_char b, u_char a) 	{ m_stroke = {b, b, b, a}; };
+	void stroke(const Rgba & s) 					{ m_stroke = s; };
+	void stroke(u_char b) 							{ m_stroke = {b, b, b, 255}; 	};
+	void stroke(u_char b, u_char a) 				{ m_stroke = {b, b, b, a}; 	};
+	void stroke(u_char r, u_char g, u_char b) { m_stroke = {r, g, b, 255}; 	};
 
 	// set stroke weight for object
 	void strokeweight(int sw)   { m_stroke_weight = sw; };
