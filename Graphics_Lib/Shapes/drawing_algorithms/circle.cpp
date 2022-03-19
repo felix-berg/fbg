@@ -35,10 +35,10 @@ void draw_circle_line_from_octant_point(Frame & frame, int cx, int cy, int x, in
 	// 		  +y
 
 	// draw lines horisontally
-	compute_horisontal_line(frame, {cx - x, cy + y}, {cx + x, cy + y}, color); // 2 -> 1
-	compute_horisontal_line(frame, {cx - x, cy - y}, {cx + x, cy - y}, color); // 4 -> 3
-	compute_horisontal_line(frame, {cx - y, cy + x}, {cx + y, cy + x}, color); // 6 -> 5
-	compute_horisontal_line(frame, {cx - y, cy - x}, {cx + y, cy - x}, color); // 8 -> 7
+	compute_horisontal_line(frame, cx - x, cy + y, cx + x, cy + y, color); // 2 -> 1
+	compute_horisontal_line(frame, cx - x, cy - y, cx + x, cy - y, color); // 4 -> 3
+	compute_horisontal_line(frame, cx - y, cy + x, cx + y, cy + x, color); // 6 -> 5
+	compute_horisontal_line(frame, cx - y, cy - x, cx + y, cy - x, color); // 8 -> 7
 }
 
 /*

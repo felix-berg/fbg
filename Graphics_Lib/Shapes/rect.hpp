@@ -5,15 +5,15 @@
 #include "../V2d.hpp"
 #include "../frame.hpp"
 
-class Rectangle : public Shape {
+class Rect : public Shape {
 public:
-	Rectangle(const V2d<int> & p, u_int w, u_int h) 
+	Rect(const V2d<int> & p, u_int w, u_int h) 
 	: m_w { w }, m_h { h }	{
 		add_point(p);
 	}
 
-	Rectangle() 
-		: Rectangle({0, 0}, 1, 1) { };
+	Rect(int x, int y, u_int w, u_int h) : Rect { {x, y}, w, h } { };
+	Rect() : Rect { {0, 0}, 1, 1 } { };
 
 	void compute_stroke(Frame & f);
 	void compute_fill(Frame & f);

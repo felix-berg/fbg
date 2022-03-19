@@ -4,7 +4,7 @@
 #include "../../frame.hpp"
 #include "../rect.hpp"
 
-void compute_AA_rect_stroke(Frame & f, Rectangle & r);
-void compute_AA_rect_fill(Frame & f, Rectangle & r);
+void compute_AA_rect_stroke(Frame & f, int x, int y, int w, int h, const Rgba & color, int sw);
+void compute_AA_rect_fill(Frame & f, int x, int y, int w, int h, const Rgba & color);
 
 #endif

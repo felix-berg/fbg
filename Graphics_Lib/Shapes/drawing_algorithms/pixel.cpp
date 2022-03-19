@@ -23,38 +23,45 @@ void set_pixel(Frame & frame, int x, int y, const Rgba & color) {
 }
 
 /*
-	Restrict a pixel id and line length based on a given point on the screen.
-	Made to constrain horisontal line within frame.
+	Get the right and left pixel offsets based on given
+	strokeweight
 */
-void restrict_pxi_ll_from_point(const V2d<int> & pt, int * pixel_idx, int * line_length, int scr_w, int scr_h) {
-	// y value
-	if (pt.y < 0 || pt.y >= scr_h) {
-		*line_length = 0;
-		return;
+void offsets_from_strokeweight(int sw, int * loff, int * roff) {
+	if (sw % 2 == 0) { // even
+		*loff = sw / 2;
+		*roff = sw / 2 + 1;
+	} else { // odd
+		*loff = (sw - 1) / 2;
+		*roff = *loff;
 	}
-	
-	// x value
-	if (pt.x < 0) {
-		// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
-		*line_length += pt.x + 1;
-
-		// move the startindex to the start of the line
-		*pixel_idx -=  *pixel_idx % scr_w - scr_w;
-	}
-
-	if (pt.x + *line_length >= scr_w) 
-		*line_length -= (pt.x + *line_length) - scr_w;
 }
 
 /*
 	Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
+	Inclusive of tx
 */
-void compute_horisontal_line(Frame & frame, V2d<int> f, V2d<int> t, const Rgba & color) {
-	int px = frame.w * f.y + f.x; // pixel index for top left pixel of rectangle
-	int ll = t.x - f.x;				// length of line
+void compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
+	int pidx = frame.w * fy + fx; // pixel index for top left pixel of rectangle
+	int ll = tx - fx + 1;		  	// length of line
 
-	// restrict pixel id and length of line within screen space
-	restrict_pxi_ll_from_point(f, &px, &ll, frame.w, frame.h);
+	// y value
+	if (fy < 0 || fy >= frame.h) {
+		ll = 0;
+		return;
+	}
+	
+	// x value
+	if (fx < 0) {
+		// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
+		ll += fx + 1;
+
+		// move the startindex to the start of the line
+		pidx -=  pidx % frame.w - frame.w;
+	}
+
+	if (fx + ll >= frame.w) 
+		ll -= (fx + ll) - frame.w;
+
 	// composite pixels on top with the given pixel_id and line lengths
-	alpha_compositeNC(&frame.pixels[px], &color, ll);
+	alpha_compositeNC(&frame.pixels[pidx], &color, ll);
 }

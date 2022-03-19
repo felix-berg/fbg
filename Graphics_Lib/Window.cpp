@@ -30,6 +30,13 @@ void Window::draw() {
 	// the shapes of the context object
 	context.compute_fill(frame);
 	context.compute_stroke(frame);
+
+	// for (int y = 0; y < height(); y++) {
+	// 	for (int x = 0; x < width(); x++)
+	// 		printf("%.3d ", get_pixel({x, y}).r);
+	// 	std::cout << '\n';
+	// }
+	// std::cout << '\n';
 	
 	// update the SDL Pixelbuffer and pull new events.
 	this->update();

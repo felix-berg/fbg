@@ -15,5 +15,7 @@ Line::Line(const V2d<int> & f, const V2d<int> & t)
 	Change given pixelbuffer based on the pixels of the line.
 */
 void Line::compute_stroke(Frame & f) {
-	compute_line_stroke(f, from(), to(), stroke());
+	V2d<int> fp = from();
+	V2d<int> tp = to();
+	compute_line_stroke(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
 }

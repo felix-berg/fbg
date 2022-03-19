@@ -18,7 +18,7 @@ int main() {
 	// define function that will be called at every frame
 	window.before_draw = [&](float frametime) -> void {
 		// grab the mouse position from the window
-		V2d<int> mpos = window.get_mouse_pos();
+		V2d<int> mpos = window.mouse();
 
 		// set the position of the radius to the
 		// current mouse position

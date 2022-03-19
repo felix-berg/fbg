@@ -7,7 +7,7 @@ struct VectorGrid {
 
 	std::array<V2d<float>, nx * ny> vectors;
 	std::array<Line, 		  nx * ny> lines;
-	std::array<Rectangle,  nx * ny> rects;
+	std::array<Rect,  nx * ny> rects;
 
 	VectorGrid(int cell_size) : cell_sz { cell_size } { 
 		for (int y = 0; y < ny; y++)
@@ -15,7 +15,7 @@ struct VectorGrid {
 				int tx = x * cell_sz;
 				int ty = y * cell_sz;
 
-				Rectangle & r = rects[y * nx + x];
+				Rect & r = rects[y * nx + x];
 				r.pos(tx, ty);
 				r.stroke(255); 
 				r.fill(0);
@@ -95,7 +95,7 @@ int main() {
 
 	// definition of game loop -> called every frame.
 	win.before_draw = [&](float dt) -> void {
-		V2d<int> mouse = win.get_mouse_pos_clamped();
+		V2d<int> mouse = win.mouse_pos_clamped();
 		for (Particle & p : particles) {
 			p.apply_force(vg.velocity_at(p.p) * dt);
 			p.update(win.width(), win.height());

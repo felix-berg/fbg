@@ -1,69 +1,53 @@
 #include "../../V2d.hpp"
 #include "../../rgba.hpp"
 #include "rect.hpp"
+#include "line.hpp"
 #include "../../alphacomposite.hpp"
 #include "pixel.hpp"
 
 /*
 	Draws stroke of axis aligned rectangle r on pixel grid.
 */
-void compute_AA_rect_stroke(Frame & frame, Rectangle & r) {
-	const V2d<int> & tl_pt = r.pos(); 								    // point at the top left of the rectangle
-	const V2d<int> & bl_pt = r.pos() + V2d<u_int> {0, r.height()}; // point at the bottom left of the rectangle
-	const V2d<int> & tr_pt = tl_pt   + V2d<u_int> {r.width(), 0};
+void compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
+	// take stroke width into account
+	int loff, roff; // offsets created by strokeweight
 
-	// top line
-	int tl_px = frame.w * tl_pt.y + tl_pt.x; // pixel index for top left pixel of rectangle
-	int tl_ll = r.width(); 					 	  // length of top line
+	offsets_from_strokeweight(sw, &loff, &roff);
 
-	// restrict top left point and line length to be within screen space
-	restrict_pxi_ll_from_point(tl_pt, &tl_px, &tl_ll, frame.w, frame.h);
-	
-	// if any pixels
-	if (tl_ll > 0)
-		alpha_compositeNC(frame.pixels + tl_px, &r.stroke(), tl_ll); // draw top line
-	
+	int louterx = rx - loff; 			  // left x
+	int routerx = rx + rw + roff;  	  // right x
 
-	// bottom line: same thing
-	int bl_px = frame.w * bl_pt.y + bl_pt.x;
-	int bl_ll = r.width();
+	int fy = ry - loff;
+	int ty = ry + roff;
 
-	restrict_pxi_ll_from_point(bl_pt, &bl_px, &bl_ll, frame.w, frame.h);
-
-	if (bl_ll > 0)
-		alpha_compositeNC(frame.pixels + bl_px, &r.stroke(), bl_ll); // draw bottom line
-
-	// left line
-	if (tl_pt.x >= 0 && tl_pt.x < frame.w) {
-		for (int y = tl_pt.y; y < tl_pt.y + r.height() && y < frame.h; y++) {
-			if (y < 0) continue; // if out of screen -> next px
-
-			int index = tl_pt.x + y * frame.w;
-
-			alpha_composite1(frame.pixels + index, &r.stroke());
-		}
+	// move from y to to y
+	for (int y = fy; y <= ty; y++) {
+		compute_horisontal_line(frame, louterx, y, 			 routerx, y, 			  color); // top line	
+		compute_horisontal_line(frame, louterx, y + rh - 1, routerx, y + rh - 1, color); // bottom line
 	}
-	
-	// right line
-	if (tr_pt.x >= 0 && tr_pt.x < frame.w) {
-		for (int y = tr_pt.y; y < tr_pt.y + r.height() && y < frame.h; y++) {
-			if (y < 0) continue; // if out of screen -> next px
 
-			int index = tr_pt.x + y * frame.w;
 
-			alpha_composite1(frame.pixels + index, &r.stroke());
+	// vertical lines
+	int topy = ry - loff;
+	int boty = ry + rh - 1 + roff;
+
+	if (rx >= 0 && rx < frame.w) {
+		for (int y = topy; y <= boty && y < frame.h; y++) {
+			if (y < 0) continue; // if offscreen -> move to next pixel
+			
+			compute_stroke_part_horisontal(frame, rx, y, color, sw);
+			compute_stroke_part_horisontal(frame, rx + rw, y, color, sw);
 		}
 	}
 }
 
-void compute_AA_rect_fill(Frame & f, Rectangle & r) {
-	V2d<int> tl, br; // top left, bottom right
-	tl = r.pos();
-	br = r.pos() + V2d<u_int> {r.width(), r.height()};
-	for (int y = tl.y; y < br.y; y++) {
-		if (y > f.h - 1)
-			return;
+void compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) {
+	// bottom right point
+	const int brx = rx + rw;
+	const int bry = ry + rh;
 
-		compute_horisontal_line(f, {tl.x, y}, {br.x, y}, r.fill());
+	// loop from top to bottom (only inside rect)
+	for (int y = ry + 1; y <= bry - 1; y++) {
+		compute_horisontal_line(f, rx + 1, y, brx - 1, y, color);
 	}
 }
