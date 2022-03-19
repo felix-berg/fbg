@@ -134,7 +134,7 @@ bool SDL_Handler::is_key_pressed() const {
 /*
 	Get the mouse position relative to the top left corner of the screen.
 */
-V2d<int> SDL_Handler::get_mouse_pos() const {
+V2d<int> SDL_Handler::mouse_pos() const {
 	SDL_PumpEvents();
 	V2d<int> res;
 	V2d<int> window_pos;
@@ -162,8 +162,8 @@ void clamp_point(V2d<int> & p, const V2d<int> & f, const V2d<int> & t) {
 /*
 	TODO: Add support for multiple windows
 */
-V2d<int> SDL_Handler::get_mouse_pos_clamped() const {
-	V2d<int> res = get_mouse_pos();
+V2d<int> SDL_Handler::mouse_pos_clamped() const {
+	V2d<int> res = mouse_pos();
 	// clamp mouse position within screen space
 	clamp_point(res, {0, 0}, {width() - 1, height() - 1});
 	return res;

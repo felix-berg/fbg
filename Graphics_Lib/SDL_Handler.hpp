@@ -24,8 +24,8 @@ public:
 	const std::vector<int> & get_pressed_keys() const { return m_keys_down; };
 	bool is_key_pressed(int key_id) const;
 	bool is_key_pressed() const;
-	V2d<int> get_mouse_pos() const;
-	V2d<int> get_mouse_pos_clamped() const;
+	V2d<int> mouse_pos() const;
+	V2d<int> mouse_pos_clamped() const;
 
 	bool is_open() const { return m_is_open; };
 
