@@ -61,17 +61,23 @@ void compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, cons
 		return;
 	}
 	
+	if (fx > 1231923)
+		throw std::runtime_error("");
+
 	// x value
 	if (fx < 0) {
 		// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
-		ll += fx + 1;
+		ll -= fx;
+		
 
-		// move the startindex to the start of the line
-		pidx -=  pidx % frame.w - frame.w;
+		// move the startindex to the first column of pixels
+		pidx -= pidx % frame.w - frame.w;
+		exit(0);
 	}
 
 	if (fx + ll >= frame.w) 
 		ll -= (fx + ll) - frame.w;
+
 
 	// composite pixels on top with the given pixel_id and line lengths
 	alpha_compositeNC(&frame.pixels[pidx], &color, ll);

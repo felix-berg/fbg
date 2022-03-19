@@ -18,7 +18,7 @@ void draw_8_octants(Frame & frame, int cx, int cy, int x, int y, const Rgba & co
 	set_pixel(frame, cx - y, cy + x, color);	//   2     |     1
 	set_pixel(frame, cx + y, cy - x, color);	//       6 | 5
 	set_pixel(frame, cx - y, cy - x, color);	//  		  | 
-	                                        							  		// 			 +y
+															// 		  +y
 }
 
 /*
@@ -27,10 +27,12 @@ void draw_8_octants(Frame & frame, int cx, int cy, int x, int y, const Rgba & co
 void draw_circle_line_from_octant_point(Frame & frame, int cx, int cy, int x, int y, const Rgba & color) {
 	// Octants ((x, y) is normally in the "1" octant):
 	//			  |
-	//       8 | 7   
+	//       8 | 7 
+	// 		  |  
 	//   4     |     3
 	// --------+------- +x 
 	//   2     |     1
+	// 		  |
 	//       6 | 5
 	//  		  | 
 	// 		  +y
