@@ -10,19 +10,15 @@
 	as a referencepoint.
 */
 void draw_8_octants(Frame & frame, int cx, int cy, int x, int y, const Rgba & color, int sw) {
-	compute_stroke_part_horisontal(frame, cx + x, cy + y, color, sw);	// Octants ((x, y) is normally in the "1" octant):
-	compute_stroke_part_horisontal(frame, cx - x, cy + y, color, sw);	//			  |
-	compute_stroke_part_horisontal(frame, cx + x, cy - y, color, sw);	//       8 | 7   
-	compute_stroke_part_horisontal(frame, cx - x, cy - y, color, sw);	//   4     |     3
-	compute_stroke_part_vertical(frame, cx + y, cy + x, color, sw);	// --------+------- +x 
-	compute_stroke_part_vertical(frame, cx - y, cy + x, color, sw);	//   2     |     1
-	compute_stroke_part_vertical(frame, cx + y, cy - x, color, sw);	//       6 | 5
-	compute_stroke_part_vertical(frame, cx - y, cy - x, color, sw);	//  		  | 
+	set_pixel(frame, cx + x, cy + y, color);	// Octants ((x, y) is normally in the "1" octant):
+	set_pixel(frame, cx - x, cy + y, color);	//			  |
+	set_pixel(frame, cx + x, cy - y, color);	//       8 | 7   
+	set_pixel(frame, cx - x, cy - y, color);	//   4     |     3
+	set_pixel(frame, cx + y, cy + x, color);	// --------+------- +x 
+	set_pixel(frame, cx - y, cy + x, color);	//   2     |     1
+	set_pixel(frame, cx + y, cy - x, color);	//       6 | 5
+	set_pixel(frame, cx - y, cy - x, color);	//  		  | 
 	                                        							  		// 			 +y
-	// Note: Octants 5 - 8 are vertical, 	because their gradients are, by definition, less than 1.
-	//			Octants 1 - 4 are horisontal, because their gradients are, by definition, greater than 1.
-
-	// TODO: Make sure this is right.
 }
 
 /*
@@ -55,8 +51,13 @@ void compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba & co
 
 	int D = 3 - 2 * r;
 
+	int loff, roff;
+	offsets_from_strokeweight(sw, &loff, &roff);
+
 	while (x >= y) {
-		draw_8_octants(frame, cx, cy, x, y, color, sw);
+		for (int i = x - loff; i <= x + roff; i++) // take stroke weight into account
+			draw_8_octants(frame, cx, cy, i, y, color, sw);
+
 		if (D > 0) {
 			D = D + 4 * (y - x) + 10;
 			x = x - 1;
