@@ -18,7 +18,7 @@ public:
 	virtual void compute_stroke(Frame & f)  { };
 	virtual void compute_fill(Frame & f) { };
 
-	V2d<int> get_point(int i) const { return m_points[i]; };
+	V2d<float> get_point(int i) const { return m_points[i]; };
 
 	// get fill color of shape
 	const Rgba & fill() const { return m_fill; };
@@ -60,7 +60,7 @@ protected:
 	};
 	
 	// Constructor with provided list of points
-	Shape(std::initializer_list<V2d<int>> l) { 
+	Shape(std::initializer_list<V2d<float>> l) { 
 		this->m_id = get_unique_id();
 
 		for (auto & p : l)
@@ -68,8 +68,8 @@ protected:
 	};
 	
 	// add given point to shape
-	void add_point(const V2d<int> & p) 			{ m_points.push_back(p); };
-	void set_point(int i, const V2d<int> & p) { m_points[i] = p; };	
+	void add_point(const V2d<float> & p) 			{ m_points.push_back(p); };
+	void set_point(int i, const V2d<float> & p) 	{ m_points[i] = p; };	
 
 	// get unique id
 	unsigned int id() const { return m_id; };
@@ -77,7 +77,7 @@ protected:
 	void generate_id() { m_id = clock(); };
 	
 private:
-	std::vector<V2d<int>> m_points; // storage for the points of this shape
+	std::vector<V2d<float>> m_points; // storage for the points of this shape
 	unsigned int m_id; // unique id for identification
 
 	Rgba m_fill = {255, 255, 255, 255};   // fill-in color

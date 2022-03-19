@@ -2,27 +2,28 @@
 #define POINT_HPP
 
 #include "shape.hpp"
-#include "../alphacomposite.hpp"
+#include "drawing_algorithms/pixel.hpp"
 
 class Point : public Shape {
 public:
-	Point(const V2d<int> & p) :
+	Point(const V2d<float> & p) :
 		Shape { p } { };
 	
-	Point() : Shape { V2d<int> {0, 0} } { };
+	Point() : Shape { V2d<float> {0.0f, 0.0f} } { };
 
 	void compute_stroke(Frame & f) {
-		alpha_composite1(&f.pixels[pos().x + pos().y * f.w], &stroke()); 
+		V2d<int> p = pos();
+		set_pixel(f, p.x, p.y, stroke(), strokeweight());
 	}
 
 	void compute_fill(Rgba *, int, int) { return; };
 
 	// get position
-	V2d<int> pos() const { return get_point(0); };
+	V2d<float> pos() const { return get_point(0); };
 	
 	// set position
-	void pos(V2d<int> p)   { set_point(0, p); 	  };
-	void pos(int x, int y) { set_point(0, {x, y}); };
+	void pos(V2d<float> p)   { set_point(0, p); 	  };
+	void pos(float x, float y) { set_point(0, {x, y}); };
 };
 
 #endif

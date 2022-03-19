@@ -7,10 +7,6 @@
 #include <iostream>
 #include <cmath>
 
-Line::Line(const V2d<int> & f, const V2d<int> & t) 
-	: Shape {{ f, t }}
-{}
-
 /*
 	Change given pixelbuffer based on the pixels of the line.
 */
