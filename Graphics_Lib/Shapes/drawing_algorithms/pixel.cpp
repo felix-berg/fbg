@@ -69,10 +69,8 @@ void compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, cons
 		// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
 		ll -= fx;
 		
-
 		// move the startindex to the first column of pixels
 		pidx -= pidx % frame.w - frame.w;
-		exit(0);
 	}
 
 	if (fx + ll >= frame.w) 
