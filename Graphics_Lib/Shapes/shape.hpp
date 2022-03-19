@@ -20,25 +20,27 @@ public:
 
 	V2d<float> get_point(int i) const { return m_points[i]; };
 
-	// get fill color of shape
-	const Rgba & fill() const { return m_fill; };
-	// get stroke color of shape
-	const Rgba & stroke() const { return m_stroke; };
-	// get stroke weight
-	int strokeweight() const { return m_stroke_weight; };
+	
+	const Rgba & fill() const { return m_fill; }; // get fill color of shape
+	const Rgba & stroke() const { return m_stroke; }; // get stroke color of shape
+	int strokeweight() const { return m_stroke_weight; }; // get stroke weight of shape
 	
 
 	// set fill color of object
-	void fill(const Rgba & f)   					{ m_fill = f; };
-	void fill(u_char b)   							{ m_fill = {b, b, b, 255}; };
-	void fill(u_char b, u_char a) 				{ m_fill = {b, b, b, a}; };
-	void fill(u_char r, u_char g, u_char b) { m_fill = {r, g, b, 255}; 	};
+	void fill(const Rgba & f)   					{ m_fill = f; 					  m_do_fill = true; 	};
+	void fill(u_char b)   							{ m_fill = {b, b, b, 255};   m_do_fill = true; 	};
+	void fill(u_char b, u_char a) 				{ m_fill = {b, b, b, a}; 	  m_do_fill = true; 	};
+	void fill(u_char r, u_char g, u_char b) 	{ m_fill = {r, g, b, 255};   m_do_fill = true; 	};
 
 	// set stroke color of object
-	void stroke(const Rgba & s) 					{ m_stroke = s; };
-	void stroke(u_char b) 							{ m_stroke = {b, b, b, 255}; 	};
-	void stroke(u_char b, u_char a) 				{ m_stroke = {b, b, b, a}; 	};
-	void stroke(u_char r, u_char g, u_char b) { m_stroke = {r, g, b, 255}; 	};
+	void stroke(const Rgba & s) 					{ m_stroke = s;				  m_do_stroke = true; };
+	void stroke(u_char b) 							{ m_stroke = {b, b, b, 255}; m_do_stroke = true; };
+	void stroke(u_char b, u_char a) 				{ m_stroke = {b, b, b, a};   m_do_stroke = true; };
+	void stroke(u_char r, u_char g, u_char b) { m_stroke = {r, g, b, 255}; m_do_stroke = true; };
+
+	void no_stroke() { m_do_stroke = false; };
+	void no_fill()	  { m_do_fill   = false; }
+
 
 	// set stroke weight for object
 	void strokeweight(int sw)   { m_stroke_weight = sw; };
@@ -78,13 +80,15 @@ protected:
 	// generate a new id
 	void generate_id() { m_id = clock(); };
 	
+	bool m_do_stroke = true,
+		  m_do_fill	  = true;
+
 private:
 	std::vector<V2d<float>> m_points; // storage for the points of this shape
 	unsigned int m_id; // unique id for identification
 
 	Rgba m_fill = {255, 255, 255, 255};   // fill-in color
 	Rgba m_stroke = {0, 0, 0, 255}; // color of stroke
-	bool m_do_stroke = true, m_do_fill = true;
 
 	int m_stroke_weight = 1; // pixel width of stroke
 

@@ -12,6 +12,7 @@ public:
 	Point() : Shape { V2d<float> {0.0f, 0.0f} } { };
 
 	void compute_stroke(Frame & f) {
+		if (!m_do_stroke) return;
 		V2d<int> p = pos();
 		set_pixel(f, p.x, p.y, stroke(), strokeweight());
 	}
