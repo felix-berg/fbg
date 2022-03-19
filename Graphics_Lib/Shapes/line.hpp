@@ -7,8 +7,12 @@ class Line : public Shape {
 public:
 	Line(const V2d<float> & f, const V2d<float> & t)
 		: Shape { { f, t } } { };
+
 	Line() : Line {{0.0f, 0.0f}, {0.0f, 0.0f}} { };
 	
+	Line(float fx, float fy, float tx, float ty)
+		: Line { { fx, fy }, { tx, ty }} { };
+
 	void compute_stroke(Frame & f);
 	void compute_fill(Frame & f) { };
 
