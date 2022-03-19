@@ -44,14 +44,14 @@ public:
 	void strokeweight(int sw)   { m_stroke_weight = sw; };
 
 	// get current rotation in radians
-	float angle() const { return m_angle; };
+	// float angle() const { return m_angle; };
 	// get current rotation in degrees
-	float angle_degrees() const { return (m_angle / 6.28318530717958f) * 360.0f; }
+	// float angle_degrees() const { return (m_angle / 6.28318530717958f) * 360.0f; }
 
 	// set rotation in radians
-	void angle(float a) { m_angle = a; };
+	// void angle(float a) { m_angle = a; };
 	// set rotation in degrees
-	void angle_degrees(float a) { m_angle = (a / 360.0f) * 6.28318530717958f; };
+	// void angle_degrees(float a) { m_angle = (a / 360.0f) * 6.28318530717958f; };
 
 	bool operator == (const Shape & other) { return this->id() == other.id(); };
 
@@ -88,7 +88,7 @@ private:
 
 	int m_stroke_weight = 1; // pixel width of stroke
 
-	float m_angle = 0; // current rotation of shape
+	// float m_angle = 0; // current rotation of shape
 };
 };
 #endif
