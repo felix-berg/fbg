@@ -5,7 +5,7 @@ int main() {
 	fbg::LoopWin window { "Window Title", 1280, 720 };
 
 	// set window attributes:
-	window.background(0, 20); // black with alpha 20
+	window.background(0U, 20U); // black with alpha 20
 	window.framerate(144.0f);
 	
 	// Create circle object at (0, 0) with radius 50

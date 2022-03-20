@@ -54,8 +54,8 @@ namespace fbg {
 		 * @param g: Green-value of background color. [0, 255]
 		 * @param b: Blue-value of background color. [0, 255] 
 		 * @param a: Alpha-value of background color. [0, 255]*/
-		void background(u_char r, u_char g, u_char b) { 
-			m_backgroundColor = { r, g, b, 255 }; 
+		void background(u_char r, u_char g, u_char b, u_char a) { 
+			m_backgroundColor = { r, g, b, a }; 
 		};		
 			
 		/** Setter for background color.
