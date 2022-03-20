@@ -1,4 +1,4 @@
-# 2D Graphics Library using SDL!
+# Low-level 2D Graphics Library!
 Example usage:
 ```C++
 #include "2D_Graphics_Lib.hpp"
