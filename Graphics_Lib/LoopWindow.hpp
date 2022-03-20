@@ -115,8 +115,9 @@ namespace fbg {
 		int m_numFrames = 0; // total number of frames elapsed
 	};
 
-	/** Log the expected and actual framerate of a window, that has finished execution. */
-	void log_window_performance(LoopWin & win) {
+	/** Log the expected and actual framerate of a window, that has finished execution.
+	 * @param win: The window to be analyzed. */
+	void log_window_performance(const LoopWin & win) {
 		std::cout << "Expected framerate: " 
 						<< win.framerate() << '\n';
 		float frametime = win.totalTime() / static_cast<float>(win.framesElapsed());
