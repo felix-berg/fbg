@@ -1,6 +1,7 @@
 #ifndef LWINDOW_HPP
 #define LWINDOW_HPP
 
+#include <iostream>
 #include <functional>
 #include <thread>
 #include <chrono>
@@ -51,6 +52,7 @@ namespace fbg {
 
 		/* Return number of frames completed since run() was called. */
 		int frames_elapsed() const { return m_numFrames; };
+		
 		float total_time() const { 
 			if (is_open()) throw std::runtime_error("Cannot get total time while window is running.");
 			return m_totalTime.count();
@@ -90,6 +92,7 @@ namespace fbg {
 
 				dt = std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>>(high_resolution_clock::now() - frameStartTime);
 			}
+
 			m_totalTime = high_resolution_clock::now() - m_startTime;
 		}
 
@@ -101,6 +104,15 @@ namespace fbg {
 
 		int m_numFrames = 0; // total number of frames elapsed
 	};
+
+	void log_window_performance(LoopWin & win) {
+		std::cout << "Expected framerate: " 
+						<< win.framerate() << '\n';
+		float frametime = win.total_time() / static_cast<float>(win.frames_elapsed());
+		std::cout << "Actual framerate: "
+						<< 1.0f / frametime << '\n';
+		std::cout << '\n';
+	} 
 };
 
 #endif
