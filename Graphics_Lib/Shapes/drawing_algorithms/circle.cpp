@@ -55,11 +55,11 @@ void fbg::compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba
 
 	int D = 3 - 2 * r;
 
-	int loff, roff;
-	offsets_from_strokeweight(sw, &loff, &roff);
+	int lOff, rOff;
+	offsets_from_strokeweight(sw, &lOff, &rOff);
 
 	while (x >= y) {
-		for (int i = x - loff; i <= x + roff; i++) // take stroke weight into account
+		for (int i = x - lOff; i <= x + rOff; i++) // take stroke weight into account
 			draw_8_octants(frame, cx, cy, i, y, color, sw);
 
 		if (D > 0) {

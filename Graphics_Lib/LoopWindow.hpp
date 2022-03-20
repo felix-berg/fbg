@@ -50,10 +50,10 @@ public:
 	}
 
 	/* Return number of frames completed since run() was called. */
-	int frames_elapsed() const { return m_num_frames; };
+	int frames_elapsed() const { return m_numFrames; };
 	float total_time() const { 
 		if (is_open()) throw std::runtime_error("Cannot get total time while window is running.");
-		return m_total_time.count();
+		return m_totalTime.count();
  	}
 
 	/*
@@ -64,18 +64,18 @@ public:
 		if (before_run != nullptr)
 			before_run();
 
-		m_start_time = high_resolution_clock::now();
-		m_last_frame = m_start_time;
+		m_startTime = high_resolution_clock::now();
+		m_lastFrame = m_startTime;
 		
 		std::chrono::duration<float, std::ratio<1>> dt = m_frametime; // time for last frame. initialized as expected framerate
 		while (is_open()) {
-			high_resolution_clock::time_point frame_start_time = high_resolution_clock::now();
+			high_resolution_clock::time_point frameStartTime = high_resolution_clock::now();
 
 			// update timer
-			m_last_frame += m_frametime;
+			m_lastFrame += m_frametime;
 			
 			// wait for enough time to have passed
-			std::this_thread::sleep_until(m_last_frame);
+			std::this_thread::sleep_until(m_lastFrame);
 
 			// user defined function
 			if (before_draw != nullptr) 
@@ -83,23 +83,23 @@ public:
 
 			// draw frame
 			draw();
-			m_num_frames++;
+			m_numFrames++;
 
 			if (after_draw != nullptr)
 				after_draw(dt.count());
 
-			dt = std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>>(high_resolution_clock::now() - frame_start_time);
+			dt = std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>>(high_resolution_clock::now() - frameStartTime);
 		}
-		m_total_time = high_resolution_clock::now() - m_start_time;
+		m_totalTime = high_resolution_clock::now() - m_startTime;
 	}
 
 private:
 	std::chrono::microseconds m_frametime { 1000000 / 60 }; // time per frame in µs
-	std::chrono::duration<float, std::ratio<1, 1>> m_total_time;
+	std::chrono::duration<float, std::ratio<1, 1>> m_totalTime;
 
-	high_resolution_clock::time_point m_last_frame, m_start_time;
+	high_resolution_clock::time_point m_lastFrame, m_startTime;
 
-	int m_num_frames = 0; // total number of frames elapsed
+	int m_numFrames = 0; // total number of frames elapsed
 };
 };
 

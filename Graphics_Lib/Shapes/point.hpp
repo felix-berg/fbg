@@ -11,13 +11,13 @@ public:
 	
 	Point() : Shape { V2d<float> {0.0f, 0.0f} } { };
 
-	void compute_stroke(Frame & f) {
-		if (!m_do_stroke) return;
+	void draw_stroke(Frame & f) {
+		if (!m_doStroke) return;
 		V2d<int> p = pos();
 		set_pixel(f, p.x, p.y, stroke(), strokeweight());
 	}
 
-	void compute_fill(Rgba *, int, int) { return; };
+	void draw_fill(Rgba *, int, int) { return; };
 
 	// get position
 	V2d<float> pos() const { return get_point(0); };

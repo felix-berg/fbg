@@ -14,7 +14,7 @@ namespace fbg {
 class SDL_Handler {
 public:
 	SDL_Handler();
-	SDL_Handler(const std::string & title, const V2d<int> & start_point, int w, int h);
+	SDL_Handler(const std::string & title, const V2d<int> & startPoint, int w, int h);
 	SDL_Handler(const std::string & title, int w, int h);
 	~SDL_Handler();
 
@@ -25,13 +25,13 @@ public:
 	V2d<int> dimensions() const { return { m_width, m_height }; }
 	
 
-	const std::vector<int> & get_pressed_keys() const { return m_keys_down; };
-	bool is_key_pressed(int key_id) const;
-	bool is_key_pressed() const;
+	const std::vector<int> & get_pressed_keys() const { return m_keysDown; };
+	bool key_is_pressed(int key_id) const;
+	bool key_is_pressed() const;
 	V2d<int> mouse() const;
 	V2d<int> mouse_pos_clamped() const;
 
-	bool is_open() const { return m_is_open; };
+	bool is_open() const { return m_isOpen; };
 
 protected:
 	const Rgba & get_pixel(unsigned int n) 					  const { return frame.pixels[n]; };
@@ -41,8 +41,8 @@ protected:
 	void set_pixel(const V2d<int> & p, const Rgba & px);
 
 	// list of scancodes corresponding to every key, represented by SDL
-	std::vector<int> m_keys_down;
-	bool m_is_open = false;
+	std::vector<int> m_keysDown;
+	bool m_isOpen = false;
 
 	void handle_event(const SDL_Event * e);
 	void poll_events();

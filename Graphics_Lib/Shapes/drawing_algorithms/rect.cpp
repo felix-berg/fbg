@@ -12,33 +12,33 @@ using namespace fbg;
 */
 void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
 	// take stroke width into account
-	int loff, roff; // offsets created by strokeweight
+	int lOff, rOff; // offsets created by strokeweight
 
-	offsets_from_strokeweight(sw, &loff, &roff);
+	offsets_from_strokeweight(sw, &lOff, &rOff);
 
-	int louterx = rx - loff; 			  // left x
-	int routerx = rx + rw + roff;  	  // right x
+	int lOuterX = rx - lOff; 			  // left x
+	int rOuterX = rx + rw + rOff;  	  // right x
 
-	int fy = ry - loff;
-	int ty = ry + roff;
+	int fy = ry - lOff;
+	int ty = ry + rOff;
 
 	// move from y to to y
 	for (int y = fy; y <= ty; y++) {
-		compute_horisontal_line(frame, louterx, y, 			 routerx, y, 			  color); // top line	
-		compute_horisontal_line(frame, louterx, y + rh - 1, routerx, y + rh - 1, color); // bottom line
+		compute_horisontal_line(frame, lOuterX, y, 			 rOuterX, y, 			  color); // top line	
+		compute_horisontal_line(frame, lOuterX, y + rh - 1, rOuterX, y + rh - 1, color); // bottom line
 	}
 
 
 	// vertical lines
-	int topy = ry - loff;
-	int boty = ry + rh - 1 + roff;
+	int topY = ry - lOff;
+	int botY = ry + rh - 1 + rOff;
 
 	if (rx >= 0 && rx < frame.w) {
-		for (int y = topy; y <= boty && y < frame.h; y++) {
+		for (int y = topY; y <= botY && y < frame.h; y++) {
 			if (y < 0) continue; // if offscreen -> move to next pixel
 			
-			compute_stroke_part_horisontal(frame, rx, y, color, sw);
-			compute_stroke_part_horisontal(frame, rx + rw, y, color, sw);
+			draw_stroke_part_horisontal(frame, rx, y, color, sw);
+			draw_stroke_part_horisontal(frame, rx + rw, y, color, sw);
 		}
 	}
 }

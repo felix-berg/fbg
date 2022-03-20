@@ -15,35 +15,35 @@ public:
 	Shape & operator = (const Shape &) = delete; 
 
 	// virtual function: to be defined by subclasses
-	virtual void compute_stroke(Frame & f)  { };
-	virtual void compute_fill(Frame & f) { };
+	virtual void draw_stroke(Frame & f)  { };
+	virtual void draw_fill(Frame & f) { };
 
 	V2d<float> get_point(int i) const { return m_points[i]; };
 
 	
 	const Rgba & fill() const { return m_fill; }; // get fill color of shape
 	const Rgba & stroke() const { return m_stroke; }; // get stroke color of shape
-	int strokeweight() const { return m_stroke_weight; }; // get stroke weight of shape
+	int strokeweight() const { return m_strokeWeight; }; // get stroke weight of shape
 	
 
 	// set fill color of object
-	void fill(const Rgba & f)   					{ m_fill = f; 					  m_do_fill = true; 	};
-	void fill(u_char b)   							{ m_fill = {b, b, b, 255};   m_do_fill = true; 	};
-	void fill(u_char b, u_char a) 				{ m_fill = {b, b, b, a}; 	  m_do_fill = true; 	};
-	void fill(u_char r, u_char g, u_char b) 	{ m_fill = {r, g, b, 255};   m_do_fill = true; 	};
+	void fill(const Rgba & f)   					{ m_fill = f; 					  m_doFill = true; 	};
+	void fill(u_char b)   							{ m_fill = {b, b, b, 255};   m_doFill = true; 	};
+	void fill(u_char b, u_char a) 				{ m_fill = {b, b, b, a}; 	  m_doFill = true; 	};
+	void fill(u_char r, u_char g, u_char b) 	{ m_fill = {r, g, b, 255};   m_doFill = true; 	};
 
 	// set stroke color of object
-	void stroke(const Rgba & s) 					{ m_stroke = s;				  m_do_stroke = true; };
-	void stroke(u_char b) 							{ m_stroke = {b, b, b, 255}; m_do_stroke = true; };
-	void stroke(u_char b, u_char a) 				{ m_stroke = {b, b, b, a};   m_do_stroke = true; };
-	void stroke(u_char r, u_char g, u_char b) { m_stroke = {r, g, b, 255}; m_do_stroke = true; };
+	void stroke(const Rgba & s) 					{ m_stroke = s;				  m_doStroke = true; };
+	void stroke(u_char b) 							{ m_stroke = {b, b, b, 255}; m_doStroke = true; };
+	void stroke(u_char b, u_char a) 				{ m_stroke = {b, b, b, a};   m_doStroke = true; };
+	void stroke(u_char r, u_char g, u_char b) { m_stroke = {r, g, b, 255}; m_doStroke = true; };
 
-	void no_stroke() { m_do_stroke = false; };
-	void no_fill()	  { m_do_fill   = false; }
+	void no_stroke() { m_doStroke = false; };
+	void no_fill()	  { m_doFill   = false; }
 
 
 	// set stroke weight for object
-	void strokeweight(int sw)   { m_stroke_weight = sw; };
+	void strokeweight(int sw)   { m_strokeWeight = sw; };
 
 	// get current rotation in radians
 	// float angle() const { return m_angle; };
@@ -80,8 +80,8 @@ protected:
 	// generate a new id
 	void generate_id() { m_id = clock(); };
 	
-	bool m_do_stroke = true,
-		  m_do_fill	  = true;
+	bool m_doStroke = true,
+		  m_doFill	  = true;
 
 private:
 	std::vector<V2d<float>> m_points; // storage for the points of this shape
@@ -90,7 +90,7 @@ private:
 	Rgba m_fill = {255, 255, 255, 255};   // fill-in color
 	Rgba m_stroke = {0, 0, 0, 255}; // color of stroke
 
-	int m_stroke_weight = 1; // pixel width of stroke
+	int m_strokeWeight = 1; // pixel width of stroke
 
 	// float m_angle = 0; // current rotation of shape
 };

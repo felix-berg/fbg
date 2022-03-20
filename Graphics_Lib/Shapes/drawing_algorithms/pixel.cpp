@@ -39,13 +39,13 @@ void fbg::set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
 	Get the right and left pixel offsets based on given
 	strokeweight
 */
-void fbg::offsets_from_strokeweight(int sw, int * loff, int * roff) {
+void fbg::offsets_from_strokeweight(int sw, int * lOff, int * rOff) {
 	if (sw % 2 == 0) { // even
-		*loff = sw / 2;
-		*roff = sw / 2 - 1;
+		*lOff = sw / 2;
+		*rOff = sw / 2 - 1;
 	} else { // odd
-		*loff = (sw - 1) / 2;
-		*roff = *loff;
+		*lOff = (sw - 1) / 2;
+		*rOff = *lOff;
 	}
 }
 
@@ -54,28 +54,28 @@ void fbg::offsets_from_strokeweight(int sw, int * loff, int * roff) {
 	Inclusive of tx
 */
 void fbg::compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
-	int ll = tx - fx + 1;		  	// length of line
+	int lLen = tx - fx + 1;		  	// length of line
 
 	// y value
-	if (fx + ll < 0 || fx >= frame.w || fy < 0 || fy >= frame.h) {
-		ll = 0;
+	if (fx + lLen < 0 || fx >= frame.w || fy < 0 || fy >= frame.h) {
+		lLen = 0;
 	} else {
 		// x value
 		if (fx < 0) {
 			// lessen number of pixels in width (dont change the length of the line, just how many pixels are drawn of it)
-			ll += fx;
+			lLen += fx;
 			
 			// move the startindex to the first column of pixels
 			fx = 0;
 		}
 	
-		if (fx + ll >= frame.w) 
-			ll -= (fx + ll) - frame.w;
+		if (fx + lLen >= frame.w) 
+			lLen -= (fx + lLen) - frame.w;
 
-		int pidx = frame.w * fy + fx; // pixel index for top left pixel of rectangle
+		int pIdx = frame.w * fy + fx; // pixel index for top left pixel of rectangle
 
 		// composite pixels on top with the given pixel_id and line lengths
-		alpha_compositeNC(&frame.pixels[pidx], &color, ll);
+		alpha_compositeNC(&frame.pixels[pIdx], &color, lLen);
 	}
 
 }

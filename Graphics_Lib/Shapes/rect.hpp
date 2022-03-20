@@ -15,8 +15,8 @@ public:
 	Rect(float x, float y, u_int w, u_int h) : Rect { {x, y}, w, h } { };
 	Rect() : Rect { {0, 0}, 1, 1 } { };
 
-	void compute_stroke(Frame & f);
-	void compute_fill(Frame & f);
+	void draw_stroke(Frame & f);
+	void draw_fill(Frame & f);
 
 	// getters
 	V2d<float> pos() 	const { return get_point(0); };

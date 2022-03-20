@@ -21,7 +21,7 @@ SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point
 	clear_pixels({0, 0, 0, 255});
 
 	// set window to the open state
-	m_is_open = true;
+	m_isOpen = true;
 }
 
 /*
@@ -80,20 +80,20 @@ void SDL_Handler::push_frame(const Frame & f) {
 	TODO: Add support for multiple windows
 */
 void SDL_Handler::handle_event(const SDL_Event * e) {
-	if (e->type == SDL_KEYDOWN && !is_key_pressed(e->key.keysym.sym)) {
+	if (e->type == SDL_KEYDOWN && !key_is_pressed(e->key.keysym.sym)) {
 		int scancode = SDL_GetScancodeFromKey(e->key.keysym.sym);
-		m_keys_down.push_back(scancode); 
+		m_keysDown.push_back(scancode); 
 	}
 	
 	if (e->type == SDL_KEYUP)  {
 		int scancode = SDL_GetScancodeFromKey(e->key.keysym.sym);
-		for (int i = 0; i < m_keys_down.size(); i++)
-			if (m_keys_down[i] == scancode)
-				m_keys_down.erase(m_keys_down.begin() + i);
+		for (int i = 0; i < m_keysDown.size(); i++)
+			if (m_keysDown[i] == scancode)
+				m_keysDown.erase(m_keysDown.begin() + i);
 	}
 
 	if (e->type == SDL_QUIT)
-		m_is_open = false;
+		m_isOpen = false;
 }
 
 void SDL_Handler::poll_events() {
@@ -119,8 +119,8 @@ void SDL_Handler::update() {
 	SDL_RenderPresent(m_renderer); 
 }
 
-bool SDL_Handler::is_key_pressed(int key_id) const {
-	for (int key : m_keys_down)
+bool SDL_Handler::key_is_pressed(int key_id) const {
+	for (int key : m_keysDown)
 		if (key == key_id)
 			return true;
 	return false;
@@ -129,8 +129,8 @@ bool SDL_Handler::is_key_pressed(int key_id) const {
 /*
 	TODO: iterally doesn't work
 */
-bool SDL_Handler::is_key_pressed() const {
-	return !(m_keys_down.size() == 0);
+bool SDL_Handler::key_is_pressed() const {
+	return !(m_keysDown.size() == 0);
 }
 
 /*
@@ -139,11 +139,11 @@ bool SDL_Handler::is_key_pressed() const {
 V2d<int> SDL_Handler::mouse() const {
 	SDL_PumpEvents();
 	V2d<int> res;
-	V2d<int> window_pos;
+	V2d<int> windowPos;
 
 	SDL_GetGlobalMouseState(&res.x, &res.y);
-	SDL_GetWindowPosition(m_window, &window_pos.x, &window_pos.y);
-	res = res - window_pos;
+	SDL_GetWindowPosition(m_window, &windowPos.x, &windowPos.y);
+	res = res - windowPos;
 	
 	return res;
 }

@@ -15,8 +15,8 @@ public:
 	Line(float fx, float fy, float tx, float ty)
 		: Line { { fx, fy }, { tx, ty }} { };
 
-	void compute_stroke(Frame & f);
-	void compute_fill(Frame & f) { };
+	void draw_stroke(Frame & f);
+	void draw_fill(Frame & f)   { };
 
 	// getters
 	V2d<float> from() const { return get_point(0); };
@@ -25,7 +25,7 @@ public:
 	// setters
 	void from(V2d<float> f) 		 { set_point(0, f); 			};
 	void from(float x, float y) 	 { set_point(0, {x, y});	};
-	void to(const V2d<float> & p) { set_point(1, p); 			};
+	void to(const V2d<float> & p)  { set_point(1, p); 			};
 	void to(float x, float y) 		 { set_point(1, {x, y});	};
 };
 };

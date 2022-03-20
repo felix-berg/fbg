@@ -16,8 +16,8 @@ public:
 	Circle() 
 		: Circle({0, 0}, 1) { };
 
-	void compute_stroke(Frame & f);
-	void compute_fill(Frame & f);
+	void draw_stroke(Frame & f);
+	void draw_fill(Frame & f);
 
 	// getters
 	V2d<float> pos() 	  const { return get_point(0); };

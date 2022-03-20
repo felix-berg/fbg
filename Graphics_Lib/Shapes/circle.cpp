@@ -3,15 +3,18 @@
 
 using namespace fbg;
 
-void Circle::compute_stroke(Frame & f) {
-	if (!m_do_stroke) return;
+void Circle::draw_stroke(Frame & f) {
+	if (!m_doStroke) return;
+	
 	V2d<int> p = pos();
-	int r = int(radius());
+	int r = static_cast<int>(radius());
+
 	compute_circle_stroke(f, p.x, p.y, r, stroke(), strokeweight());
 }
 
-void Circle::compute_fill(Frame & f) {
-	if (!m_do_fill) return;
+void Circle::draw_fill(Frame & f) {
+	if (!m_doFill) return;
+
 	V2d<int> p = pos();
 	int r = static_cast<int>(radius());
 

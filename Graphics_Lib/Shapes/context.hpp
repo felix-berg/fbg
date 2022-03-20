@@ -8,12 +8,12 @@ namespace fbg {
 class Context : public Shape {
 public:
 	Context() { };
-	void compute_stroke(Frame & f) {	};
+	void draw_stroke(Frame & f) {	};
 
-	void compute_fill(Frame & f) {
+	void draw_fill(Frame & f) {
 		for (Shape * s : m_shapes) {
-			s->compute_fill(f);
-			s->compute_stroke(f);
+			s->draw_fill(f);
+			s->draw_stroke(f);
 		}
 	}
 
@@ -22,7 +22,9 @@ public:
 
 	void attach (Shape & s) { m_shapes.push_back(&s); };
 	void detach (Shape & s) { 
-		for (int i = 0; i < m_shapes.size(); i++) if (*m_shapes[i] == s) m_shapes.erase(m_shapes.begin() + i);
+		for (int i = 0; i < m_shapes.size(); i++) 
+			if (*m_shapes[i] == s) 
+				m_shapes.erase(m_shapes.begin() + i);
 	};
 
 private:

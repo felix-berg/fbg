@@ -4,8 +4,8 @@
 
 using namespace fbg;
 
-void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lres, __m256i * _hres);
-inline __m256i _mm256_epu16_divideby255(const __m256i _v);
+void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lRes, __m256i * _hRes);
+inline __m256i _mm256_epu16_divideby256(const __m256i _v);
 inline __m128i _mm_convertepi16_epi8(const __m256i _v);
 inline __m256i _mm256_combine_2_128i(const __m128i _v1, const __m128i _v2);
 
@@ -48,10 +48,10 @@ void fbg::alpha_composite8(Rgba * dst, Rgba * over) {
 
 	// get a vector _oa filled with only the over.a value
 
-	const __m256i _select_alpha = _mm256_set1_epi32(0x000000FF);
-	// _oa = over.a & _select_alpha
+	const __m256i _selectAlpha = _mm256_set1_epi32(0x000000FF);
+	// _oa = over.a & _selectAlpha
 	// _oa = |R1|G1|... & |00|00|00|FF| ==> |00|00|00|A1|...|00|A2|...
-	__m256i _oa = _mm256_and_si256(_over, _select_alpha);
+	__m256i _oa = _mm256_and_si256(_over, _selectAlpha);
 
 	// set every element of the vector _oa to over.a
 	// _oa = _oa & _oa << 1 byte & _oa << 2 byte & _oa << 3 byte
@@ -75,37 +75,33 @@ void fbg::alpha_composite8(Rgba * dst, Rgba * over) {
 	_mm256_storeu_si256(&_dst, _mm256_loadu_si256((const __m256i *) dst));
 
 
-
 	// _rest = 255 - over.a
-
 	__m256i _rest = _mm256_sub_epi8(_255, _oa);
 
 	// over.x + (dst.x * _rest) / 255
 	// ******************************
 
-
-
-	__m256i _lndst16, _hndst16; // new dst low part and high part
+	__m256i _lnDst16, _hnDst16; // new dst low part and high part
 	// new dst = dst.x * _rest
-	_mm_mult_epu8_into_2epu16(_dst, _rest, &_lndst16, &_hndst16);
+	_mm_mult_epu8_into_2epu16(_dst, _rest, &_lnDst16, &_hnDst16);
 
-	__m256i _nover, _lnover16, _hnover16; // new over low part and high part
+	__m256i _nOver, _lnOver16, _hnOver16; // new over low part and high part
 	// new over = (over.x * over.a) / 255
-	_mm_mult_epu8_into_2epu16(_over, _oa, &_lnover16, &_hnover16);
+	_mm_mult_epu8_into_2epu16(_over, _oa, &_lnOver16, &_hnOver16);
 
 	// use new dst for result to save registers
 	// new dst = over.x * over.a + dst.x * rest
-	_lndst16 = _mm256_add_epi16(_lnover16, _lndst16);
-	_hndst16 = _mm256_add_epi16(_hnover16, _hndst16);
+	_lnDst16 = _mm256_add_epi16(_lnOver16, _lnDst16);
+	_hnDst16 = _mm256_add_epi16(_hnOver16, _hnDst16);
 
 	// new dst = (over.x * over.x + dst.x * rest) / 255 (actually 256 because its faster)
-	_lndst16 = _mm256_epu16_divideby255(_lndst16);
-	_hndst16 = _mm256_epu16_divideby255(_hndst16);
+	_lnDst16 = _mm256_epu16_divideby256(_lnDst16);
+	_hnDst16 = _mm256_epu16_divideby256(_hnDst16);
 	
 	// convert to 8-bit integers again
 	// use "_rest" register for result of (over.x * over.a + dst.x * rest) / 255
-	// _rest = |_hndst16|_lndst16|
-	_rest = _mm256_combine_2_128i(_mm_convertepi16_epi8(_lndst16), _mm_convertepi16_epi8(_hndst16));
+	// _rest = |_hnDst16|_lnDst16|
+	_rest = _mm256_combine_2_128i(_mm_convertepi16_epi8(_lnDst16), _mm_convertepi16_epi8(_hnDst16));
 
 	_mm256_storeu_si256((__m256i *) dst, _rest);
 }
@@ -121,8 +117,8 @@ void fbg::alpha_compositeN(Rgba * dst, Rgba * over, int n) {
 		alpha_composite8(dst + i, over + i);
 	}
 	
-	int pixels_left = n % 8;
-	for (int i = n - pixels_left; i < n; i++) {
+	int n_pixelsLeft = n % 8;
+	for (int i = n - n_pixelsLeft; i < n; i++) {
 		alpha_composite1(dst + i, over + i);
 	}
 }
@@ -140,21 +136,21 @@ void fbg::alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
 		alpha_composite8(dst + i, over8);
 	}
 
-	int pixels_left = n % 8;
-	if (pixels_left == 0)
+	int n_pixelsLeft = n % 8;
+	if (n_pixelsLeft == 0)
 		alpha_composite8(dst + n - 8, over8);
 
-	for (int i = n - pixels_left; i < n; i++) {
+	for (int i = n - n_pixelsLeft; i < n; i++) {
 		alpha_composite1(dst + i, over);
 	}
 }
 
 /*
-	Multiply char from _v1 and _v1 into two 16-bit short vectors _lres (low result) and _hres (high result).
+	Multiply char from _v1 and _v1 into two 16-bit short vectors _lRes (low result) and _hRes (high result).
 	Note: Multiplication of signed integers and unsigned integers is the same operation
 	Returns 16-bit versions of the product of the given vectors. 
 */
-void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lres, __m256i * _hres) {
+void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lRes, __m256i * _hRes) {
 	// "half"-registers
 	__m128i _v1_128, _v2_128;
 	// expanded registers, same as above, but with shorts
@@ -174,7 +170,7 @@ void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _
 	//  into and intermediary 32-bit integer, 
 	//  and then returns the two low order
 	//  bytes of the 32-bit int)
-	*_lres = _mm256_mullo_epi16(_v1ex_256, _v2ex_256);
+	*_lRes = _mm256_mullo_epi16(_v1ex_256, _v2ex_256);
 
 	// upper half bits -> same thing
 	_v1_128 = _mm256_extractf128_si256(_v1, 1);
@@ -185,7 +181,7 @@ void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _
 	_v2ex_256 = _mm256_cvtepu8_epi16(_v2_128);
 
 	// multiply two vectors and return result
-	*_hres = _mm256_mullo_epi16(_v1ex_256, _v2ex_256);
+	*_hRes = _mm256_mullo_epi16(_v1ex_256, _v2ex_256);
 }
 
 
@@ -221,19 +217,11 @@ inline __m256i _mm256_combine_2_128i(const __m128i _low, const __m128i _hi) {
 }
 
 /*
-	Divides every 16-bit unsigned integer in the given 256-bit vector by 255
-	Implemented after https://www.reddit.com/r/C_Programming/comments/gudfyk/faster_divide_by_255/ 
+	Divides every 16-bit unsigned integer in the given 256-bit vector by 256
 */
-inline __m256i _mm256_epu16_divideby255(const __m256i _v) {
+inline __m256i _mm256_epu16_divideby256(const __m256i _v) {
 	static const __m128i _shift8 = _mm_set_epi16(0x0000, 0x0000, 0x0000, 0x0008,
 													  0x0000, 0x0000, 0x0000, 0x0008);
-	// v / 255 =approx v / 256 == v >> 8	
+	// v / 255 =~= v / 256 == v >> 8	
 	return _mm256_srl_epi16(_v, _shift8);
-
-	// return _mm256_sra_epi16(
-	// 	_mm256_add_epi16(
-	// 		_mm256_sra_epi16(_mm256_add_epi16(_v, _mm256_set1_epi16(0x0101)), _shift8),
-	// 		_v
-	// 	), 
-	// 	_shift8); 
 }
