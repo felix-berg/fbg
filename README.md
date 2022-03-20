@@ -5,14 +5,14 @@ Example usage:
 
 int main() {
 	// Construct 1280x720 Window object.
-	LoopWin window { "Window Title", 1280, 720 };
+	fbg::LoopWin window { "Window Title", 1280, 720 };
 
 	// set window attributes:
 	window.background(0, 20); // black with alpha 20
-	window.framerate(144);
+	window.framerate(144.0f);
 	
 	// Create circle object at (0, 0) with radius 50
-	Circle circle {0, 0, 50};
+	fbg::Circle circle {0.0f, 0.0f, 50.0f};
 	
 	// draw circle object at every frame update,
 	// by attaching it to the window object
@@ -21,7 +21,7 @@ int main() {
 	// define function that will be called at every frame
 	window.before_draw = [&](float frametime) -> void {
 		// grab the mouse position from the window
-		V2d<int> mpos = window.get_mouse_pos();
+		fbg::V2d<int> mpos = window.mouse();
 
 	
 	// set the position of the radius to the
