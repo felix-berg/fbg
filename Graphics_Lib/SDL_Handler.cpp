@@ -104,7 +104,7 @@ void SDL_Handler::poll_events() {
 
 void SDL_Handler::update() {
 
-	if (!is_open()) 
+	if (!isOpen()) 
 		throw std::runtime_error("SDL_Handler error: Cannot update unopen screen.\n");
 	
 	poll_events();

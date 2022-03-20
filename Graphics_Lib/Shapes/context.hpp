@@ -17,8 +17,8 @@ namespace fbg {
 			}
 		}
 
-		int num_shapes() const { return m_shapes.size(); };
-		const std::vector<Shape *> & get_shapes() const { return m_shapes; };
+		int numShapes() const { return m_shapes.size(); };
+		const std::vector<Shape *> & getShapes() const { return m_shapes; };
 
 		void attach (Shape & s) { m_shapes.push_back(&s); };
 		void detach (Shape & s) { 

@@ -51,10 +51,10 @@ namespace fbg {
 		}
 
 		/* Return number of frames completed since run() was called. */
-		int frames_elapsed() const { return m_numFrames; };
+		int framesElapsed() const { return m_numFrames; };
 		
-		float total_time() const { 
-			if (is_open()) throw std::runtime_error("Cannot get total time while window is running.");
+		float totalTime() const { 
+			if (isOpen()) throw std::runtime_error("Cannot get total time while window is running.");
 			return m_totalTime.count();
 		}
 
@@ -70,7 +70,7 @@ namespace fbg {
 			m_lastFrame = m_startTime;
 			
 			std::chrono::duration<float, std::ratio<1>> dt = m_frametime; // time for last frame. initialized as expected framerate
-			while (is_open()) {
+			while (isOpen()) {
 				high_resolution_clock::time_point frameStartTime = high_resolution_clock::now();
 
 				// update timer
@@ -108,7 +108,7 @@ namespace fbg {
 	void log_window_performance(LoopWin & win) {
 		std::cout << "Expected framerate: " 
 						<< win.framerate() << '\n';
-		float frametime = win.total_time() / static_cast<float>(win.frames_elapsed());
+		float frametime = win.totalTime() / static_cast<float>(win.framesElapsed());
 		std::cout << "Actual framerate: "
 						<< 1.0f / frametime << '\n';
 		std::cout << '\n';

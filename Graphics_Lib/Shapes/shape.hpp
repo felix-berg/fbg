@@ -39,8 +39,8 @@ namespace fbg {
 		void stroke(u_char b, u_char a) 				{ m_stroke = {b, b, b, a};   m_doStroke = true; };
 		void stroke(u_char r, u_char g, u_char b) { m_stroke = {r, g, b, 255}; m_doStroke = true; };
 
-		void no_stroke() { m_doStroke = false; };
-		void no_fill()	  { m_doFill   = false; }
+		void noStroke() { m_doStroke = false; };
+		void noFill()	  { m_doFill   = false; }
 
 
 		// set stroke weight for object

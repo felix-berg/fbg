@@ -25,13 +25,13 @@ namespace fbg {
 		V2d<int> dimensions() const { return { m_width, m_height }; }
 		
 
-		const std::vector<int> & get_pressed_keys() const { return m_keysDown; };
+		const std::vector<int> & pressedKeys() const { return m_keysDown; };
 		bool key_is_pressed(int key_id) const;
 		bool key_is_pressed() const;
 		V2d<int> mouse() const;
 		V2d<int> mouse_pos_clamped() const;
 
-		bool is_open() const { return m_isOpen; };
+		bool isOpen() const { return m_isOpen; };
 
 	protected:
 		const Rgba & get_pixel(unsigned int n) 					  const { return frame.pixels[n]; };

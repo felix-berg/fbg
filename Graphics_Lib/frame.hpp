@@ -10,8 +10,7 @@ namespace fbg {
 	struct Frame { 
 		Rgba * pixels;
 
-		const int w, 
-					h;
+		const int w, h;
 
 		Frame(int w, int h) 
 			: w { w }, h { h }
