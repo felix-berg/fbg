@@ -5,6 +5,8 @@ int main() {
 
 	fbg::Circle c { 100.0f, 100.0f, 50.0f};
 
+	
+
 	w.attach(c);
 	w.run();
 }

@@ -7,23 +7,23 @@
 	Container for Rgba pixelbuffer that includes width and height
 */
 namespace fbg {
-struct Frame { 
-	Rgba * pixels;
+	struct Frame { 
+		Rgba * pixels;
 
-	const int w, 
-				 h;
+		const int w, 
+					h;
 
-	Frame(int w, int h) 
-		: w { w }, h { h }
-	{
-		pixels = (Rgba *) malloc(sizeof(Rgba) * w * h);
-	}
+		Frame(int w, int h) 
+			: w { w }, h { h }
+		{
+			pixels = (Rgba *) malloc(sizeof(Rgba) * w * h);
+		}
 
-	~Frame() {
-		if (pixels != nullptr) 
-			free(pixels);
-	}
-};
+		~Frame() {
+			if (pixels != nullptr) 
+				free(pixels);
+		}
+	};
 };
 
 #endif
