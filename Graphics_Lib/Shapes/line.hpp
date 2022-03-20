@@ -6,7 +6,9 @@ namespace fbg {
 class Line : public Shape {
 public:
 	Line(const V2d<float> & f, const V2d<float> & t)
-		: Shape { { f, t } } { };
+		: Shape { { f, t } } {
+		strokeweight(3);
+	};
 
 	Line() : Line {{0.0f, 0.0f}, {0.0f, 0.0f}} { };
 	
