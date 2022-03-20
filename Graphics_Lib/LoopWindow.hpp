@@ -37,6 +37,9 @@ namespace fbg {
 		 * Provides the frametime of the previous frame	in seconds. */
 		std::function<void(float)> after_draw = nullptr;
 
+		/** This function is called immediately before the	Window::run() method starts the game loop. */
+		std::function<void(void)> before_run = nullptr;
+
 		/** Getter for framerate. 
 		 * @returns Current expected framerate of the window in frames/second */
 		float framerate() const { 
@@ -71,6 +74,8 @@ namespace fbg {
 
 		/** Run gameloop. Stops execution until window closes. */
 		void run() { 
+			if (before_run != nullptr) before_run();
+
 			m_startTime = high_resolution_clock::now();
 			m_lastFrame = m_startTime;
 			
