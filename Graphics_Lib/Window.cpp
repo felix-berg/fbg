@@ -5,9 +5,6 @@
 
 using namespace fbg;
 
-/*
-	Stop the current process, until user enters any key.
-*/
 void Window::wait_for_key() {
 	while (m_keysDown.size() == 0 || !this->has_keyboard_focus()) {
 		SDL_Event e;

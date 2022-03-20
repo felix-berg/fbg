@@ -13,7 +13,6 @@
 namespace fbg {
 	class SDL_Handler {
 	public:
-		SDL_Handler();
 		SDL_Handler(const std::string & title, const V2d<int> & startPoint, int w, int h);
 		SDL_Handler(const std::string & title, int w, int h);
 		~SDL_Handler();

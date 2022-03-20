@@ -19,7 +19,6 @@ int main() {
 	window.before_draw = [&](float frametime) -> void {
 		// grab the mouse position from the window
 		fbg::V2d<int> mpos = window.mouse();
-
 	
 		// set the position of the radius to the
 		// current mouse position

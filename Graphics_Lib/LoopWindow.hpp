@@ -9,63 +9,68 @@
 #include "Window.hpp"
 
 using std::chrono::high_resolution_clock;
+
 namespace fbg {
 
-/* Class for running animations inside a Window */
+/** Class for running animations inside a Window.
+ * @param before_draw(): Function pointer, that can be defined. Called immediately before every frame is rendered.
+ * @param after_draw(): Function pointer, that can be defiend. Called immediately after every frame is rendered. 
+ * @param run(): Function that starts rendering. Stops execution until window is closed.
+ * @param framerate(): Getter/setter for framerate. */
 	class LoopWin : public Window {
 	public:
-		/* Constructor for looping window */
+		/** Constructor for looping window. 
+		 * @param title: The title at the top bar of the window.
+		 * @param w: The width of the window.
+		 * @param h: The height of the window. */
 		LoopWin(const std::string & title, int w, int h) : Window { title, w, h } { };
 
-		/* Default constructor: Applies sensible defaults */
+		/** Default constructor. 
+		 * Sets title to "Looping Window". Sets width to 640 px and height to 480 px. */
 		LoopWin() : LoopWin { "Looping Window", 640, 480 } { };
-		
-		/*
-			This function is called immediately before the
-			loop starts in run().
-		*/
-		std::function<void()> before_run = nullptr;
 
-		/* This function is called immediately before the
-			window::draw() method is called.
-			Provides the expected frametime in seconds. */
+		/** This function is called immediately before the	Window::draw() method is called.
+		 * Provides the frametime of the previous frame	in seconds. */
 		std::function<void(float)> before_draw = nullptr;
 
-		/* Same as before_draw, but after. */
+		/** This function is called immediately after the Window::draw() method is called.
+		 * Provides the frametime of the previous frame	in seconds. */
 		std::function<void(float)> after_draw = nullptr;
 
-		// getter and setter for the framerate 
+		/** Getter for framerate. 
+		 * @returns Current expected framerate of the window in frames/second */
 		float framerate() const { 
 			float dt = frametime();
 			return 1.0f / dt;  // return 1.0f / frametime
 		};
 
+		/** Setter for framerate. 
+		 * @param f: Framerate in frames/second */
 		void framerate(float f)   { 
 			// convert floating point framerate into microseconds in 64 bit integer format
 			m_frametime = std::chrono::duration_cast<std::chrono::duration<int, std::micro>> (std::chrono::duration<float, std::micro> (1000000.0f / f));
 		};
 
+		/** Getter for frametime. 
+		 * @returns Expected frametime of window. */
 		float frametime() const {
 			// convert frametime from microseconds 64 int -> seconds in float
 			return std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>> (m_frametime).count(); // why
 		}
 
-		/* Return number of frames completed since run() was called. */
+		/** Getter for number of frames elapsed since LoopWin::run() was called.
+		 * @returns Number of frames completed since run() was called. */
 		int framesElapsed() const { return m_numFrames; };
 		
+		/** Getter for total time since LoopWin::run() was called.
+		 * @returns Total amount of time in seconds. */
 		float totalTime() const { 
 			if (isOpen()) throw std::runtime_error("Cannot get total time while window is running.");
 			return m_totalTime.count();
 		}
 
-		/*
-			Run gameloop. Stop execution until window closes.
-		*/
+		/** Run gameloop. Stops execution until window closes. */
 		void run() { 
-			// user defined function
-			if (before_run != nullptr)
-				before_run();
-
 			m_startTime = high_resolution_clock::now();
 			m_lastFrame = m_startTime;
 			
@@ -105,6 +110,7 @@ namespace fbg {
 		int m_numFrames = 0; // total number of frames elapsed
 	};
 
+	/** Log the expected and actual framerate of a window, that has finished execution. */
 	void log_window_performance(LoopWin & win) {
 		std::cout << "Expected framerate: " 
 						<< win.framerate() << '\n';

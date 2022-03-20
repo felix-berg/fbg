@@ -32,13 +32,6 @@ SDL_Handler::SDL_Handler(const std::string & title, int w, int h)
 { }
 
 /*
-	Default constructor -> applies sensible defaults.
-*/
-SDL_Handler::SDL_Handler() 
-	: SDL_Handler { "Window", {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, 640, 480 }
-{ }
-
-/*
 	Destructor
 */
 SDL_Handler::~SDL_Handler() {
