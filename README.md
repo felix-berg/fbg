@@ -10,8 +10,8 @@ int main() {
 	LoopWin window { "Window Title", 1280, 720 };
 
 	// set window attributes:
-	window.background(0U, 20U); // black with alpha 20
-	window.framerate(144.0f);
+	window.background(0, 50); // set background color to black with alpha 50
+	window.framerate(112.0f);
 	
 	// Create circle object at (0, 0) with radius 50
 	Circle circle {0.0f, 0.0f, 50.0f};
