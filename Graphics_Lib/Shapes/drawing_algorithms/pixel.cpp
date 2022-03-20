@@ -1,7 +1,6 @@
 #include "pixel.hpp"
 #include "circle.hpp"
 #include "../../alphacomposite.hpp"
-#include "../../V2d.hpp"
 
 using namespace fbg;
 

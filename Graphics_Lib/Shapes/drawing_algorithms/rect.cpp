@@ -1,8 +1,6 @@
 #include "../../V2d.hpp"
-#include "../../rgba.hpp"
 #include "rect.hpp"
 #include "line.hpp"
-#include "../../alphacomposite.hpp"
 #include "pixel.hpp"
 
 using namespace fbg;

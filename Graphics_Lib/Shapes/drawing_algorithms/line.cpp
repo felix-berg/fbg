@@ -1,6 +1,5 @@
 #include "line.hpp"
 #include "pixel.hpp"
-#include "../../alphacomposite.hpp"
 
 using namespace fbg;
 
