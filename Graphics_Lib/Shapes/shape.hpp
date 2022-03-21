@@ -56,7 +56,6 @@ namespace fbg {
 		 * @param b: Amount of blue. [0, 255]*/
 		void fill(u_char r, u_char g, u_char b, u_char a) { m_fill = {r, g, b, a}; m_doFill = true; }
 
-
 		/** Setter for stroke color. 
 		 * @param c: Color */
 		void stroke(const Rgba & c)   					{ m_stroke = c; 					  m_doStroke = true; 	};
@@ -132,7 +131,10 @@ namespace fbg {
 		void set_point(int i, const V2d<float> & p) 	{ m_points[i] = p; };	
 		
 		// get point with given index
-		V2d<float> get_point(int i) const { return m_points[i]; };
+		const V2d<float> & get_point(int i) const { return m_points[i]; };
+
+		// get number of points currently added to shape
+		int num_points() const { return m_points.size(); };
 
 		// get unique id
 		unsigned int id() const { return m_id; };
