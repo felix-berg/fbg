@@ -50,7 +50,7 @@ void fbg::draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & 
 	int fx = x - lOff; 
 	int tx = x + rOff; // from x and to x
 	
-	compute_horisontal_line(frame, fx, tx, y, color);
+	set_horisontal_line(frame, fx, tx, y, color);
 }
 
 
@@ -64,26 +64,52 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
 		draw_stroke_part_vertical(frame, x, y, color, sw);
 	});
 
-	int lOff, rOff; 
+	// 0 0 0 0 l 0 0   0 0 0 c 0 0 0   0 0 0 0 l 0 0
+	// 0 0 0 0 l 0 0   0 0 c c c 0 0   0 0 0 0 l 0 0 
+	// 0 0 0 0 l 0 0   0 c c c c c 0   0 0 0 0 l c 0 
+	// 0 0 0 X 0 0 0 + c c c X c c c = 0 0 0 X c c c
+	// 0 0 0 l 0 0 0	 0 c c c c c 0   0 0 0 l c c 0
+	// 0 0 l 0 0 0 0   0 0 c c c 0 0   0 0 l c c 0 0 
+	// 0 0 l 0 0 0 0   0 0 0 c 0 0 0   0 0 l c 0 0 0 
+
+	int lOff, rOff;
 	offsets_from_strokeweight(sw, &lOff, &rOff);
-	// 0 0 0 l 0 0   0 0 c c 0 0   0 0 0 l 0 0
-	// 0 0 0 l 0 0   0 c 0 0 c 0   0 0 0 l c 0 
-	// 0 0 0 l 0 0   c 0 0 0 0 c   0 0 0 l 0 c 
-	// 0 0 l 0 0 0 + c 0 0 0 0 c = 0 0 l 0 0 c
-	// 0 0 l 0 0 0	  c 0 0 0 0 c   0 0 l 0 0 c
-	// 0 l 0 0 0 0   0 c 0 0 c 0   0 l 0 0 c 0 
-	// 0 l 0 0 0 0   0 0 c c 0 0   0 l c c 0 0 
 
-	// Frame<bool> end_circle { sw, sw };
-	// compute_circle_fill(end_circle, sw / 2, sw / 2, sw / 2, true);
+	int gridWidth = 2 * lOff + 1;
+	int gridHeight = sw + 1;
+
+	bool * circleGrid   = (bool *) malloc(sizeof(bool) * gridHeight * gridWidth);
+	bool * perpLineGrid = (bool *) malloc(sizeof(bool) * gridHeight * gridWidth);
+
+	memset(circleGrid, 0, sizeof(bool) * gridHeight * gridWidth);
+	memset(perpLineGrid, 0, sizeof(bool) * gridHeight * gridWidth);
 	
-	// for (int j = 0; j < end_circle.h; j++) {
-	// 	for (int i = 0; i < end_circle.w; i++)
-	// 		std::cout << (int) end_circle.pixels[j * end_circle.w + i] << ' ';
-	// 	std::cout << '\n';
-	// }
-	// std::cout << '\n';
+	bresenham_circle(lOff - 1, [&](int x, int y) -> void {
+		int cx = lOff;
+		int cy = lOff;
 
+		// octant 2 -> octant 1
+		int idx1 = (cx + x) + (cy + y) * gridWidth;
+		int idx2 = (cx - x) + (cy + y) * gridWidth;
+		std::fill(circleGrid + idx1, circleGrid + idx2, true);
+
+		// octant 4 -> octant 3
+		int idx3 = (cx + x) + (cy )
+		
+		set_horisontal_line(frame, cx - x + 1, cx + x - 1, cy + y, color); // 2 -> 1
+		set_horisontal_line(frame, cx - x + 1, cx + x - 1, cy - y, color); // 4 -> 3
+		set_horisontal_line(frame, cx - y + 1, cx + y - 1, cy + x, color); // 6 -> 5
+		set_horisontal_line(frame, cx - y + 1, cx + y - 1, cy - x, color); // 8 -> 7
+
+	});
+	// bresenham_line(0, 0, );
+
+	for (int j = 0; j < gridHeight; j++) {
+		for (int i = 0; i < gridWidth; i++)
+			std::cout << circleGrid[j * gridWidth + i] << ' ';
+		std::cout << '\n';
+	}
+	std::cout << '\n';
 }
 
 /*

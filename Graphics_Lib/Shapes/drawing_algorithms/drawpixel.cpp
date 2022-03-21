@@ -4,11 +4,9 @@
 
 using namespace fbg;
 
-/*
-	Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
-	Inclusive of tx
-*/
-void fbg::compute_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba & color) {
+/** Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
+ * Inclusive of tx */
+void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba & color) {
    int lLen = tx - fx + 1; // length of line
 
    // y value

@@ -21,8 +21,8 @@ void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, 
 
 	// move from y to to y
 	for (int y = fy; y <= ty; y++) {
-		compute_horisontal_line(frame, lOuterX, rOuterX, y, 		    color); // top line	
-		compute_horisontal_line(frame, lOuterX, rOuterX, y + rh - 1, color); // bottom line
+		set_horisontal_line(frame, lOuterX, rOuterX, y, 		    color); // top line	
+		set_horisontal_line(frame, lOuterX, rOuterX, y + rh - 1, color); // bottom line
 	}
 
 
@@ -47,6 +47,6 @@ void fbg::compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const 
 
 	// loop from top to bottom (only inside rect)
 	for (int y = ry + 1; y <= bry - 1; y++) {
-		compute_horisontal_line(f, rx + 1, brx - 1, y, color);
+		set_horisontal_line(f, rx + 1, brx - 1, y, color);
 	}
 }

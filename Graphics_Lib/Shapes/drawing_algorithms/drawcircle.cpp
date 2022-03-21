@@ -35,10 +35,10 @@ void draw_circle_line_from_octant_point(Frame &frame, int cx, int cy, int x, int
 
    // draw lines horisontally
    //                             from x       to x         y
-   compute_horisontal_line(frame, cx - x + 1, cx + x - 1, cy + y, color); // 2 -> 1
-   compute_horisontal_line(frame, cx - x + 1, cx + x - 1, cy - y, color); // 4 -> 3
-   compute_horisontal_line(frame, cx - y + 1, cx + y - 1, cy + x, color); // 6 -> 5
-   compute_horisontal_line(frame, cx - y + 1, cx + y - 1, cy - x, color); // 8 -> 7
+   set_horisontal_line(frame, cx - x + 1, cx + x - 1, cy + y, color); // 2 -> 1
+   set_horisontal_line(frame, cx - x + 1, cx + x - 1, cy - y, color); // 4 -> 3
+   set_horisontal_line(frame, cx - y + 1, cx + y - 1, cy + x, color); // 6 -> 5
+   set_horisontal_line(frame, cx - y + 1, cx + y - 1, cy - x, color); // 8 -> 7
 }
 
 /** Draw pixels of given circle, defined by center point (cx, cy) and radius r, to the given frame. */
