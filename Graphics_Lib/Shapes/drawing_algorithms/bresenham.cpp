@@ -1,8 +1,11 @@
 #include "bresenham.hpp"
 
-/** Bresenham line algorithm for drawing a line where the gradient is less than one. 
-    Switch y with x to get the high version of the algorithm. */ 
-void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<void(int, int)> draw_pixel) {
+/*	Bresenhams line algorithm: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+	Case for when absolute change in x is greater than absolute change in y. abs(gradient) < 1.
+	Stepping along x-axis -> only one point per column. 
+	Calls set(x, y) for every point it finds along the way. 
+	set(x, y) needs to return true, if the algorithm is to continue.*/ 
+void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<bool(int x, int y)> set) {
 	int dx = tx - fx;
 	int dy = ty - fy;
 
@@ -18,7 +21,8 @@ void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<void(int,
 
 	// loop along x-axis: from.x -> to.y
 	for (int x = fx; x <= tx; x++) {
-		draw_pixel(x, y);
+		// set pixel and break if wanted
+		if (!set(x, y)) break;
 
 		if (D > 0) { // the point is under the line, the error is positive. Step one pixel vertically
 			y += yDir;
@@ -29,15 +33,15 @@ void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<void(int,
 	}
 }
 
-/** This function draws single pixels in the first quadrant, and expects that draw_pixel will handle the other seven. */ 
-void fbg::bresenham_circle(int r, std::function<void(int, int)> draw_pixel) {
+/** This function draws single pixels in the first quadrant, and expects that set() will handle the other seven. */ 
+void fbg::bresenham_circle(int r, std::function<void(int x, int y)> set) {
    int x = r;
 	int y = 0;
 
 	int D = 3 - 2 * r;
 
 	while (x >= y) {
-		draw_pixel(x, y);
+		set(x, y);
 
 		if (D > 0) {
 			D = D + 4 * (y - x) + 10;
