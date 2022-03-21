@@ -17,6 +17,7 @@ namespace fbg {
 		Line(const V2d<float> & f, const V2d<float> & t)
 			: Shape { { f, t } } {
 			strokeweight(3);
+			stroke(255);
 		};
 
 		/** Constructor for line class. 
