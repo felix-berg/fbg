@@ -53,7 +53,8 @@ namespace fbg {
 		/** Setter for fill color.
 		 * @param r: Amount of red. [0, 255] 
 		 * @param g: Amount of green. [0, 255]
-		 * @param b: Amount of blue. [0, 255]*/
+		 * @param b: Amount of blue. [0, 255] 
+		 * @param a: Amount of alpha. [0, 255] */
 		void fill(u_char r, u_char g, u_char b, u_char a) { m_fill = {r, g, b, a}; m_doFill = true; }
 
 		/** Setter for stroke color. 
@@ -78,7 +79,8 @@ namespace fbg {
 		/** Setter for stroke color.
 		 * @param r: Amount of red. [0, 255] 
 		 * @param g: Amount of green. [0, 255]
-		 * @param b: Amount of blue. [0, 255] */
+		 * @param b: Amount of blue. [0, 255]
+		 * @param a: Amount of alpha. [0, 255] */
 		void stroke(u_char r, u_char g, u_char b, u_char a) { m_stroke = {r, g, b, a}; m_doStroke = true; }
 
 		/** Turn off rendering of stroke. */
