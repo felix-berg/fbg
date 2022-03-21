@@ -7,7 +7,7 @@ using namespace fbg;
 /*
 	Draws stroke of axis aligned rectangle r on pixel grid.
 */
-void fbg::compute_AA_rect_stroke(Frame<Rgba> & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
+void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
 	// take stroke width into account
 	int lOff, rOff; // offsets created by strokeweight
 
@@ -21,8 +21,8 @@ void fbg::compute_AA_rect_stroke(Frame<Rgba> & frame, int rx, int ry, int rw, in
 
 	// move from y to to y
 	for (int y = fy; y <= ty; y++) {
-		compute_horisontal_line(frame, lOuterX, y, 			 rOuterX, y, 			  color); // top line	
-		compute_horisontal_line(frame, lOuterX, y + rh - 1, rOuterX, y + rh - 1, color); // bottom line
+		compute_horisontal_line(frame, lOuterX, rOuterX, y, 		    color); // top line	
+		compute_horisontal_line(frame, lOuterX, rOuterX, y + rh - 1, color); // bottom line
 	}
 
 
@@ -40,13 +40,13 @@ void fbg::compute_AA_rect_stroke(Frame<Rgba> & frame, int rx, int ry, int rw, in
 	}
 }
 
-void fbg::compute_AA_rect_fill(Frame<Rgba> & f, int rx, int ry, int rw, int rh, const Rgba & color) {
+void fbg::compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) {
 	// bottom right point
 	const int brx = rx + rw;
 	const int bry = ry + rh;
 
 	// loop from top to bottom (only inside rect)
 	for (int y = ry + 1; y <= bry - 1; y++) {
-		compute_horisontal_line(f, rx + 1, y, brx - 1, y, color);
+		compute_horisontal_line(f, rx + 1, brx - 1, y, color);
 	}
 }

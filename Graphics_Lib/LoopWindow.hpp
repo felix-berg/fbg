@@ -13,8 +13,8 @@ using std::chrono::high_resolution_clock;
 namespace fbg {
 
 /** Class for running animations inside a Window.
- * @param before_draw(): Function pointer, that can be defined. Called immediately before every Frame<Rgba> is rendered.
- * @param after_draw(): Function pointer, that can be defiend. Called immediately after every Frame<Rgba> is rendered. 
+ * @param before_draw(): Function pointer, that can be defined. Called immediately before every Frame is rendered.
+ * @param after_draw(): Function pointer, that can be defiend. Called immediately after every Frame is rendered. 
  * @param run(): Function that starts rendering. Stops execution until window is closed.
  * @param framerate(): Getter/setter for framerate. */
 	class LoopWin : public Window {
@@ -107,7 +107,7 @@ namespace fbg {
 		}
 
 	private:
-		std::chrono::microseconds m_frametime { 1000000 / 60 }; // time per Frame<Rgba> in µs
+		std::chrono::microseconds m_frametime { 1000000 / 60 }; // time per Frame in µs
 		std::chrono::duration<float, std::ratio<1, 1>> m_totalTime;
 
 		high_resolution_clock::time_point m_lastFrame, m_startTime;

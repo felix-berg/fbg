@@ -123,8 +123,8 @@ namespace fbg {
 		};
 
 		// virtual function: to be defined by subclasses
-		virtual void draw_stroke(Frame<Rgba> & f)  { };
-		virtual void draw_fill(Frame<Rgba> & f) { };
+		virtual void draw_stroke(Frame & f)  { };
+		virtual void draw_fill(Frame & f) { };
 
 		friend class Context; // allow for context to use draw_stroke and draw_fill
 		

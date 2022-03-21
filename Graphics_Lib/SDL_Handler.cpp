@@ -62,9 +62,9 @@ void SDL_Handler::clear_pixels() {
 }
 
 /*
-	Push Frame<Rgba> to SDL Texture
+	Push Frame to SDL Texture
 */
-void SDL_Handler::push_frame(const Frame<Rgba> & f) {
+void SDL_Handler::push_frame(const Frame & f) {
 	if (SDL_UpdateTexture(m_texture, NULL, f.pixels, sizeof(Rgba) * width()) != 0)
 		throw std::runtime_error("Error on updating texture.\n");
 }

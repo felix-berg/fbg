@@ -29,8 +29,8 @@ namespace fbg {
 		void close() { m_open = false; };
 
 	protected:
-		void draw_stroke(Frame<Rgba> & f);
-		void draw_fill(Frame<Rgba> & f) { };
+		void draw_stroke(Frame & f);
+		void draw_fill(Frame & f) { };
 	private:
 		bool m_open = true;
 	};

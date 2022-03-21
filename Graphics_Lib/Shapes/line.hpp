@@ -58,8 +58,8 @@ namespace fbg {
 		void to(float x, float y) 	 	  { set_point(1, {x, y});	};
 
 	protected:
-		void draw_stroke(Frame<Rgba> & f);
-		void draw_fill(Frame<Rgba> & f)   { };
+		void draw_stroke(Frame & f);
+		void draw_fill(Frame & f)   { };
 	};
 };
 #endif

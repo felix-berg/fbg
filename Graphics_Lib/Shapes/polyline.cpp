@@ -1,7 +1,7 @@
 #include "polyline.hpp"
 #include "drawing_algorithms/drawline.hpp"
 
-void fbg::Polygon::draw_stroke(Frame<Rgba> & frame) {
+void fbg::Polygon::draw_stroke(Frame & frame) {
 	// Set from to the last vector
 	V2d<int> to, from = get_point(0);
 

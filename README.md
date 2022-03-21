@@ -16,7 +16,7 @@ int main() {
 	// Create circle object at (0, 0) with radius 50
 	Circle circle {0.0f, 0.0f, 50.0f};
 	
-	// draw circle object at every Frame<Rgba> update,
+	// draw circle object at every Frame update,
 	// by attaching it to the window object
 	window.attach(circle);
 

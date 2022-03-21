@@ -31,10 +31,10 @@ namespace fbg {
 		void pos(float x, float y) { set_point(0, {x, y}); };
 
 	protected:
-		void draw_stroke(Frame<Rgba> & f) {
+		void draw_stroke(Frame & f) {
 			if (!m_doStroke) return;
 			V2d<int> p = pos();
-			set_pixel(f, p.x, p.y, stroke(), strokeweight());
+			draw_pixel(f, p.x, p.y, stroke(), strokeweight());
 		}
 
 		void draw_fill(Rgba *, int, int) { return; };

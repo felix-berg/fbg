@@ -35,11 +35,11 @@ namespace fbg {
 		/** Empty: 
 		 * Drawing of shapes in ths context is done within the the draw_fill method.
 		 */
-		void draw_stroke(Frame<Rgba> & f) {	};
+		void draw_stroke(Frame & f) {	};
 
 		/** Draw pixels of every object in this context.
-		 * @param f: The Frame<Rgba> to draw the pixels to. */
-		void draw_fill(Frame<Rgba> & f) {
+		 * @param f: The Frame to draw the pixels to. */
+		void draw_fill(Frame & f) {
 			for (Shape * s : m_shapes) {
 				s->draw_fill(f);
 				s->draw_stroke(f);

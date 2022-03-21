@@ -13,14 +13,11 @@ using namespace fbg;
 bool Line::SMOOTH_EDGES = false;
 
 /** Change given pixelbuffer based on the pixels of the line. */
-void Line::draw_stroke(Frame<Rgba> & f) {
+void Line::draw_stroke(Frame & f) {
 	if (!m_doStroke) return;
 
 	V2d<int> fp = from();
 	V2d<int> tp = to();
 	
-	if (Line::SMOOTH_EDGES)
-		compute_line_stroke_smooth(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
-	else
-		compute_line_stroke(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
+	compute_line_stroke(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
 }
