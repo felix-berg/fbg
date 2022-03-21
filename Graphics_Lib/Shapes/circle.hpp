@@ -4,6 +4,7 @@
 #include "shape.hpp"
 #include "../V2d.hpp"
 #include "../frame.hpp"
+
 namespace fbg {
 	/** Circle class. 
 	 * Defined by center point (x, y) and radius (r). 
@@ -47,8 +48,8 @@ namespace fbg {
 		void radius(float r) 		{ m_radius = r; };
 
 	protected:
-		void draw_stroke(Frame & f);
-		void draw_fill(Frame & f);	
+		void draw_stroke(Frame<Rgba> & f);
+		void draw_fill(Frame<Rgba> & f);	
 
 	private:
 		float m_radius;

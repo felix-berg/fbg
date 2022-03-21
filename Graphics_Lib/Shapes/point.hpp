@@ -2,7 +2,7 @@
 #define POINT_HPP
 
 #include "shape.hpp"
-#include "drawing_algorithms/pixel.hpp"
+#include "drawing_algorithms/drawpixel.hpp"
 namespace fbg {
 	
 	/** Point class.
@@ -31,7 +31,7 @@ namespace fbg {
 		void pos(float x, float y) { set_point(0, {x, y}); };
 
 	protected:
-		void draw_stroke(Frame & f) {
+		void draw_stroke(Frame<Rgba> & f) {
 			if (!m_doStroke) return;
 			V2d<int> p = pos();
 			set_pixel(f, p.x, p.y, stroke(), strokeweight());

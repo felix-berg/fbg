@@ -1,14 +1,14 @@
 #include "polyline.hpp"
-#include "drawing_algorithms/line.hpp"
+#include "drawing_algorithms/drawline.hpp"
 
-void fbg::Polygon::draw_stroke(Frame & frame) {
+void fbg::Polygon::draw_stroke(Frame<Rgba> & frame) {
 	// Set from to the last vector
 	V2d<int> to, from = get_point(0);
 
 	// draw every line segment by looping through list of points
 	for (int i = 0; i < num_points(); i++) {
 		to = get_point(i);
-		compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight());
+		compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight()); 
 		from = to;
 	}
 

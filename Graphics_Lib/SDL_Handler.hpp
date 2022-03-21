@@ -53,7 +53,7 @@ namespace fbg {
 		void clear_pixels();
 		void clear_pixels(const Rgba & col);
 		
-		Frame frame; // container for all pixels on screen
+		Frame<Rgba> frame; // container for all pixels on screen
 
 	private:
 		SDL_Window * m_window;
@@ -62,7 +62,7 @@ namespace fbg {
 
 		const int m_width, m_height;
 
-		void push_frame(const Frame & f);
+		void push_frame(const Frame<Rgba>  & f);
 	};
 };
 

@@ -10,6 +10,8 @@ namespace fbg {
 	*/
 	class Line : public Shape {
 	public:
+		static bool SMOOTH_EDGES;
+
 		/** Constructor for line class.
 		 * @param f: The "from" point of the line.
 		 * @param t: The "to" point of the line.
@@ -56,8 +58,8 @@ namespace fbg {
 		void to(float x, float y) 	 	  { set_point(1, {x, y});	};
 
 	protected:
-		void draw_stroke(Frame & f);
-		void draw_fill(Frame & f)   { };
+		void draw_stroke(Frame<Rgba> & f);
+		void draw_fill(Frame<Rgba> & f)   { };
 	};
 };
 #endif

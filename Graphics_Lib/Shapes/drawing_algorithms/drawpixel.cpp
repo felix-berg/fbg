@@ -1,5 +1,5 @@
-#include "pixel.hpp"
-#include "circle.hpp"
+#include "drawpixel.hpp"
+#include "drawcircle.hpp"
 #include "../../alphacomposite.hpp"
 
 using namespace fbg;
@@ -19,7 +19,7 @@ bool fbg::in_bound(T x, T y, T lx, T ly, T ux, T uy) {
 	Draw color to pixel at the given x, y coordinate.
 	Doesn't draw, if the point is out of bounds.
 */
-void fbg::set_pixel(Frame & frame, int x, int y, const Rgba & color) {
+void fbg::set_pixel(Frame<Rgba> & frame, int x, int y, const Rgba & color) {
 	if (in_bound(x, y, 0, 0, (int) frame.w - 1, (int) frame.h - 1)) 
 		alpha_composite1(&frame.pixels[y * frame.w + x], &color);
 }
@@ -27,7 +27,7 @@ void fbg::set_pixel(Frame & frame, int x, int y, const Rgba & color) {
 /*
 	TODO: Untested
 */
-void fbg::set_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void fbg::set_pixel(Frame<Rgba> & frame, int x, int y, const Rgba & color, int sw) {
 	if (sw == 1)
 		set_pixel(frame, x, y, color);
 	else
@@ -52,7 +52,7 @@ void fbg::offsets_from_strokeweight(int sw, int * lOff, int * rOff) {
 	Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
 	Inclusive of tx
 */
-void fbg::compute_horisontal_line(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
+void fbg::compute_horisontal_line(Frame<Rgba> & frame, int fx, int fy, int tx, int ty, const Rgba & color) {
 	int lLen = tx - fx + 1;		  	// length of line
 
 	// y value

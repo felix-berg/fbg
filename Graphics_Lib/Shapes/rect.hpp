@@ -71,8 +71,8 @@ namespace fbg {
 		};
 
 	protected:
-		void draw_stroke(Frame & f);
-		void draw_fill(Frame & f);
+		void draw_stroke(Frame<Rgba> & f);
+		void draw_fill(Frame<Rgba> & f);
 
 	private:
 		u_int m_w = 0, 
