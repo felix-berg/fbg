@@ -7,6 +7,8 @@
 
 using namespace fbg;
 
+// TODO: Lines with even strokeweight look a little goofy
+
 void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges); 
 void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges);
 
@@ -18,15 +20,29 @@ void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & 
 void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
    if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
       if (fx > tx) // if points are the opposite way round
-         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, true);
+         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, false);
       else 
-         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, true);
+         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, false);
    } else // if gradient > 1, use "hi"
       if (fy > ty)
-         draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, true);
+         draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, false);
       else
-         draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, true);
+         draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, false);
 }
+
+void fbg::compute_line_stroke_smooth(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
+   if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
+      if (fx > tx) // if points are the opposite way round
+         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, sw != 1);
+      else 
+         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, sw != 1);
+   } else // if gradient > 1, use "hi"
+      if (fy > ty)
+         draw_stroke_hi(frame, tx, ty, fx, fy,  color, sw, sw != 1);
+      else
+         draw_stroke_hi(frame, fx, fy, tx, ty,  color, sw, sw != 1);
+}
+
 
 /** Get coordinates for point of perpendicular line within grid.
  * Translates from (x, y) into (&px, &py).  */

@@ -57,9 +57,21 @@ namespace fbg {
        * @param y: y-value for "to" point. */
       void to(float x, float y) 	 	  { set_point(1, {x, y});	};
 
+      /** Setter for smooth edges for line. 
+       * @param b: True = smooth, false = rough */
+      void smoothEdge(bool b) { m_edgeType = b; };
+
+      /** Getter for smooth edges for line.
+       * @returns Whether smooth lines are being drawn for this particular line. */
+      bool smoothEdge() const { return m_edgeType; };
+
    protected:
       void draw_stroke(Frame & f);
       void draw_fill(Frame & f)   { };
+
+   private:
+      enum EDGETYPE { UNDEFINED, ROUGH, SMOOTH };
+      int m_edgeType = UNDEFINED;
    };
 };
 #endif
