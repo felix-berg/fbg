@@ -11,231 +11,234 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
 void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges);
 
 /*
-	Compute the colors of the lines stroke and output onto "frame".
-	Line defined by fx, fy -> tx, ty (inclusive).
-	This function doesn't make smooth edges.
+   Compute the colors of the lines stroke and output onto "frame".
+   Line defined by fx, fy -> tx, ty (inclusive).
+   This function doesn't make smooth edges.
 */
 void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
-	if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
-		if (fx > tx) // if points are the opposite way round
-			draw_stroke_low(frame, tx, ty, fx, fy, color, sw, false);
-		else 
-			draw_stroke_low(frame, fx, fy, tx, ty, color, sw, false);
-	} else // if gradient > 1, use "hi"
-		if (fy > ty)
-			draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, false);
-		else
-			draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, false);
+   if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
+      if (fx > tx) // if points are the opposite way round
+         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, false);
+      else 
+         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, false);
+   } else // if gradient > 1, use "hi"
+      if (fy > ty)
+         draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, false);
+      else
+         draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, false);
 }
 
 /*
-	Compute the vertical pixels for a given pixel with the correct stroke
+   Compute the vertical pixels for a given pixel with the correct stroke
 */
 void fbg::draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) {
-	int lOff, rOff;
-	offsets_from_strokeweight(sw, &lOff, &rOff);
+   int lOff, rOff;
+   offsets_from_strokeweight(sw, &lOff, &rOff);
 
-	int fy = y - lOff;
-	int ty = y + rOff;
+   int fy = y - lOff;
+   int ty = y + rOff;
 
-	for (int py = fy; py <= ty; py++)
-		frame.set_pixel(x, py, color);
+   for (int py = fy; py <= ty; py++)
+      frame.set_pixel(x, py, color);
 }
 
 /*
-	Compute the horisontal pixels for a given pixel with the correct stroke
+   Compute the horisontal pixels for a given pixel with the correct stroke
 */
 void fbg::draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
-	int lOff, rOff;
-	offsets_from_strokeweight(sw, &lOff, &rOff);
-	int fx = x - lOff; 
-	int tx = x + rOff; // from x and to x
-	
-	set_horisontal_line(frame, fx, tx, y, color);
+   int lOff, rOff;
+   offsets_from_strokeweight(sw, &lOff, &rOff);
+   int fx = x - lOff; 
+   int tx = x + rOff; // from x and to x
+   
+   set_horisontal_line(frame, fx, tx, y, color);
 }
 
 /** Get coordinates for point of perpendicular line within grid.
  * Translates from (x, y) into (&px, &py).  */
 void get_perpendicular_line_point(int x, int y, int * px, int * py, int gridWidth, int gradientSign) {
-	bool isNegative = gradientSign < 0;
+   bool isNegative = gradientSign < 0;
 
-	int lx = isNegative * (gridWidth - 1) + gradientSign * x;
-	int ly = y * gradientSign;
+   int lx = isNegative * (gridWidth - 1) + gradientSign * x;
+   int ly = y * gradientSign;
 
-	*px = ly;
-	*py = gridWidth - 1 - lx;
+   *px = ly;
+   *py = gridWidth - 1 - lx;
 }
 
 /** Make sure, that min and max are in the right order */
 inline void fix_min_max(int * min, int * max) {
-	if (*min > *max) { 
-		int tmp = *min;
-		*min = *max;
-		*max = tmp;
-	}
+   if (*min > *max) { 
+      int tmp = *min;
+      *min = *max;
+      *max = tmp;
+   }
 }
 
 std::vector<int> g_strokePattern; // container for current stroke pattern
 /* Get list filled with the x-values of the perpendicular line to the line defined by (fx, tx). */
 std::vector<int> & get_stroke_pattern(int fx, int fy, int tx, int ty, int patternHeight) {
-	g_strokePattern.resize(patternHeight); // set the size of the container to relevant size
+   g_strokePattern.resize(patternHeight); // set the size of the container to relevant size
 
-	std::fill(g_strokePattern.begin(), g_strokePattern.end(), -1);
+   std::fill(g_strokePattern.begin(), g_strokePattern.end(), -1);
 
-	int gradientSign = 2 * (ty - fy >= 0) - 1;
+   int gradientSign = 2 * (ty - fy >= 0) - 1;
 
-	int cx = patternHeight / 2;
-	int cy = cx;
-	int midx;
+   int cx = patternHeight / 2;
+   int cy = cx;
+   int midx;
 
-	bresenham_line(0, 0, tx - fx, ty - fy, [&](int x, int y) -> bool {
-		if (x >= patternHeight) return false; // if we have evaluated enough, stop the algorithm
+   bresenham_line(0, 0, tx - fx, ty - fy, [&](int x, int y) -> bool {
+      if (x >= patternHeight) return false; // if we have evaluated enough, stop the algorithm
 
-		int px, py;
-		get_perpendicular_line_point(x, y, &px, &py, patternHeight, gradientSign);
+      int px, py;
+      get_perpendicular_line_point(x, y, &px, &py, patternHeight, gradientSign);
 
-		g_strokePattern[py] = px;
+      g_strokePattern[py] = px;
 
-		if (py == cy)
-			midx = px;
+      if (py == cy)
+         midx = px;
 
-		return true; // continue algorithm
-	});
+      return true; // continue algorithm
+   });
 
-	// move every bit of the perpendicular line grid, 
-	// so that the middle pixel of the line is in the center
-	int perpLineOffset = cx - midx; // the amount to offset every pixel
+   // move every bit of the perpendicular line grid, 
+   // so that the middle pixel of the line is in the center
+   int perpLineOffset = cx - midx; // the amount to offset every pixel
 
-	for (int y = 0; y < patternHeight; y++)
-		g_strokePattern[y] += perpLineOffset;
+   for (int y = 0; y < patternHeight; y++)
+      g_strokePattern[y] += perpLineOffset;
 
-	// sort min and max values
-	int minX = g_strokePattern[0];
-	int maxX = g_strokePattern[patternHeight - 1];
+   // sort min and max values
+   int minX = g_strokePattern[0];
+   int maxX = g_strokePattern[patternHeight - 1];
 
-	fix_min_max(&minX, &maxX);
+   fix_min_max(&minX, &maxX);
 
-	// calculate gradient of line
-	int lineX = maxX - minX;
-	float gradient = static_cast<float> (patternHeight) / static_cast<float> (lineX);
+   // calculate gradient of line
+   int lineX = maxX - minX;
+   float gradient = static_cast<float> (patternHeight) / static_cast<float> (lineX);
 
-	// compute appropriate grid height based on the line reach X
-	int lineY = static_cast<int> (std::sin(std::atan(gradient)) * patternHeight); // sin(atan(gradient)) * strokeweight
+   // compute appropriate grid height based on the line reach X
+   int lineY = static_cast<int> (std::sin(std::atan(gradient)) * patternHeight); // sin(atan(gradient)) * strokeweight
 
-	// remove top and bottom lines according to gradient
-	int n_linesToRemove = patternHeight - lineY;
-	for (int y = 0; y < n_linesToRemove / 2; y++) {
-		g_strokePattern[y] 							= -1;
-		g_strokePattern[patternHeight - 1 - y] = -1;
-	}
+   // remove top and bottom lines according to gradient
+   int n_linesToRemove = patternHeight - lineY;
+   for (int y = 0; y < n_linesToRemove / 2; y++) {
+      g_strokePattern[y] 							= -1;
+      g_strokePattern[patternHeight - 1 - y] = -1;
+   }
 
-	return g_strokePattern;
+   return g_strokePattern;
 }
 
 void draw_stroke_pattern(Frame & frame, const std::vector<int> & strokePattern, int cx, int cy, const Rgba & color) {
-	int patternSz = strokePattern.size();
-	for (int y = 0; y < patternSz; y++) {
-		if (strokePattern[y] == -1) continue;
-		frame.set_pixel(cx + strokePattern[y], cy + y, color);
-	}
+   int patternSz = strokePattern.size();
+   for (int y = 0; y < patternSz; y++) {
+      if (strokePattern[y] == -1) continue;
+      frame.set_pixel(cx + strokePattern[y] - patternSz / 2, cy + y - patternSz / 2, color);
+   }
 }
 
 std::vector<int> get_gaps_from_stroke_pattern(const std::vector<int> & strokePattern, int patternHeight, int gradientSign){
-	std::vector<int> res;
-	res.resize(patternHeight);
+   std::vector<int> res;
+   res.resize(patternHeight);
 
-	// compare strokePattern to itself, but shifted -1 x and +1 y.
-	for (int y = 0; y < patternHeight; y++) {
-		int x = strokePattern[y];
+   // compare strokePattern to itself, but shifted -1 x and +1 y.
+   for (int y = 0; y < patternHeight; y++) {
+      int x = strokePattern[y];
 
-		if (x == -1) {
-			res[y] = -1;
-			continue; 
-		}
+      if (x == -1) {
+         res[y] = -1;
+         continue; 
+      }
 
-		int shiftedY = y + gradientSign;
-		if (shiftedY < 0 || shiftedY >= patternHeight) {
-			res[y] = -1;
-			continue; 
-		}
+      int shiftedY = y + gradientSign;
+      if (shiftedY < 0 || shiftedY >= patternHeight) {
+         res[y] = -1;
+         continue; 
+      }
 
-		int shiftedX = strokePattern[shiftedY] - 1;
+      int shiftedX = strokePattern[shiftedY] - 1;
 
-		if (shiftedX + 2 == x)
-			res[y] = shiftedX + 1;
-		else
-			res[y] = -1;		
-	}
+      if (shiftedX + 2 == x)
+         res[y] = shiftedX + 1;
+      else
+         res[y] = -1;		
+   }
 
-	return std::move(res);
+   return std::move(res);
 }
 
 void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
-	int patternHeight = sw;
+   int patternHeight = sw;
 
-	// reminder that this is a pointer to a global resource
-	std::vector<int> & strokePattern = get_stroke_pattern(fx, fy, tx, ty, patternHeight);
-	
-	// get the gap-points for the given stroke pattern
-	int gradientSign = (ty - fy >= 0) * 2 - 1;
+   // reminder that this is a pointer to a global resource
+   std::vector<int> & strokePattern = get_stroke_pattern(fx, fy, tx, ty, patternHeight);
+   
+   // get the gap-points for the given stroke pattern
+   int gradientSign = (ty - fy >= 0) * 2 - 1;
 
-	std::vector<int> gapPoints = get_gaps_from_stroke_pattern(strokePattern, patternHeight, gradientSign);
+   std::vector<int> gapPoints = get_gaps_from_stroke_pattern(strokePattern, patternHeight, gradientSign);
 
-	int prevy = fy;
-	bresenham_line(fx, fy, tx, ty, [&](int x, int y) -> bool {
-		// if (y != prevy) // if we stepped down fill the gaps
-			// draw_stroke_pattern(frame, gapPoints, x, y, color);
+   int prevy = fy;
+   bresenham_line(fx, fy, tx, ty, [&](int x, int y) -> bool {
+      // if (y != prevy) // if we stepped down fill the gaps
+         // draw_stroke_pattern(frame, gapPoints, x, y, color);
 
-		// draw_stroke_pattern(frame, strokePattern, x, y, color);
+      if (x == tx)
+         draw_stroke_pattern(frame, strokePattern, x, y, color);
 
-		prevy = y;
-		return true;
-	});
+      prevy = y;
+      return true;
+   });
 
 
-	int centerX = sw / 2;
-	int centerY = sw / 2;
+   int centerX = sw / 2;
+   int centerY = sw / 2;
 
-	// lOff -> if lOff != rOff, make circle smaller.
-	bresenham_circle(sw / 2, [&](int circx, int circy) -> void {
-		if (strokePattern[circy] != -1) {
-			int patternX = strokePattern[circy];
-			int patternY = circy;
+   frame.set_pixel(tx, ty, {255, 255, 255, 255});
 
-			int lx = tx - centerX + ;
-			int ly = ty - centerY + circy;
+   // lOff -> if lOff != rOff, make circle smaller.
+   bresenham_circle(sw / 2, [&](int circx, int circy) -> void {
+      if (strokePattern[circy] != -1) {
+         int patternX = strokePattern[circy];
+         int patternY = circy;
 
-			set_horisontal_line(frame, lx, tx + circx, ty + circy, color); // line edge -> octant 1
-			set_horisontal_line(frame, lx, tx + circx, ty - circy, color); // line edge -> octant 3
-			set_horisontal_line(frame, tx + ly, tx + circx, ty + circx, color); // line edge -> octant 5
-		}
+         int lx = tx - centerX + circx;
+         int ly = ty - centerY + circy;
+         // frame.set_pixel(lx, ly, color);
+         //set_horisontal_line(frame, lx, tx + circx, ty + circy, color); // line edge -> octant 1
+         //set_horisontal_line(frame, lx, tx + circx, ty - circy, color); // line edge -> octant 3
+         //set_horisontal_line(frame, tx + ly, tx + circx, ty + circx, color); // line edge -> octant 5
+      }
 
-		// // edge -> octant 3
-		// int idx3 = (tx + x) + (ty - y) * frame.w;
-		// int idx4 = (tx - x) + (ty - y) * frame.w;
-		// std::fill(circleGrid.begin() + idx4, circleGrid.begin() + idx3, 1);
+      // // edge -> octant 3
+      // int idx3 = (tx + x) + (ty - y) * frame.w;
+      // int idx4 = (tx - x) + (ty - y) * frame.w;
+      // std::fill(circleGrid.begin() + idx4, circleGrid.begin() + idx3, 1);
 
-		// // edge -> octant 5
-		// int idx5 = (tx + y) + (ty + x) * frame.w;
-		// int idx6 = (tx - y) + (ty + x) * frame.w;
-		// std::fill(circleGrid.begin() + idx6, circleGrid.begin() + idx5, 1);
+      // // edge -> octant 5
+      // int idx5 = (tx + y) + (ty + x) * frame.w;
+      // int idx6 = (tx - y) + (ty + x) * frame.w;
+      // std::fill(circleGrid.begin() + idx6, circleGrid.begin() + idx5, 1);
 
-		// // edge -> octant 7
-		// int idx7 = (tx + y) + (ty - x) * frame.w;
-		// int idx8 = (tx - y) + (ty - x) * frame.w;
-		// std::fill(circleGrid.begin() + idx8, circleGrid.begin() + idx7, 1);
-	});
+      // // edge -> octant 7
+      // int idx7 = (tx + y) + (ty - x) * frame.w;
+      // int idx8 = (tx - y) + (ty - x) * frame.w;
+      // std::fill(circleGrid.begin() + idx8, circleGrid.begin() + idx7, 1);
+   });
 
 
 }
 
 
 void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
-	bresenham_line(fy, fx, ty, tx, [&](int x, int y) -> bool {
-		// the same as low stroke, but with opposite parameters
-		draw_stroke_part_horisontal(frame, y, x, color, sw);
-		return true;
-	});
+   bresenham_line(fy, fx, ty, tx, [&](int x, int y) -> bool {
+      // the same as low stroke, but with opposite parameters
+      draw_stroke_part_horisontal(frame, y, x, color, sw);
+      return true;
+   });
 }
 
 // /** Make sure, that min and max are in the right order */
@@ -345,12 +348,12 @@ void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & 
 // 				shiftedX = x - 1;
 // 				shiftedY = y + 1;
 // 			}
-			
+         
 // 			// bounds check
 // 			if (shiftedX < 0 || shiftedX >= gridDim ||
 // 				 shiftedY < 0 || shiftedY >= gridDim)
 // 				break;
-				
+            
 // 			int shiftedIndex = shiftedX + shiftedY * gridDim;
 
 // 			// point was found does it have a gap followed by a pixel?
@@ -373,7 +376,7 @@ void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & 
 // 	// get the gap-points for the given stroke pattern
 // 	int gradientSign = (ty - fy >= 0) * 2 - 1;
 // 	std::vector<std::pair<int, int>> gapPoints = get_gap_points_from_stroke_pattern(strokePattern, gridDim, gradientSign);
-	
+   
 // 	// add gaps to stroke pattern
 // 	for (auto & p : gapPoints)
 // 		strokePattern[p.first + p.second * gridDim] = 1;

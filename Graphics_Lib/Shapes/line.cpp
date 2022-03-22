@@ -14,10 +14,10 @@ bool Line::SMOOTH_EDGES = false;
 
 /** Change given pixelbuffer based on the pixels of the line. */
 void Line::draw_stroke(Frame & f) {
-	if (!m_doStroke) return;
+   if (!m_doStroke) return;
 
-	V2d<int> fp = from();
-	V2d<int> tp = to();
-	
-	compute_line_stroke(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
+   V2d<int> fp = from();
+   V2d<int> tp = to();
+   
+   compute_line_stroke(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
 }

@@ -33,25 +33,25 @@ void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba &
 }
 
 /*
-	TODO: Untested
+   TODO: Untested
 */
 void fbg::draw_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
-	if (sw == 1)
-		frame.set_pixel(x, y, color);
-	else
-		compute_circle_fill(frame, x, y, sw, color);
+   if (sw == 1)
+      frame.set_pixel(x, y, color);
+   else
+      compute_circle_fill(frame, x, y, sw, color);
 }
 
 /*
-	Get the right and left pixel offsets based on given
-	strokeweight
+   Get the right and left pixel offsets based on given
+   strokeweight
 */
 void fbg::offsets_from_strokeweight(int sw, int * lOff, int * rOff) {
-	if (sw % 2 == 0) { // even
-		*lOff = sw / 2;
-		*rOff = sw / 2 - 1;
-	} else { // odd
-		*lOff = (sw - 1) / 2;
-		*rOff = *lOff;
-	}
+   if (sw % 2 == 0) { // even
+      *lOff = sw / 2;
+      *rOff = sw / 2 - 1;
+   } else { // odd
+      *lOff = (sw - 1) / 2;
+      *rOff = *lOff;
+   }
 }
