@@ -14,12 +14,12 @@ bool Line::SMOOTH_EDGES = true;
 // standard value
 
 /** Change given pixelbuffer based on the pixels of the line. */
-void Line::draw_stroke(Frame & f) {
+void Line::draw_stroke(Frame & frame) {
    if (!m_doStroke) return;
 
-   V2d<int> fp = from();
-   V2d<int> tp = to();
-
+   V2d<float> f = from();
+   V2d<float> t = to();
+   
    bool smooth = false;
    
    if (m_edgeType == Line::EDGETYPE::UNDEFINED)
@@ -28,7 +28,7 @@ void Line::draw_stroke(Frame & f) {
       smooth = m_edgeType == Line::EDGETYPE::SMOOTH;
 
    if (smooth)
-      compute_line_stroke_smooth(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
+      compute_line_stroke_smooth(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight());
    else
-      compute_line_stroke(f, fp.x, fp.y, tp.x, tp.y, stroke(), strokeweight());
+      compute_line_stroke(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight());
 }

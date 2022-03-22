@@ -28,14 +28,6 @@ void Window::draw() {
    // change m_pixels by adding the colors of the strokes and fills within
    // the shapes of the context object
    context.draw_fill(frame);
-   context.draw_stroke(frame);
-
-   // for (int y = 0; y < height(); y++) {
-   // 	for (int x = 0; x < width(); x++)
-   // 		printf("%.3d ", get_pixel({x, y}).r);
-   // 	std::cout << '\n';
-   // }
-   // std::cout << '\n';
    
    // update the SDL Pixelbuffer and pull new events.
    this->update();
