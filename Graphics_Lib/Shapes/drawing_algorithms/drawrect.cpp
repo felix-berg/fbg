@@ -1,8 +1,33 @@
 #include "drawrect.hpp"
-#include "drawline.hpp"
 #include "drawpixel.hpp"
 
 using namespace fbg;
+
+/*
+   Compute the vertical pixels for a given pixel with the correct stroke
+*/
+void draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) {
+   int lOff, rOff;
+   offsets_from_strokeweight(sw, &lOff, &rOff);
+
+   int fy = y - lOff;
+   int ty = y + rOff;
+
+   for (int py = fy; py <= ty; py++)
+      frame.set_pixel(x, py, color);
+}
+
+/*
+   Compute the horisontal pixels for a given pixel with the correct stroke
+*/
+void draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
+   int lOff, rOff;
+   offsets_from_strokeweight(sw, &lOff, &rOff);
+   int fx = x - lOff; 
+   int tx = x + rOff; // from x and to x
+   
+   set_horisontal_line(frame, fx, tx, y, color);
+}
 
 /*
    Draws stroke of axis aligned rectangle r on pixel grid.

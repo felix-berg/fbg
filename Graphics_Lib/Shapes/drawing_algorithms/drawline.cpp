@@ -18,40 +18,14 @@ void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & 
 void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
    if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
       if (fx > tx) // if points are the opposite way round
-         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, false);
+         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, true);
       else 
-         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, false);
+         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, true);
    } else // if gradient > 1, use "hi"
       if (fy > ty)
-         draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, false);
+         draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, true);
       else
-         draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, false);
-}
-
-/*
-   Compute the vertical pixels for a given pixel with the correct stroke
-*/
-void fbg::draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) {
-   int lOff, rOff;
-   offsets_from_strokeweight(sw, &lOff, &rOff);
-
-   int fy = y - lOff;
-   int ty = y + rOff;
-
-   for (int py = fy; py <= ty; py++)
-      frame.set_pixel(x, py, color);
-}
-
-/*
-   Compute the horisontal pixels for a given pixel with the correct stroke
-*/
-void fbg::draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
-   int lOff, rOff;
-   offsets_from_strokeweight(sw, &lOff, &rOff);
-   int fx = x - lOff; 
-   int tx = x + rOff; // from x and to x
-   
-   set_horisontal_line(frame, fx, tx, y, color);
+         draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, true);
 }
 
 /** Get coordinates for point of perpendicular line within grid.
@@ -200,28 +174,28 @@ std::vector<std::pair<int, int>> & get_circle_stroke_pattern(int sw) {
    return s_circleStrokePattern;
 }
 
-void draw_stroke_pattern(Frame & frame, const std::vector<int> & strokePattern, int cx, int cy, const Rgba & color) {
+void draw_stroke_pattern(Frame & frame, const std::vector<int> & strokePattern, int cx, int cy, std::function<void(int x, int y)> setpx) {
    int patternSz = strokePattern.size();
    for (int y = 0; y < patternSz; y++) {
       if (strokePattern[y] == -1) continue;
-      frame.set_pixel(cx + strokePattern[y] - patternSz / 2, cy + y - patternSz / 2, color);
+      setpx(cx + strokePattern[y] - patternSz / 2, cy + y - patternSz / 2);
    }
 }
 
-void draw_thick_line(Frame & frame, int fx, int fy, int tx, int ty, const std::vector<int> & strokePattern, const std::vector<int> & gapPoints, const Rgba & color) {
+void draw_thick_line(Frame & frame, int fx, int fy, int tx, int ty, const std::vector<int> & strokePattern, const std::vector<int> & gapPoints, std::function<void(int x, int y)> setpx) {
    int prevy = fy;
    bresenham_line(fx, fy, tx, ty, [&](int x, int y) -> bool {
       if (y != prevy) // if we stepped down fill the gaps
-         draw_stroke_pattern(frame, gapPoints, x, y, color);
+         draw_stroke_pattern(frame, gapPoints, x, y, setpx);
 
-      draw_stroke_pattern(frame, strokePattern, x, y, color);
+      draw_stroke_pattern(frame, strokePattern, x, y, setpx);
 
       prevy = y;
       return true;
    });
 }
 
-void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
+void draw_stroke_line_low_templated(Frame & frame, int fx, int fy, int tx, int ty, int sw, bool smoothEdges, std::function<void(int x, int y)> setpx, std::function<void(int fx, int tx, int y)> sethoriline) {
    int patternHeight = sw;
    int gradientSign = (ty - fy >= 0) * 2 - 1;
 
@@ -232,14 +206,16 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
    // circle for given stroke weight
    std::vector<std::pair<int, int>> & circleStrokePattern = get_circle_stroke_pattern(patternHeight);
 
-   draw_thick_line(frame, fx, fy, tx, ty, strokePattern, gapPoints, color);
+   draw_thick_line(frame, fx, fy, tx, ty, strokePattern, gapPoints, setpx);
 
+   if (!smoothEdges) return;
+
+   // ------ DRAWING SMOOTH EDGES -----
    int centerX = sw / 2;
    int centerY = sw / 2;
 
    for (int y = 0; y < patternHeight; y++) {
-      // sort out empty lines. Special cases
-      if (strokePattern[y] > circleStrokePattern[y].second)               continue; 
+      // sort out empty lines. Special case
       if (strokePattern[y] == -1 && (gradientSign == 1) == (y < centerY)) continue;
 
       // get the x-value of the pixel farthest to the left, and farthest to
@@ -248,36 +224,59 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
       if (strokePattern[y] == -1) {
          endLeftX = tx + circleStrokePattern[y].first - centerX;
       } else {
-         endLeftX   = tx + std::max(strokePattern[y], circleStrokePattern[y].first) - centerX;
+         endLeftX = tx + std::max(strokePattern[y], circleStrokePattern[y].first) - centerX;
       }
 
       // the farthest away pixel will always be the second circle pixel in the row
       int endRightX = tx + circleStrokePattern[y].second - centerX;
       int endY = ty + y - centerY;
 
-      // the x values and y value for the horisontal line 
-      // for the end of the line
-      set_horisontal_line(frame, endLeftX + 1, endRightX, endY, color); // the end of the line
+      // set the computed line of the frame. +1 since we need to avoid overlap.
+      sethoriline(endLeftX + 1, endRightX, endY);
+   }
 
-      
+   for (int y = 0; y < patternHeight; y++) {
+      // sort out empty lines. Special case
+      if (strokePattern[y] == -1 && (gradientSign == 1) == (y >= centerY)) continue;
 
+      // get the x-value for the pixel furthest to the right in the stroke pattern and circle pattern
+      int startRightX;
+      if (strokePattern[y] == -1) 
+         startRightX = fx + circleStrokePattern[y].second - centerX;
+      else
+         startRightX = fx + std::min(strokePattern[y], circleStrokePattern[y].second) - centerX;
 
-      
+      // the leftmost pixel is always the circle
+      int startLeftX = fx + circleStrokePattern[y].first - centerX;
 
-      
+      int startY = fy + y - centerY;
 
-      // // the start of the line is just the inverse
-      // int startX1 = fx - offX2;
-      // int startX2 = fx - offX1 - 1;
-      // int startY  = fy - offY;
-      // set_horisontal_line(frame, startX1, startX2, startY, color); // the start of the line
+      sethoriline(startLeftX, startRightX - 1, startY); // -1 avoids overlap
    }
 }
 
+void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
+   std::function<void(int, int)> setpx = [&](int x, int y) -> void {
+      frame.set_pixel(x, y, color);   
+   };
+   
+   std::function<void(int, int, int)> sethoriline = [&](int fx, int tx, int y) -> void {
+      set_horisontal_line(frame, fx, tx, y, color);
+   };
+
+   draw_stroke_line_low_templated(frame, fx, fy, tx, ty, sw, smoothEdges, setpx, sethoriline);
+}
+
 void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
-   bresenham_line(fy, fx, ty, tx, [&](int x, int y) -> bool {
-      // the same as low stroke, but with opposite parameters
-      draw_stroke_part_horisontal(frame, y, x, color, sw);
-      return true;
-   });
+   // use the draw_stroke_line_low_templated, but switch x with y in the drawing functions.
+   std::function<void(int, int)> setpx = [&](int x, int y) -> void {
+      frame.set_pixel(y, x, color);   
+   };
+   
+   std::function<void(int, int, int)> sethoriline = [&](int fx, int tx, int y) -> void {
+      for (int x = fx; x <= tx; x++)
+         frame.set_pixel(y, x, color);
+   };
+
+   draw_stroke_line_low_templated(frame, fy, fx, ty, tx, sw, smoothEdges, setpx, sethoriline);
 }
