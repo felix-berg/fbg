@@ -25,6 +25,7 @@ namespace fbg {
 
       /** @return Number of shapes in the object */
       int numShapes() const { return m_shapes.size(); };
+
       /** @return Vector of pointers to the current shapes */
       const std::vector<Shape *> & getShapes() const { return m_shapes; };
 
@@ -44,7 +45,7 @@ namespace fbg {
        * @param o: Origin of the context.  */
       void origin(const V2d<float> & o) { set_point(0, o); };
 
-      /** Get origin of the context.
+      /** Set origin of the context.
        * @param x: x-value for origin
        * @param y: y-value for origin */
       void origin(float x, float y) { set_point(0, {x, y}); };
@@ -52,6 +53,27 @@ namespace fbg {
       /** Get origin of the context.
        * @returns Origin point for context. */
       const V2d<float> & origin() const { return get_point(0); };
+
+      void rotate(float a, const V2d<float> & p) {
+         for (Shape * s : m_shapes)
+            s->rotate(a, p);
+      };
+
+      void rotate(float a) {
+         for (Shape * s : m_shapes)
+            s->rotate(a, get_point(0));
+      }
+
+      void rotate(float, float, float) { 
+         
+      };
+
+      void move(const V2d<float> & v) {
+         for (Shape * s : m_shapes)
+            s->move(v);
+      }
+
+      void move(float x, float y) { move({x, y}); };
 
    private:
       friend class Window; // allow for window to use draw_fill

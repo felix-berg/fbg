@@ -37,7 +37,7 @@ namespace fbg {
          draw_pixel(f, p.x, p.y, stroke(), strokeweight());
       }
 
-      void draw_fill(Rgba *, int, int) { return; };
+      void draw_fill(Rgba *, int, int) { };
    };
 };
 

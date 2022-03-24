@@ -121,10 +121,9 @@ namespace fbg {
          rotate(a, ref);
       };
 
-
       /** Move shape 
        * @param v: Vector to move the shape by. */
-      void move(const V2d<float> & p) { 
+      virtual void move(const V2d<float> & p) { 
          for (V2d<float> & m_point : m_points)
             m_point += p;
       }
@@ -132,7 +131,7 @@ namespace fbg {
       /** Move shape 
        * @param x: x-value to move the shape by.
        * @param y: y-value to move the shape by. */
-      void move(float x, float y) {
+      virtual void move(float x, float y) {
          for (V2d<float> & m_point : m_points) {
             m_point.x += x;
             m_point.y += y;

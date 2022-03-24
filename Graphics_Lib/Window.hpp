@@ -26,11 +26,7 @@ namespace fbg {
        * Sets the title to "Window". 
        * Sets the width to 640 and the height to 480. */
       Window() : SDL_Handler { "Window", {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, 640, 480 } {	};
-
-      /** Convinience function. 
-       * @returns Point for middle of the screen */
-      V2d<float> middle() { return this->dimensions() / 2.0f; };
- 
+      
       /** Setter for background color.
        * @param b: Grayscale value for background color. [0, 255] */
       void background(u_char b) { 
