@@ -15,10 +15,9 @@ namespace fbg {
       /** Constructor for circle class.
        * @param p: Center point of constructed circle.
        * @param r: Radius of constructed circle. */
-      Circle(const V2d<float> & p, float r) 
-      : m_radius { r }	{
-         add_point(p);
-      }
+      Circle(const V2d<float> & p, float r) : Shape { { p } } { 
+         radius(r);
+      };
 
       /** Constructor for circle class.
        * @param x: x-value for center point.
@@ -45,7 +44,11 @@ namespace fbg {
       void pos(float x, float y) { set_point(0, V2d<float> {x, y}); };
       /** Set radius of circle. 
        * @param r: Radius of circle. */
-      void radius(float r) 		{ m_radius = r; };
+      void radius(float r) { 
+         if (r < 0.0f)
+            throw std::runtime_error("Radius of circle cannot be negative.");
+         m_radius = r;
+      };
 
    protected:
       void draw_stroke(Frame & f);
