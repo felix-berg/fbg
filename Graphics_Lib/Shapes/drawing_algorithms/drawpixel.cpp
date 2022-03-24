@@ -32,6 +32,11 @@ void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba &
    }
 }
 
+void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, const Rgba & color) {
+   for (int y = fy; y <= ty; y++)
+      frame.set_pixel(x, y, color);
+}
+
 /*
    TODO: Untested
 */

@@ -68,7 +68,8 @@ namespace fbg {
       /** Getter for total time since LoopWin::run() was called.
        * @returns Total amount of time in seconds. */
       float totalTime() const { 
-         if (isOpen()) throw std::runtime_error("Cannot get total time while window is running.");
+         if (isOpen()) 
+            throw std::runtime_error("Cannot get total time while window is running.");
          return m_totalTime.count();
       }
 
@@ -78,7 +79,7 @@ namespace fbg {
 
          m_startTime = high_resolution_clock::now();
          m_lastFrame = m_startTime;
-         
+
          std::chrono::duration<float, std::ratio<1>> dt = m_frametime; // time for last frame. initialized as expected framerate
          while (isOpen()) {
             high_resolution_clock::time_point frameStartTime = high_resolution_clock::now();
@@ -113,6 +114,10 @@ namespace fbg {
       high_resolution_clock::time_point m_lastFrame, m_startTime;
 
       int m_numFrames = 0; // total number of frames elapsed
+
+      bool m_isRunning = false;
+
+      std::vector<int> m_closeKeys;
    };
 
    /** Log the expected and actual framerate of a window, that has finished execution.
