@@ -93,29 +93,34 @@ namespace fbg {
        * @param sw: Stroke weight of shape. */ 
       void strokeweight(int sw)   { m_strokeWeight = sw; };
 
-      /** Rotate shape around x, y.
+      /** Rotate shape around reference point. 
+       * @param a: The angle to rotate the shape by.
+       * @param ref: The centre of rotation. */
+      virtual void rotate(float a, const V2d<float> & ref) {
+         for (int i = 0; i < m_points.size(); i++) {
+            V2d<float> diff = get_point(i) - ref;
+            diff.rotate(a);
+            set_point(i, ref + diff);
+         }
+      }
+
+      /** Rotate shape around x, y. 
        * @param a: Angle of rotation
        * @param x: x-value of reference point.
        * @param y: y-value of reference point. */
-      void rotate(float a, float x, float y) { 
-         V2d<float> ref {x, y};
-         for (V2d<float> & p : m_points) {
-            float c = (p - ref).size();
-            p.x += cos(a) * c;
-            p.y += sin(a) * c;
-         }
+      virtual void rotate(float a, float x, float y) { 
+         rotate(a, {x, y});
       };
 
-      /** Rotate shape 
+      /** Rotate shape around its first point (e.g. the center of a circle).
        * @param a: Angle to rotate by */
-      void rotate(float a) { 
-         V2d<float> ref { get_point(0) };
-         for (V2d<float> & p : m_points) {
-            float c = (p - ref).size();
-            p.x += cos(a) * c;
-            p.y += sin(a) * c;
-         }
+      virtual void rotate(float a) { 
+         // copy the first point
+         V2d<float> ref = get_point(0);
+
+         rotate(a, ref);
       };
+
 
       /** Move shape 
        * @param v: Vector to move the shape by. */

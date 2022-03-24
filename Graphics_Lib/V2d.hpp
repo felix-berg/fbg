@@ -61,7 +61,7 @@ namespace fbg {
       
       bool is_bound(const V2d<T> & lower, const V2d<T> & upper) const {
          return ! (x < lower.x || x > upper.x ||
-                  y < lower.y || y > upper.y);
+                   y < lower.y || y > upper.y);
       };
 
       V2d<T> normal() const {
@@ -75,6 +75,19 @@ namespace fbg {
       void set_size(T sz) { 
          this->normalize();
          *this *= sz;
+      }
+
+      /** Probably shaky for integers. */
+      void rotate(float a) {
+         T sina = std::sin(a);
+         T cosa = std::cos(a);
+
+         V2d<T> new_pos {
+            cosa * this->x - sina * this->y,
+            sina * this->x + cosa * this->y
+         };
+
+         *this = new_pos;
       }
    };
 
