@@ -6,7 +6,7 @@ using namespace fbg;
 /*
    Primary constructor for SDL_Handler.
 */
-SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point, int w, int h) 
+SDLHandler::SDLHandler(const std::string & title, const V2d<int> & start_point, int w, int h) 
    : m_width { w }, m_height { h }, frame { w, h } // initiate pixel buffer with provided width and height
 {
    // create SDL instances
@@ -27,14 +27,14 @@ SDL_Handler::SDL_Handler(const std::string & title, const V2d<int> & start_point
 /*
    Creates window in the middle of the screen with the given width and height
 */
-SDL_Handler::SDL_Handler(const std::string & title, int w, int h) 
-   : SDL_Handler { title, {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, w, h }
+SDLHandler::SDLHandler(const std::string & title, int w, int h) 
+   : SDLHandler { title, {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, w, h }
 { }
 
 /*
    Destructor
 */
-SDL_Handler::~SDL_Handler() {
+SDLHandler::~SDLHandler() {
    SDL_DestroyTexture(m_texture);
    SDL_DestroyRenderer(m_renderer);
    SDL_DestroyWindow(m_window);
@@ -43,28 +43,28 @@ SDL_Handler::~SDL_Handler() {
 /*
    Set given point to given pixel color value
 */
-void SDL_Handler::set_pixel(const V2d<int> & p, const Rgba & px) {
+void SDLHandler::set_pixel(const V2d<int> & p, const Rgba & px) {
    static int i = 0;
    frame.pixels[p.y * width() + p.x] = px;
 }
 /*
    Set all pixel to color
 */
-void SDL_Handler::clear_pixels(const Rgba & color) {
+void SDLHandler::clear_pixels(const Rgba & color) {
    std::fill(frame.pixels, frame.pixels + size(), color);
 }
 
 /*
    Clear pixels of pixelarray to black.
 */
-void SDL_Handler::clear_pixels() {
+void SDLHandler::clear_pixels() {
    memset(frame.pixels, 0, sizeof(Rgba) * size());
 }
 
 /*
    Push Frame to SDL Texture
 */
-void SDL_Handler::push_frame(const Frame & f) {
+void SDLHandler::push_frame(const Frame & f) {
    if (SDL_UpdateTexture(m_texture, NULL, f.pixels, sizeof(Rgba) * width()) != 0)
       throw std::runtime_error("Error on updating texture.\n");
 }
@@ -72,7 +72,7 @@ void SDL_Handler::push_frame(const Frame & f) {
 /*
    TODO: Add support for multiple windows
 */
-void SDL_Handler::handle_event(const SDL_Event * e) {
+void SDLHandler::handle_event(const SDL_Event * e) {
    if (e->type == SDL_KEYDOWN && !key_is_pressed(e->key.keysym.sym)) {
       int scancode = SDL_GetScancodeFromKey(e->key.keysym.sym);
       m_keysDown.push_back(scancode); 
@@ -89,16 +89,16 @@ void SDL_Handler::handle_event(const SDL_Event * e) {
       m_isOpen = false;
 }
 
-void SDL_Handler::poll_events() {
+void SDLHandler::poll_events() {
    SDL_Event e;
    while (SDL_PollEvent(&e))
       handle_event(&e);
 }
 
-void SDL_Handler::update() {
+void SDLHandler::update_pixels() {
 
    if (!isOpen()) 
-      throw std::runtime_error("SDL_Handler error: Cannot update unopen screen.\n");
+      throw std::runtime_error("SDLHandler error: Cannot update unopen screen.\n");
    
    poll_events();
 
@@ -112,7 +112,7 @@ void SDL_Handler::update() {
    SDL_RenderPresent(m_renderer); 
 }
 
-bool SDL_Handler::key_is_pressed(int key_id) const {
+bool SDLHandler::key_is_pressed(int key_id) const {
    for (int key : m_keysDown)
       if (key == key_id)
          return true;
@@ -122,14 +122,14 @@ bool SDL_Handler::key_is_pressed(int key_id) const {
 /*
    TODO: Literally doesn't work
 */
-bool SDL_Handler::key_is_pressed() const {
+bool SDLHandler::key_is_pressed() const {
    return !(m_keysDown.size() == 0);
 }
 
 /*
    Get the mouse position relative to the top left corner of the screen.
 */
-V2d<int> SDL_Handler::mouse() const {
+V2d<int> SDLHandler::mouse() const {
    SDL_PumpEvents();
    V2d<int> res;
    V2d<int> windowPos;
@@ -157,7 +157,7 @@ void clamp_point(V2d<int> & p, const V2d<int> & f, const V2d<int> & t) {
 /*
    TODO: Add support for multiple windows
 */
-V2d<int> SDL_Handler::mouse_pos_clamped() const {
+V2d<int> SDLHandler::mouse_pos_clamped() const {
    V2d<int> res = mouse();
    // clamp mouse position within screen space
    clamp_point(res, {0, 0}, {width() - 1, height() - 1});
@@ -169,7 +169,7 @@ V2d<int> SDL_Handler::mouse_pos_clamped() const {
    TODO: Untested.
    Update: doesnt work
 */
-bool SDL_Handler::has_keyboard_focus() const {
+bool SDLHandler::has_keyboard_focus() const {
    return SDL_GetKeyboardFocus() == m_window;
 }
 
@@ -177,6 +177,6 @@ bool SDL_Handler::has_keyboard_focus() const {
    Returns whether this window is in mouse focus.
    TODO: Untested
 */
-bool SDL_Handler::has_mouse_focus() const {
+bool SDLHandler::has_mouse_focus() const {
    return SDL_GetMouseFocus() == m_window; 
 }

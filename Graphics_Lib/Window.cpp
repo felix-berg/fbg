@@ -30,5 +30,5 @@ void Window::update() {
    context.draw_fill(frame);
    
    // update the SDL Pixelbuffer and pull new events.
-   this->update();
+   SDLHandler::update_pixels();
 }

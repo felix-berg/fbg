@@ -11,11 +11,11 @@
 #include "frame.hpp"
 
 namespace fbg {
-   class SDL_Handler {
+   class SDLHandler {
    public:
-      SDL_Handler(const std::string & title, const V2d<int> & startPoint, int w, int h);
-      SDL_Handler(const std::string & title, int w, int h);
-      ~SDL_Handler();
+      SDLHandler(const std::string & title, const V2d<int> & startPoint, int w, int h);
+      SDLHandler(const std::string & title, int w, int h);
+      ~SDLHandler();
 
       int width()  const { return m_width; };
       int height() const { return m_height; };
@@ -45,7 +45,7 @@ namespace fbg {
 
       void handle_event(const SDL_Event * e);
       void poll_events();
-      void update();
+      void update_pixels();
 
       bool has_keyboard_focus() const;
       bool has_mouse_focus() const;

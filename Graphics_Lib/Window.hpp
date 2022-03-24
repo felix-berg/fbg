@@ -14,18 +14,18 @@ namespace fbg {
     * @param draw(): Draw the attached shapes to the window.
     * @param background(): Set background color of window. 
     * @param wait_for_key(): Wait for key-press before continuing. */
-   class Window : public SDL_Handler {
+   class Window : public SDLHandler {
    public:
       /** Constructor for window class 
        * @param title: The title to be displayed to the top bar of the screen. 
        * @param w: The width of the window.
        * @param h: The height of the window. */
-      Window(const std::string & title, int w, int h) : SDL_Handler { title, w, h } {	};
+      Window(const std::string & title, int w, int h) : SDLHandler { title, w, h } {	};
 
       /** Default constructor for window.
        * Sets the title to "Window". 
        * Sets the width to 640 and the height to 480. */
-      Window() : SDL_Handler { "Window", {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, 640, 480 } {	};
+      Window() : SDLHandler { "Window", {SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED}, 640, 480 } {	};
       
       /** Setter for background color.
        * @param b: Grayscale value for background color. [0, 255] */
