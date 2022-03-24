@@ -22,10 +22,10 @@ void Line::draw_stroke(Frame & frame) {
    
    bool smooth = false;
    
-   if (m_edgeType == Line::EDGETYPE::UNDEFINED)
+   if (m_edgeType == Line::Edgetype::UNDEFINED)
       smooth = Line::SMOOTH_EDGES;
    else 
-      smooth = m_edgeType == Line::EDGETYPE::SMOOTH;
+      smooth = m_edgeType == Line::Edgetype::SMOOTH;
 
    if (smooth)
       compute_line_stroke_smooth(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight());
