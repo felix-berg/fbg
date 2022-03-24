@@ -70,7 +70,7 @@ namespace fbg {
       Rgba background() const { return m_backgroundColor; };
 
       /** Render the currently attached shapes to the window */
-      void draw();
+      void update();
       
       /** Attach shape to window. 
        * @param s: The shape to be attached to the window. */

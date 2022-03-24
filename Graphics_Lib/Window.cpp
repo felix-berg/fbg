@@ -21,7 +21,7 @@ void Window::wait_for_key(int key_id) {
    }
 }
 
-void Window::draw() {
+void Window::update() {
    // Alpha composite entire pixel area using AVX2 vector processing 
    alpha_compositeNC(frame.pixels, &m_backgroundColor, size());
    

@@ -13,7 +13,7 @@ using std::chrono::high_resolution_clock;
 namespace fbg {
 
 /** Class for running animations inside a Window.
- * @param before_draw(): Function pointer, that can be defined. Called immediately before every Frame is rendered.
+ * @param draw(): Function pointer, that can be defined. Called immediately before every Frame is rendered.
  * @param after_draw(): Function pointer, that can be defiend. Called immediately after every Frame is rendered. 
  * @param run(): Function that starts rendering. Stops execution until window is closed.
  * @param framerate(): Getter/setter for framerate. */
@@ -29,11 +29,11 @@ namespace fbg {
        * Sets title to "Looping Window". Sets width to 640 px and height to 480 px. */
       LoopWin() : LoopWin { "Looping Window", 640, 480 } { };
 
-      /** This function is called immediately before the	Window::draw() method is called.
+      /** This function is called immediately before the	Window::update() method is called.
        * Provides the frametime of the previous frame	in seconds. */
-      std::function<void(float)> before_draw = nullptr;
+      std::function<void(float)> draw = nullptr;
 
-      /** This function is called immediately after the Window::draw() method is called.
+      /** This function is called immediately after the Window::update() method is called.
        * Provides the frametime of the previous frame	in seconds. */
       std::function<void(float)> after_draw = nullptr;
 
@@ -91,11 +91,11 @@ namespace fbg {
             std::this_thread::sleep_until(m_lastFrame);
 
             // user defined function
-            if (before_draw != nullptr) 
-               before_draw(dt.count());
+            if (draw != nullptr) 
+               draw(dt.count());
 
-            // draw frame
-            draw();
+            // draw shapes on frame
+            Window::update();
             m_numFrames++;
 
             if (after_draw != nullptr)
