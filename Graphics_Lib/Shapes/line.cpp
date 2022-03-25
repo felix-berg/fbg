@@ -20,15 +20,12 @@ void Line::draw_stroke(Frame & frame) {
    V2d<float> f = from();
    V2d<float> t = to();
    
-   bool smooth = false;
+   bool isSmooth = false;
    
    if (m_edgeType == Line::Edgetype::UNDEFINED)
-      smooth = Line::SMOOTH_EDGES;
+      isSmooth = Line::SMOOTH_EDGES;
    else 
-      smooth = m_edgeType == Line::Edgetype::SMOOTH;
+      isSmooth = m_edgeType == Line::Edgetype::SMOOTH;
 
-   if (smooth)
-      compute_line_stroke_smooth(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight());
-   else
-      compute_line_stroke(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight());
+   compute_line_stroke(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight(), isSmooth);
 }

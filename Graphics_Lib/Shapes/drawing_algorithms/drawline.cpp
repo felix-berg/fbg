@@ -9,42 +9,24 @@ using namespace fbg;
 
 constexpr int NONE = INT32_MIN;
 
-// TODO: Lines with even strokeweight look a little goofy
-
 void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges); 
-void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges);
+void draw_stroke_hi (Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges);
 
-/*
-   Compute the colors of the lines stroke and output onto "frame".
-   Line defined by fx, fy -> tx, ty (inclusive).
-   This function doesn't make smooth edges.
-*/
-void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
+/** Compute the colors of the lines stroke and output onto "frame".
+ * Line defined by fx, fy -> tx, ty (inclusive). 
+ * This function doesn't make smooth edges.     */
+void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
    if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
       if (fx > tx) // if points are the opposite way round
-         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, false);
+         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, smoothEdges); // inverted
       else 
-         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, false);
+         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, smoothEdges);
    } else // if gradient > 1, use "hi"
       if (fy > ty)
-         draw_stroke_hi(frame, tx, ty, fx, fy, color, sw, false);
+         draw_stroke_hi (frame, tx, ty, fx, fy, color, sw, smoothEdges); // inverted
       else
-         draw_stroke_hi(frame, fx, fy, tx, ty, color, sw, false);
+         draw_stroke_hi (frame, fx, fy, tx, ty, color, sw, smoothEdges);
 }
-
-void fbg::compute_line_stroke_smooth(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw) {
-   if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
-      if (fx > tx) // if points are the opposite way round
-         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, sw != 1);
-      else 
-         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, sw != 1);
-   } else // if gradient > 1, use "hi"
-      if (fy > ty)
-         draw_stroke_hi(frame, tx, ty, fx, fy,  color, sw, sw != 1);
-      else
-         draw_stroke_hi(frame, fx, fy, tx, ty,  color, sw, sw != 1);
-}
-
 
 /** Get coordinates for point of perpendicular line within grid.
  * Translates from (x, y) into (&px, &py).  */
@@ -67,44 +49,42 @@ inline void fix_min_max(int * min, int * max) {
    }
 }
 
-
 /** Get list filled with the x-values of the perpendicular line to the line defined by (fx, tx). 
- * @returns Reference to static s_strokePattern vector. */
-std::vector<int> & get_stroke_pattern(int fx, int fy, int tx, int ty, int patternHeight) {
+ * @returns Reference to static vector. */
+std::vector<int> & get_stroke_pattern(int fx, int fy, int tx, int ty, int patternHeight, int gradientSign) {
    static std::vector<int> s_strokePattern; // container for current stroke pattern
-   
-   s_strokePattern.resize(patternHeight); // set the size of the container to relevant size
 
-   std::fill(s_strokePattern.begin(), s_strokePattern.end(), NONE);
+   s_strokePattern.resize(patternHeight, NONE); // set the size of the container to relevant size
 
-   int gradientSign = 2 * (ty - fy >= 0) - 1;
-
-   int cx = patternHeight / 2;
-   int cy = cx;
-   int midx;
+   // center point
+   int cx; // to be found
+   int cy = patternHeight / 2;   
 
    bresenham_line(0, 0, tx - fx, ty - fy, [&](int x, int y) -> bool {
       if (x >= patternHeight) return false; // if we have evaluated enough, stop the algorithm
+
       int px, py;
       get_perpendicular_line_point(x, y, &px, &py, patternHeight, gradientSign);
 
       s_strokePattern[py] = px;
 
-      if (py == cy)
-         midx = px;
+      if (py == cy) 
+         cx = px; // set middle x-value
 
-      return true; // continue algorithm
+      return true;
    });
 
    // move every bit of the perpendicular line grid, 
    // so that the middle pixel of the line is in the center
-   int perpLineOffset = - midx; // the amount to offset every pixel
+   int perpLineOffset = - cx; // the amount to offset every pixel
    for (int y = 0; y < s_strokePattern.size(); y++)
       s_strokePattern[y] += perpLineOffset;
 
    return s_strokePattern;
 }
 
+/** Limit the length of a given stroke pattern of a line to the given strokeweight.
+ * @returns Reference to static vector. */
 std::vector<int> & limit_stroke_pattern_to_stroke_weight(const std::vector<int> & strokePattern, int sw) {
    static std::vector<int> s_limitedStrokePattern;
    s_limitedStrokePattern.resize(strokePattern.size(), NONE);
@@ -128,17 +108,13 @@ std::vector<int> & limit_stroke_pattern_to_stroke_weight(const std::vector<int> 
    // remove top and bottom lines according to gradient
    int n_linesToRemove = s_limitedStrokePattern.size() - lineY;
 
-   int y = 0;
-   while (true) { // TODO: Refactor
-      if (n_linesToRemove <= 0) break;
-      s_limitedStrokePattern[s_limitedStrokePattern.size() - 1 - y] = NONE;
-      n_linesToRemove--;
-
-      if (n_linesToRemove <= 0) break;
-      s_limitedStrokePattern[y] = NONE;
-      n_linesToRemove--; 
-      
-      y++;
+   for (int i = 0; i < n_linesToRemove; i++) {
+      bool isEven = i % 2 == 0;
+      int y = i / 2;
+      if (isEven)
+         s_limitedStrokePattern[s_limitedStrokePattern.size() - 1 - y] = NONE; // remove from bottom
+      else
+         s_limitedStrokePattern[y] = NONE; // remove from top
    }
 
    return s_limitedStrokePattern;
@@ -146,12 +122,10 @@ std::vector<int> & limit_stroke_pattern_to_stroke_weight(const std::vector<int> 
 
 /** Find gaps in given stroke pattern and return a stroke pattern of the necessary points to fill the gaps,
  * when the y-direction changes in the bresenham line algorithm.
-  * @returns a reference to the static stroke pattern for gaps. */
+  * @returns Reference to a static vector. */
 std::vector<int> & get_gaps_from_stroke_pattern(const std::vector<int> & strokePattern, int gradientSign){
    static std::vector<int> s_gapStrokePattern;
-
-   s_gapStrokePattern.resize(strokePattern.size());
-   std::fill(s_gapStrokePattern.begin(), s_gapStrokePattern.end(), NONE);
+   s_gapStrokePattern.resize(strokePattern.size(), NONE);
 
    // compare strokePattern to itself, but shifted as if the y-direction changed
    for (int y = 0; y < strokePattern.size(); y++) {
@@ -163,10 +137,11 @@ std::vector<int> & get_gaps_from_stroke_pattern(const std::vector<int> & strokeP
          continue; 
       }
 
-      // the shifted x and y-values
+      // y = y + yDir
       int shiftedY = y + gradientSign;
 
-      if (shiftedY < 0 || shiftedY >= strokePattern.size()) { // shiftedY is off-bounds
+      // if shiftedY is off-bounds
+      if (shiftedY < 0 || shiftedY >= strokePattern.size()) { 
          s_gapStrokePattern[y] = NONE;
          continue; 
       }
@@ -184,32 +159,16 @@ std::vector<int> & get_gaps_from_stroke_pattern(const std::vector<int> & strokeP
    return s_gapStrokePattern;
 }
 
-/** Return the first top and bottom line, that has an x-value in the given strokepattern */
-void get_ybounds_from_stroke_pattern(int * boty, int * topy, std::vector<int> & strokePattern) {
-   *topy = NONE;
-   for (int y = 0; y < strokePattern.size(); y++)
-      if (strokePattern[y]  != NONE) {
-         *topy = y;
-         break;
-      }
-
-   for (int y = strokePattern.size() - 1; y >= 0; y--)
-      if (strokePattern[y] != NONE){
-         *boty = y;
-         break;
-      }
-}
-
 /** Create a stroke pattern of a circle for ends of lines with the given strokeweight
  *  @returns Reference to static s_circleStrokePattern vector. */
-std::vector<int> & get_circle_stroke_pattern(int sw) {
+std::vector<int> & get_circle_stroke_pattern(int patternHeight) {
    static std::vector<int> s_circleStrokePattern;
+   s_circleStrokePattern.resize(patternHeight, NONE);
 
-   s_circleStrokePattern.resize(sw * 2, NONE);
-
-   int r = sw / 2;
+   int r = patternHeight / 2;
    bresenham_circle(r, [&](int circx, int circy) -> void {
-      int y1 = r + circy, y2 = r - circy,
+      // y-values for the 4 quadrants in the positive-x side.
+      int y1 = r + circy, y2 = r - circy, 
           y3 = r + circx, y4 = r - circx;
 
       s_circleStrokePattern[y1] = circx;
@@ -221,43 +180,28 @@ std::vector<int> & get_circle_stroke_pattern(int sw) {
    return s_circleStrokePattern;
 }
 
-/** Create a stroke pattern of a circle for ends of lines with the given strokeweight
- *  @returns Reference to static s_circleStrokePattern vector. */
-std::vector<int> & get_circle_stroke_pattern_inverted(int sw) {
-   static std::vector<int> s_circleStrokePattern;
-
-   s_circleStrokePattern.resize(sw * 2, NONE);
-
-   int r = sw / 2;
-   bresenham_circle(r, [&](int circx, int circy) -> void {
-      int y1 = r + circy, y2 = r - circy,
-          y3 = r + circx, y4 = r - circx;
-
-      s_circleStrokePattern[y1] = -circx;
-      s_circleStrokePattern[y2] = -circx;
-      s_circleStrokePattern[y3] = -circy;
-      s_circleStrokePattern[y4] = -circy;
-   });
-
-   return s_circleStrokePattern;
-}
-
+/** Draw the given stroke pattern to the (cx, cy) coordinate. */
 void draw_stroke_pattern(const std::vector<int> & strokePattern, int cx, int cy, std::function<void(int x, int y)> setpx) {
    int sz = strokePattern.size();
    for (int y = 0; y < sz; y++) {
       if (strokePattern[y] == NONE) continue;
+
       setpx(cx + strokePattern[y], cy + y - sz / 2);
    }
 }
 
+/** Shift the given stroke pattern values by the given (xOff, yOff) vector. 
+ * Note: If stroke-pattern is shifted out of y-range, elements are deleted, as the size of the stroke pattern is unaltered. */
 void shift_stroke_pattern(std::vector<int> & strokePattern, int xOff, int yOff) {
+   // if we shift negative y, go top down
    if (yOff < 0) {
       for (int y = 0; y < strokePattern.size(); y++) {
-         if (y - yOff < 0 || y - yOff >= strokePattern.size())
+         if (y - yOff < 0 || y - yOff >= strokePattern.size() || strokePattern[y - yOff] == NONE)
             strokePattern[y] = NONE;
          else 
             strokePattern[y] = strokePattern[y - yOff] + xOff;
       }
+   // if we shift positive y, go bottom up
    } else {
       for (int y = strokePattern.size() - 1; y >=0; y--) {
          if (y - yOff < 0 || y - yOff >= strokePattern.size() || strokePattern[y - yOff] == NONE)
@@ -268,23 +212,27 @@ void shift_stroke_pattern(std::vector<int> & strokePattern, int xOff, int yOff) 
    }
 } 
 
+/** Return a vector, that is the result of shifting the given lineStroke by (xOff, yOff), and removing any x-coordinates, that are outside the bounds of the given circleStroke. */
 std::vector<int> & shift_and_limit_line_to_circle_stroke(const std::vector<int> & lineStroke, const std::vector<int> & circleStroke, int xOffset, int yOffset) {
    static std::vector<int> s_resultStroke;
    s_resultStroke.resize(lineStroke.size(), NONE);
 
+   // copy lineStroke into s_resultStroke
    std::copy(lineStroke.begin(), lineStroke.end(), s_resultStroke.begin());
 
    shift_stroke_pattern(s_resultStroke, xOffset, yOffset);
 
+   // go through stroke pattern, and remove any x-values, that are outside the range of the circle
    for (int y = 0; y < s_resultStroke.size() ; y++) {
       int lx = s_resultStroke[y];
 
-      if (lx == NONE) continue;
+      if (lx == NONE) continue; // line undefined
 
-      s_resultStroke[y] = lx;
-      int cx = circleStroke[y];
 
-      if (lx >= -cx && lx <= cx) 
+      int rBound =  circleStroke[y];
+      int lBound = -circleStroke[y];
+
+      if (lx >= lBound && lx <= rBound) 
          s_resultStroke[y] = lx;
       else
          s_resultStroke[y] = NONE;
@@ -295,13 +243,17 @@ std::vector<int> & shift_and_limit_line_to_circle_stroke(const std::vector<int> 
    return s_resultStroke;
 }
 
-void draw_stroke_line_low_templated(int fx, int fy, int tx, int ty, int sw, bool smoothEdges, std::function<void(int x, int y)> setpx, std::function<void(int x, int fy, int ty)> sethorisontal) {
+
+/** Draw a thick line, that has an absolute gradient less than one (abs(grad) < 1).
+ * @param setpx: User-defined function for drawing a pixel at (x, y).
+ * @param sethorisontal: User-defined function for drawing a line from (fx, y) -> (tx, y). */
+void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, bool smoothEdges, std::function<void(int x, int y)> setpx, std::function<void(int x, int fy, int ty)> sethorisontal) {
    // set the pattern to the maximum height -> the line, if it was vertical
    int patternHeight = sw; 
 
    int gradientSign = (ty - fy >= 0) * 2 - 1;
    // these are all pointers to static resources 
-   const std::vector<int> & lineStrokePattern   = get_stroke_pattern(fx, fy, tx, ty, patternHeight);
+   const std::vector<int> & lineStrokePattern   = get_stroke_pattern(fx, fy, tx, ty, patternHeight, gradientSign);
          std::vector<int> & limitedLine         = limit_stroke_pattern_to_stroke_weight(lineStrokePattern, sw);
          std::vector<int> & gapPoints           = get_gaps_from_stroke_pattern(limitedLine, gradientSign);
    const std::vector<int> & circleStrokePattern = get_circle_stroke_pattern(patternHeight);
@@ -371,6 +323,7 @@ void draw_stroke_line_low_templated(int fx, int fy, int tx, int ty, int sw, bool
    });
 }
 
+/** Draw a line from (fx, fy) to (tx, ty), that has a gradient less than 1. */ 
 void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
    std::function<void(int, int)> setpx = [&](int x, int y) -> void {
       frame.set_pixel(x, y, color);   
@@ -380,11 +333,12 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
       set_horisontal_line(frame, fx, tx, y, color);
    };
 
-   draw_stroke_line_low_templated(fx, fy, tx, ty, sw, smoothEdges, setpx, sethorisontal);
+   draw_stroke_line_low(fx, fy, tx, ty, sw, smoothEdges, setpx, sethorisontal);
 }
 
+/** Draw a line from (fx, fy) to (tx, ty), that has a gradient greater than 1. */ 
 void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
-   // use the draw_stroke_line_low_templated, but switch x with y in the drawing functions.
+   // use the draw_stroke_line_low, but switch x with y in the drawing functions.
    std::function<void(int, int)> setpx = [&](int x, int y) -> void {
       frame.set_pixel(y, x, color);   
    };
@@ -394,5 +348,5 @@ void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & 
          frame.set_pixel(y, x, color);
    };
 
-   draw_stroke_line_low_templated(fy, fx, ty, tx, sw, smoothEdges, setpx, sethorisontal);
+   draw_stroke_line_low(fy, fx, ty, tx, sw, smoothEdges, setpx, sethorisontal);
 }
