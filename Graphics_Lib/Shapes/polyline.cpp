@@ -8,7 +8,7 @@ void fbg::Polygon::draw_stroke(Frame & frame) {
    // draw every line segment by looping through list of points
    for (int i = 0; i < num_points(); i++) {
       to = get_point(i);
-      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight()); 
+      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), true); 
       from = to;
    }
 
@@ -16,6 +16,6 @@ void fbg::Polygon::draw_stroke(Frame & frame) {
    if (!m_open) {
       from = get_point(num_points() - 1);
       to = get_point(0);
-      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight());
+      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), true);
    }
 }

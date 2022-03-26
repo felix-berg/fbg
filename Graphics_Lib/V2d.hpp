@@ -116,6 +116,11 @@ namespace fbg {
    }
 
    template <typename T>
+   double angle_between(const V2d<T> & v1, const V2d<T> & v2) {
+      return std::acos(dot_prod(v1, v2) / (v1.size() * v2.size()));
+   }
+
+   template <typename T>
    std::ostream & operator << (std::ostream & os, const V2d<T> & v) {
       return (os << '(' << v.x << ", " << v.y << ')');
    }
