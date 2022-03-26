@@ -11,7 +11,9 @@ using namespace fbg;
 
 /** Whether to draw lines with smooth edges of lines or not. */
 bool Line::SMOOTH_EDGES = true; 
-// standard value
+
+int Line::DEFAULT_STROKEWEIGHT = 5;
+
 
 /** Change given pixelbuffer based on the pixels of the line. */
 void Line::draw_stroke(Frame & frame) {
