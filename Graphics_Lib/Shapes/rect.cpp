@@ -65,6 +65,7 @@ void Rect::draw_fill(Frame & frame) {
    }
 }
 
+/** TODO: NOT WORKING !! */
 void fbg::Rect::rotate(float a, const V2d<float> & ref) {
    V2d<float> diff = pos() - ref;
    diff.rotate(a);
@@ -79,6 +80,4 @@ void fbg::Rect::rotate(float a, const V2d<float> & ref) {
    rr -= pos();
 
    m_angle += angle_between(rr, verticalLine);
-
-   std::cout << m_angle << '\n';  
 }
