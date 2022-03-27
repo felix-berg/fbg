@@ -103,7 +103,7 @@ std::vector<int> & limit_stroke_pattern_to_stroke_weight(const std::vector<int> 
    float gradient = static_cast<float> (s_limitedStrokePattern.size()) / static_cast<float> (lineX);
 
    // compute appropriate grid height based on the line reach X
-   int lineY = static_cast<int> (std::round(std::sin(std::atan(gradient)) * sw)); // sin(atan(gradient)) * strokeweight
+   int lineY = static_cast<int> (std::round(std::sin(std::atan(gradient)) * float(sw))); // sin(atan(gradient)) * strokeweight
 
    // remove top and bottom lines according to gradient
    int n_linesToRemove = s_limitedStrokePattern.size() - lineY;
