@@ -41,7 +41,10 @@ namespace fbg {
          return ! (x < 0 || x >= w ||
                     y < 0 || y >= h);
       }
+
+      Rgba get(int x, int y) const { return pixels[y * w + x]; };
    };
+
 };
 
 #endif
