@@ -9,23 +9,23 @@ using namespace fbg;
 
 constexpr int NONE = INT32_MIN;
 
-void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges); 
-void draw_stroke_hi (Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges);
+void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode); 
+void draw_stroke_hi (Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode);
 
 /** Compute the colors of the lines stroke and output onto "frame".
  * Line defined by fx, fy -> tx, ty (inclusive). 
  * This function doesn't make smooth edges.     */
-void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
+void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode) {
    if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
       if (fx > tx) // if points are the opposite way round
-         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, smoothEdges); // inverted
+         draw_stroke_low(frame, tx, ty, fx, fy, color, sw, mode); // inverted
       else 
-         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, smoothEdges);
+         draw_stroke_low(frame, fx, fy, tx, ty, color, sw, mode);
    } else // if gradient > 1, use "hi"
       if (fy > ty)
-         draw_stroke_hi (frame, tx, ty, fx, fy, color, sw, smoothEdges); // inverted
+         draw_stroke_hi (frame, tx, ty, fx, fy, color, sw, mode); // inverted
       else
-         draw_stroke_hi (frame, fx, fy, tx, ty, color, sw, smoothEdges);
+         draw_stroke_hi (frame, fx, fy, tx, ty, color, sw, mode);
 }
 
 /** Get coordinates for point of perpendicular line within grid.
@@ -247,7 +247,7 @@ std::vector<int> & shift_and_limit_line_to_circle_stroke(const std::vector<int> 
 /** Draw a thick line, that has an absolute gradient less than one (abs(grad) < 1).
  * @param setpx: User-defined function for drawing a pixel at (x, y).
  * @param sethorisontal: User-defined function for drawing a line from (fx, y) -> (tx, y). */
-void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, bool smoothEdges, std::function<void(int x, int y)> setpx, std::function<void(int x, int fy, int ty)> sethorisontal) {
+void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, LineMode mode, std::function<void(int x, int y)> setpx, std::function<void(int x, int fy, int ty)> sethorisontal) {
    // set the pattern to the maximum height -> the line, if it was vertical
    int patternHeight = sw; 
 
@@ -265,22 +265,32 @@ void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, bool smoothEdg
    int xOffset    = std::cos(gradient) * float(patternHeight) * 0.5f; // a = cos(A) * c
    int yOffset    = std::sin(gradient) * float(patternHeight) * 0.5f; // a = cos(A) * c
 
+   // the edges of the circle -> where the algorithm has to step from and to
+   int algoFromX, algoFromY, algoToX, algoToY;
+   
+   if (mode == LineMode::SMOOTH || mode == LineMode::ROUGHLONG) {
+      algoFromX = fx - xOffset;
+      algoFromY = fy - yOffset;
+      algoToX   = tx + xOffset;
+      algoToY   = ty + yOffset;
+   } else if (mode == LineMode::ROUGH)  {
+      algoFromX = fx; algoToX = tx;
+      algoFromY = fy; algoToY = ty;
+   }
+   
    // the circle has its centre at the end points
+   // only actually used, if mode == LineMode::SMOOTH
    int staCircX = fx;
    int staCircY = fy;
    int endCircX = tx;
    int endCircY = ty;
 
-   // the edges of the circle -> where the algorithm has to step from and to
-   int algoFromX = fx - xOffset;
-   int algoFromY = fy - yOffset;
-   int algoToX   = tx + xOffset;
-   int algoToY   = ty + yOffset;
-   
+   bool rough = mode == LineMode::ROUGH || mode == LineMode::ROUGHLONG;
+
    int previousY = fy; 
    // start algorithm (steps through x)
    bresenham_line(algoFromX, algoFromY, algoToX, algoToY, [&](int x, int y) -> bool {
-      if (x > staCircX && x < endCircX) {
+      if (rough || (x > staCircX && x < endCircX)) {
          // straight part of the line
 
          draw_stroke_pattern(limitedLine, x, y, setpx);
@@ -324,7 +334,7 @@ void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, bool smoothEdg
 }
 
 /** Draw a line from (fx, fy) to (tx, ty), that has a gradient less than 1. */ 
-void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
+void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode) {
    std::function<void(int, int)> setpx = [&](int x, int y) -> void {
       frame.set_pixel(x, y, color);   
    };
@@ -333,11 +343,11 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
       set_horisontal_line(frame, fx, tx, y, color);
    };
 
-   draw_stroke_line_low(fx, fy, tx, ty, sw, smoothEdges, setpx, sethorisontal);
+   draw_stroke_line_low(fx, fy, tx, ty, sw, mode, setpx, sethorisontal);
 }
 
 /** Draw a line from (fx, fy) to (tx, ty), that has a gradient greater than 1. */ 
-void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, bool smoothEdges) {
+void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode) {
    // use the draw_stroke_line_low, but switch x with y in the drawing functions.
    std::function<void(int, int)> setpx = [&](int x, int y) -> void {
       frame.set_pixel(y, x, color);   
@@ -348,5 +358,5 @@ void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & 
          frame.set_pixel(y, x, color);
    };
 
-   draw_stroke_line_low(fy, fx, ty, tx, sw, smoothEdges, setpx, sethorisontal);
+   draw_stroke_line_low(fy, fx, ty, tx, sw, mode, setpx, sethorisontal);
 }

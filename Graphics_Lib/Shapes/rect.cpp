@@ -76,10 +76,10 @@ void Rect::draw_stroke(Frame & frame) {
       int blX = std::round(crs.bl.x); int blY = std::round(crs.bl.y);
 
       // draw lines from corner to corner
-      compute_line_stroke(frame, tlX, tlY, trX, trY, stroke(), strokeweight(), true);
-      compute_line_stroke(frame, trX, trY, brX, brY, stroke(), strokeweight(), true);
-      compute_line_stroke(frame, brX, brY, blX, blY, stroke(), strokeweight(), true);
-      compute_line_stroke(frame, blX, blY, tlX, tlY, stroke(), strokeweight(), true);
+      compute_line_stroke(frame, tlX, tlY, trX, trY, stroke(), strokeweight(), LineMode::ROUGHLONG);
+      compute_line_stroke(frame, trX, trY, brX, brY, stroke(), strokeweight(), LineMode::ROUGHLONG);
+      compute_line_stroke(frame, brX, brY, blX, blY, stroke(), strokeweight(), LineMode::ROUGHLONG);
+      compute_line_stroke(frame, blX, blY, tlX, tlY, stroke(), strokeweight(), LineMode::ROUGHLONG);
    }
 
 }

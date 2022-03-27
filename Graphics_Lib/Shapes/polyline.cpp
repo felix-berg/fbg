@@ -11,19 +11,22 @@ void fbg::Polyline::draw_stroke(Frame & frame) {
    // draw every line segment by looping through list of points
    for (int i = 1; i < num_points(); i++) {
       to = get_point(i);
-      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), true); 
+      std::cout << from << ", " << to << ", " << strokeweight() << '\n';
+      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), LineMode::SMOOTH); 
       from = to;
    }
+   std::cout << '\n';
 
    // if polyline is closed, draw the remaining line.
    if (!m_open) {
       from = get_point(num_points() - 1);
       to = get_point(0);
-      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), true);
+      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), LineMode::SMOOTH);
    }
 }
 
 void fbg::Polyline::draw_fill(Frame & frame) {
+   if (!m_doFill) return;
 
    fbg::compute_polyline_convex_fill(frame, get_points(), fill());
 }

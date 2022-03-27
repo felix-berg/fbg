@@ -9,42 +9,40 @@
 using namespace fbg;
 
 void fill_stroke_patterns_minmax(std::vector<int> & minPattern, std::vector<int> & maxPattern, int fx, int fy, int tx, int ty, int arrayBeginIdx) {
-   bool low = true;
 
-   int fromX = fx, fromY = fy;
-   int toX   = tx, toY   = ty;
 
-   std::function<int(int, int)> getx;
-   std::function<int(int, int)> gety;
-   
-   if (fromX > toX) {
-      fromX = tx;
-      fromY = ty;
-      toX   = fx;
-      toY   = fy;
-   }
+   if (std::abs(tx - fx) > std::abs(ty - fy)) {
+      auto setpx = [&](int x, int y) -> bool 
+      { 
+         int patternY = y - arrayBeginIdx;
 
-   if (toX - fromX > toY - fromY) {
-      toX = tmpX; toY = tmpY;
-      getx = [](int x, int y) -> int { return x; };
-      gety = [](int x, int y) -> int { return y; };
+         if (x < minPattern[patternY]) minPattern[patternY] = x;
+         if (x > maxPattern[patternY]) maxPattern[patternY] = x;
+
+         return true;
+      };
+
+      if (fx <= tx)
+         bresenham_line(fx, fy, tx, ty, setpx);
+      else 
+         bresenham_line(tx, ty, fx, fy, setpx);
+
    } else {
-      getx = [](int x, int y) -> int { return y; };
-      gety = [](int x, int y) -> int { return x; };
-      int tmp1 = fromX;
-      int tmp2 = toX;
-      fromX = fromY; fromY = tmp1;
-      toX = toY;     toY = tmp2;
+      auto setpx = [&](int x, int y) -> bool // in reverse
+      {
+         int patternY = x - arrayBeginIdx;
+
+         if (y < minPattern[patternY]) minPattern[patternY] = y;
+         if (y > maxPattern[patternY]) maxPattern[patternY] = y;
+
+         return true;
+      };
+
+      if (fy <= ty)
+         bresenham_line(fy, fx, ty, tx, setpx);
+      else
+         bresenham_line(ty, tx, fy, fx, setpx);
    }
-
-   bresenham_line(fromX, fromY, toX, toY, [&](int x, int y) -> bool {
-      int patternY = gety(x, y) - arrayBeginIdx;
-
-      if (getx(x, y) < minPattern[patternY]) minPattern[patternY] = getx(x, y);
-      if (getx(x, y) > maxPattern[patternY]) maxPattern[patternY] = getx(x, y);
-
-      return true;
-   });
 }
 
 void fbg::compute_polyline_convex_fill(Frame & frame, std::vector<V2d<float>> lst, const Rgba & color) 
@@ -66,6 +64,7 @@ void fbg::compute_polyline_convex_fill(Frame & frame, std::vector<V2d<float>> ls
 
    minPattern.resize(patternHeight);
    std::fill(minPattern.begin(), minPattern.end(), INT32_MAX);
+
    maxPattern.resize(patternHeight);
    std::fill(maxPattern.begin(), maxPattern.end(), INT32_MIN);
 
@@ -77,6 +76,6 @@ void fbg::compute_polyline_convex_fill(Frame & frame, std::vector<V2d<float>> ls
       from = to;
    }
 
-   for (int y = 0; y < patternHeight; y++)
-      set_horisontal_line(frame, minPattern[y], maxPattern[y], y + minY, color);
+   for (int y = 1; y < patternHeight - 1; y++)
+      set_horisontal_line(frame, minPattern[y] + 1, maxPattern[y] - 1, y + minY, color);
 }

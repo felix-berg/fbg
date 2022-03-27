@@ -2,6 +2,8 @@
 #define LINE_HPP
 
 #include "shape.hpp"
+#include "drawing_algorithms/drawline.hpp"
+
 namespace fbg {
 
    /** Line class. 
@@ -63,18 +65,17 @@ namespace fbg {
       void to(float x, float y) 	 	  { set_point(1, {x, y});	};
 
       /** Set line edge to smooth mode. */
-      void smoothEdge() { m_edgeType = Edgetype::SMOOTH; };
+      void smoothEdge() { m_edgeType = LineMode::SMOOTH; };
 
       /** Set line edge to rough mode. */
-      void roughEdge()  { m_edgeType = Edgetype::ROUGH;  };
+      void roughEdge()  { m_edgeType = LineMode::ROUGH;  };
 
    protected:
       void draw_stroke(Frame & f);
       void draw_fill(Frame & f)   { };
 
    private:
-      enum Edgetype { UNDEFINED, ROUGH, SMOOTH };
-      int m_edgeType = Edgetype::UNDEFINED;
+      fbg::LineMode m_edgeType;
    };
 };
 #endif
