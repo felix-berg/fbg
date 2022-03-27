@@ -7,6 +7,13 @@
 #include "maths.hpp"
 
 namespace fbg {
+   /** Base 2d vector for the fbg graphics library. 
+    * @param x: x-value for vector
+    * @param y: y-value for vector
+    * @param size(): Getter/setter for the size of the vector
+    * @param size_sq(): Optimized getter for the size of the vector, squared.
+    * @param normalize(): Normalizes the vector. Equivalent to size(1).
+    * @param limit(): Limits the size of the vector. */
    template <typename T>
    struct V2d {
       T x, y;
@@ -56,28 +63,45 @@ namespace fbg {
          };
       };
 
+      /** @returns Size of vector */
       double size() 	  const { return std::sqrt(x*x + y*y); };
+
+      /** Optimized. @returns Size of vector, squared. */
       double size_sq() const { return x*x + y*y; };
       
+      /** Returns true if the point defined by the vector is within the given upper/lower bounds inclusive. 
+       * @returns true / false */
       bool is_bound(const V2d<T> & lower, const V2d<T> & upper) const {
          return ! (x < lower.x || x > upper.x ||
                    y < lower.y || y > upper.y);
       };
 
+      /** @returns Normalized vector with same direction. */
       V2d<T> normal() const {
          return *this / size();
       }
 
+      /** Normalizes vector to have size 1. */
       void normalize() {
          *this /= this->size();
       }
 
-      void set_size(T sz) { 
+      /** Setter for size of vector. 
+       * @param sz: Wanted size. */
+      void size(T sz) { 
          this->normalize();
          *this *= sz;
       }
+      
+      /** Limit the size of the vector. 
+       * @param l: The limit for the size of the vector. */
+      void limit(T l) {
+         if (size() > l)
+            size(l);
+      }
 
-      /** Probably shaky for integers. */
+      /** Rotate the vector by the given angle 
+       * @param a: The angle to rotate the vector by. */
       void rotate(float a) {
          T sina = std::sin(a);
          T cosa = std::cos(a);
@@ -91,9 +115,6 @@ namespace fbg {
       }
    };
 
-   /*
-      Return to added vectors, resulting in a vector of type T.
-   */
    template <typename T, typename S>
    V2d<T> operator + (const V2d<T> & v1, const V2d<S> & v2) {
       return {
@@ -110,11 +131,18 @@ namespace fbg {
       };
    }
 
+   /** Dot-product operator for vectors. v1 · v2
+    * @param v1: First vector
+    * @param v2: Second vector
+    * @returns Dot product between vector v1 and vector v2. */
    template <typename T> 
    double dot_prod(const V2d<T> & v1, const V2d<T> & v2) {
       return v1.x * v2.x + v1.y * v2.y;
    }
 
+   /** @param v1: First vector
+    * @param v2: Second vector
+    * @returns The angle between the given vectors. */
    template <typename T>
    double angle_between(const V2d<T> & v1, const V2d<T> & v2) {
       return std::acos(dot_prod(v1, v2) / (v1.size() * v2.size()));
@@ -130,6 +158,7 @@ namespace fbg {
       return v * factor;
    }
 
+   /** @returns a random vector from (0, 0) to (maxX, maxY). */
    template <typename T>
    V2d<T> random_vector(T maxX, T maxY) {
       return { 
@@ -138,6 +167,7 @@ namespace fbg {
       };
    };
 
+   /** @returns a random vector from (minX, minY) to (maxX, maxY). */
    template <typename T>
    V2d<T> random_vector(T minX, T maxX, T minY, T maxY) {
       return {
