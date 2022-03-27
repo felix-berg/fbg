@@ -23,11 +23,6 @@ namespace fbg {
        * Sets origin to (0, 0) */
       Context() : Context { { 0.0f, 0.0f }} {  };
 
-      ~Context() {
-         for (int i = 0; i < numShapes(); i++)
-            detach(i);
-      }
-
       /** @return Number of shapes in the object */
       int numShapes() const { return m_shapes.size(); };
 
