@@ -16,9 +16,9 @@ namespace fbg {
     * Cannot exist on its own. Instead use one of the existing subclasses. */
    class Shape {
    public:
-      // make sure, a standalone "Shape" Object is not possible -> no constructor.
-      Shape(const Shape &) = delete;
-      Shape & operator = (const Shape &) = delete; 
+      // can be used, if you want to disallow vectors of shapes.
+      // Shape(const Shape &) = delete;
+      // Shape & operator = (const Shape &) = delete; 
 
       /** Getter for fill color.
        * @returns Current fill color of shape. */
