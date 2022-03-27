@@ -87,6 +87,12 @@ namespace fbg {
          m_angle += a;
       };
 
+      void angle(float a) {
+         m_angle = a;
+      }
+
+      float angle() const { return m_angle; };
+
    protected:
       void draw_stroke(Frame & f);
       void draw_fill(Frame & f);

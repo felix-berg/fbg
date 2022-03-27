@@ -24,13 +24,22 @@ template<typename T>
 Corners<T> middle_point_to_corners(const V2d<float> & m, float w, float h, float a) {
    Corners<T> res { };
 
-   V2d<float> v {- w * 0.5f, - h * 0.5f};
-   v.rotate(a);
+   V2d<float> tlOff {-w * 0.5f, -h * 0.5f};
+   V2d<float> trOff { w * 0.5f, -h * 0.5f};
+   V2d<float> brOff { w * 0.5f,  h * 0.5f};
+   V2d<float> blOff {-w * 0.5f,  h * 0.5f};
+
+   tlOff.rotate(a);
+   trOff.rotate(a);
+   brOff.rotate(a);
+   blOff.rotate(a);
+
+
    // probably inefficient
-   res.tl = m + v; v.rotate(halfpi);
-   res.tr = m + v; v.rotate(halfpi);
-   res.br = m + v; v.rotate(halfpi);
-   res.bl = m + v;
+   res.tl = m + tlOff;
+   res.tr = m + trOff;
+   res.br = m + brOff;
+   res.bl = m + blOff;
 
    return std::move(res);
 }
