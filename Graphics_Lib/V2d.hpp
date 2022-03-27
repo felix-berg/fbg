@@ -92,6 +92,20 @@ namespace fbg {
          this->normalize();
          *this *= sz;
       }
+
+      double angle() const {
+              if (x < 0) return pi + std::atan(y / x);
+         else if (y < 0) return twoPi + std::atan(y / x);
+         else            return std::atan(y / x);
+      }
+
+      void angle(float a) {
+         float sz = size();
+         *this = {
+            std::cos(a) * sz,
+            std::sin(a) * sz
+         };
+      }
       
       /** Limit the size of the vector. 
        * @param l: The limit for the size of the vector. */
