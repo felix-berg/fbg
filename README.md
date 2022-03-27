@@ -21,7 +21,7 @@ int main() {
 	window.attach(circle);
 
 	// define function that will be called at every frame
-	window.before_draw = [&](float frametime) -> void {
+	window.draw = [&](float frametime) -> void {
 		// grab the mouse position from the window
 		V2d<int> mpos = window.mouse();
 	
