@@ -5,7 +5,7 @@
 
 using namespace fbg;
 
-// Rect::DrawMode Rect::MODE = CENTER;
+Rect::DrawMode Rect::MODE = CENTER;
 
 V2d<float> middle_point_to_topleft(const V2d<float> & m, float w, float h, float a) {
    V2d<float> v {- w * 0.5f, - h * 0.5f};
@@ -34,22 +34,52 @@ Corners<T> middle_point_to_corners(const V2d<float> & m, float w, float h, float
    return std::move(res);
 }
 
-V2d<float> topleft_to_middle_point(const V2d<float> & crn, float w, float h, float a) {
-   return { };
+V2d<float> topleft_to_middle_point(const V2d<float> & tl, float w, float h, float a) {
+   V2d<float> v { w * 0.5f, h * 0.5f };
+   v.rotate(a);
+   return tl + v;
 }
+
+constexpr float aaThreshold = 0.000001f;
 
 void Rect::draw_stroke(Frame & frame) {
    if (!m_doStroke) return;
 
-   if (std::fmod(m_angle, twopi) == 0.0f) {
-      V2d<int> p = middle_point_to_topleft(pos(), width(), height(), m_angle);
-      compute_AA_rect_stroke(frame, p.x, p.y, width(), height(), stroke(), strokeweight());
+   // if the rectangle is axis aligned
+   float modAngle = std::fmod(m_angle, twopi);
+
+   if (modAngle > aaThreshold && modAngle < -aaThreshold) {
+      V2d<float> tl;
+      
+      if (Rect::MODE == Rect::DrawMode::CORNER) 
+         tl = pos();
+      else
+         tl = middle_point_to_topleft(pos(), width(), height(), m_angle);
+
+      compute_AA_rect_stroke(frame, tl.x, tl.y, width(), height(), stroke(), strokeweight());
    } else {
-      Corners<int> crs = middle_point_to_corners<int>(pos(), width(), height(), m_angle);
-      compute_line_stroke(frame, crs.tl.x, crs.tl.y, crs.tr.x, crs.tr.y, stroke(), strokeweight(), true);
-      compute_line_stroke(frame, crs.tr.x, crs.tr.y, crs.br.x, crs.br.y, stroke(), strokeweight(), true);
-      compute_line_stroke(frame, crs.br.x, crs.br.y, crs.bl.x, crs.bl.y, stroke(), strokeweight(), true);
-      compute_line_stroke(frame, crs.bl.x, crs.bl.y, crs.tl.x, crs.tl.y, stroke(), strokeweight(), true);
+      // get the middle point
+      V2d<float> mid;
+      if (Rect::MODE == Rect::DrawMode::CENTER)
+         mid = pos();
+      else if (Rect::MODE == Rect::DrawMode::CORNER) 
+         mid = topleft_to_middle_point(pos(), width(), height(), m_angle);
+      else
+         throw std::runtime_error("Drawing mode is not defined.");
+
+      Corners<float> crs = middle_point_to_corners<float>(mid, width(), height(), m_angle);
+
+      // avoid visual glitches by rounding to integers instead of straight flooring.
+      int tlX = std::round(crs.tl.x); int tlY = std::round(crs.tl.y);
+      int trX = std::round(crs.tr.x); int trY = std::round(crs.tr.y);
+      int brX = std::round(crs.br.x); int brY = std::round(crs.br.y);
+      int blX = std::round(crs.bl.x); int blY = std::round(crs.bl.y);
+
+      // draw lines from corner to corner
+      compute_line_stroke(frame, tlX, tlY, trX, trY, stroke(), strokeweight(), true);
+      compute_line_stroke(frame, trX, trY, brX, brY, stroke(), strokeweight(), true);
+      compute_line_stroke(frame, brX, brY, blX, blY, stroke(), strokeweight(), true);
+      compute_line_stroke(frame, blX, blY, tlX, tlY, stroke(), strokeweight(), true);
    }
 
 }
@@ -57,27 +87,36 @@ void Rect::draw_stroke(Frame & frame) {
 void Rect::draw_fill(Frame & frame) {
    if (!m_doFill) return;
 
-   if (m_angle == 0.0f) {
-      V2d<int> p = middle_point_to_topleft(pos(), width(), height(), m_angle);
+   // if the rectangle is axis aligned
+   float modAngle = std::fmod(m_angle, twopi);
+   if (modAngle < aaThreshold && modAngle > -aaThreshold) {
+      V2d<int> p;
+      if (Rect::MODE == Rect::DrawMode::CENTER) {
+         p = middle_point_to_topleft(pos(), width(), height(), m_angle);
+      } else {
+         p = pos();
+      }
+
       compute_AA_rect_fill(frame, p.x, p.y, width(), height(), fill());
    } else {
+   
 
    }
 }
 
-/** TODO: NOT WORKING !! */
 void fbg::Rect::rotate(float a, const V2d<float> & ref) {
+   // compare the angle of a point on the rectangle before and after rotation
+   V2d<float> verticalLine = V2d<float>{10.0f, 10.0f};
+   V2d<float> rotatedPoint = pos() + verticalLine;
+   rotatedPoint = rotatedPoint - ref;
+   rotatedPoint.rotate(a);
+   rotatedPoint += ref;
+
    V2d<float> diff = pos() - ref;
    diff.rotate(a);
    pos(ref + diff);
 
-   // compare the angle of a point on the rectangle before and after rotation
-   V2d<float> verticalLine = V2d<float>{10.0f, 0.0f};
-   V2d<float> rr = pos() + verticalLine;
-   rr = rr - ref;
-   rr.rotate(a);
-   rr += ref;
-   rr -= pos();
+   rotatedPoint -= pos();
 
-   m_angle += angle_between(rr, verticalLine);
+   m_angle += angle_between(rotatedPoint, verticalLine);
 }

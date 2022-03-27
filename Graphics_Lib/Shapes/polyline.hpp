@@ -6,15 +6,15 @@
 // TODO: Javadocs
 
 namespace fbg {
-   class Polygon : public Shape {
+   class Polyline : public Shape {
    public:
-      Polygon(std::initializer_list<V2d<float>> l) : Shape { l } { 
+      Polyline(std::initializer_list<V2d<float>> l) : Shape { l } { 
          // set default value of stroke
          stroke(255);
          strokeweight(3);
       };
 
-      Polygon() {
+      Polyline() {
          stroke(255);
          strokeweight(3);
       }
@@ -30,7 +30,7 @@ namespace fbg {
 
    protected:
       void draw_stroke(Frame & f);
-      void draw_fill(Frame & f) { };
+      void draw_fill(Frame & f);
    private:
       bool m_open = true;
    };

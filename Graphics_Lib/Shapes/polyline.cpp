@@ -1,12 +1,15 @@
 #include "polyline.hpp"
 #include "drawing_algorithms/drawline.hpp"
+#include "drawing_algorithms/drawpolyline.hpp"
 
-void fbg::Polygon::draw_stroke(Frame & frame) {
+using namespace fbg;
+
+void fbg::Polyline::draw_stroke(Frame & frame) {
    // Set from to the last vector
    V2d<int> to, from = get_point(0);
 
    // draw every line segment by looping through list of points
-   for (int i = 0; i < num_points(); i++) {
+   for (int i = 1; i < num_points(); i++) {
       to = get_point(i);
       compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), true); 
       from = to;
@@ -18,4 +21,9 @@ void fbg::Polygon::draw_stroke(Frame & frame) {
       to = get_point(0);
       compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), true);
    }
+}
+
+void fbg::Polyline::draw_fill(Frame & frame) {
+
+   fbg::compute_polyline_convex_fill(frame, get_points(), fill());
 }
