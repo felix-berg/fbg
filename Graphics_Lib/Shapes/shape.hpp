@@ -169,6 +169,7 @@ namespace fbg {
       
       // get point with given index
       const V2d<float> & get_point(int i) const { return m_points[i]; };
+      const std::vector<V2d<float>> & get_points() const { return m_points; }; 
 
       // get number of points currently added to shape
       int num_points() const { return m_points.size(); };

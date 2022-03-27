@@ -92,7 +92,7 @@ namespace fbg {
       Context context; 
 
    private:
-      Rgba m_backgroundColor = {0, 0, 0, 255};
+      Rgba m_backgroundColor {140, 140, 140, 255};
    };
 };
 

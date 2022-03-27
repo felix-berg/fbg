@@ -17,9 +17,7 @@ void draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, 
       frame.set_pixel(x, py, color);
 }
 
-/*
-   Compute the horisontal pixels for a given pixel with the correct stroke
-*/
+/** Compute the horisontal pixels for a given pixel with the correct stroke. */
 void draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
    int lOff, rOff;
    offsets_from_strokeweight(sw, &lOff, &rOff);
@@ -29,17 +27,15 @@ void draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color
    set_horisontal_line(frame, fx, tx, y, color);
 }
 
-/*
-   Draws stroke of axis aligned rectangle r on pixel grid.
-*/
+/** Draws stroke of axis aligned rectangle r on pixel grid. */
 void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, const Rgba & color, int sw) {
    // take stroke width into account
    int lOff, rOff; // offsets created by strokeweight
 
    offsets_from_strokeweight(sw, &lOff, &rOff);
 
-   int lOuterX = rx - lOff; 			  // left x
-   int rOuterX = rx + rw + rOff;  	  // right x
+   int lOuterX = rx - lOff;      // left x
+   int rOuterX = rx + rw + rOff; // right x
 
    int fy = ry - lOff;
    int ty = ry + rOff;
@@ -49,7 +45,6 @@ void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, 
       set_horisontal_line(frame, lOuterX, rOuterX, y, 		    color); // top line	
       set_horisontal_line(frame, lOuterX, rOuterX, y + rh - 1, color); // bottom line
    }
-
 
    // vertical lines
    int topY = ry - lOff;
@@ -65,6 +60,7 @@ void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, 
    }
 }
 
+/** Compute fill of axis aligned rectangle defined by top point (rx, ry) and with width rw and height rh. */
 void fbg::compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) {
    // bottom right point
    const int brx = rx + rw;

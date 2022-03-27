@@ -13,9 +13,8 @@ namespace fbg {
    */
    class Rect : public Shape {
    public:
-      // enum DrawMode { CORNER, CENTER };
-
-      // static DrawMode MODE;
+      enum DrawMode { CORNER, CENTER };
+      static DrawMode MODE;
 
       /** Constructor for rectangle. 
        * @param f: Top-left point.
@@ -82,10 +81,10 @@ namespace fbg {
       };
 
       /** Rotate shape around its first point (e.g. the center of a circle).
+       * Max rotation is at about 0.0004f.
        * @param a: Angle to rotate by */
       void rotate(float a) { 
-         V2d<float> ref = get_point(0); // copy the first point
-         Rect::rotate(a, ref);
+         m_angle += a;
       };
 
    protected:
@@ -94,7 +93,6 @@ namespace fbg {
 
    private:
       float m_w, m_h;
-
       float m_angle = 0.0f;
    };
 };

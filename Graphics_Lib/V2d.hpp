@@ -132,13 +132,19 @@ namespace fbg {
 
    template <typename T>
    V2d<T> random_vector(T maxX, T maxY) {
-      int xSign = (rand() % 2) * 2 - 1;
-      int ySign = (rand() % 2) * 2 - 1;
       return { 
-         T(xSign) * fbg::random<T>(maxX), 
-         T(ySign) * fbg::random<T>(maxY) 
+         fbg::random<T>(maxX), 
+         fbg::random<T>(maxY) 
       };
    };
+
+   template <typename T>
+   V2d<T> random_vector(T minX, T maxX, T minY, T maxY) {
+      return {
+         fbg::random(minX, maxX),
+         fbg::random(minY, maxY)
+      };
+   }
 };
 
 #endif
