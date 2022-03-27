@@ -2,6 +2,7 @@
 #include "../alphacomposite.hpp"
 #include "drawing_algorithms/drawrect.hpp"
 #include "drawing_algorithms/drawline.hpp"
+#include "drawing_algorithms/drawpolyline.hpp"
 
 using namespace fbg;
 
@@ -99,8 +100,17 @@ void Rect::draw_fill(Frame & frame) {
 
       compute_AA_rect_fill(frame, p.x, p.y, width(), height(), fill());
    } else {
-   
+      V2d<float> mid;
+      if (Rect::MODE == Rect::DrawMode::CENTER)
+         mid = pos();
+      else if (Rect::MODE == Rect::DrawMode::CORNER) 
+         mid = topleft_to_middle_point(pos(), width(), height(), m_angle);
+      else
+         throw std::runtime_error("Drawing mode is not defined.");
 
+      Corners<float> crs = middle_point_to_corners<float>(mid, width(), height(), m_angle);
+      std::vector<V2d<float>> cVec = { { std::round(crs.tl.x), std::round(crs.tl.y) }, { std::round(crs.tr.x), std::round(crs.tr.y) }, { std::round(crs.br.x), std::round(crs.br.y) }, { std::round(crs.bl.x), std::round(crs.bl.y) }};
+      compute_polyline_convex_fill(frame, cVec, fill());
    }
 }
 
