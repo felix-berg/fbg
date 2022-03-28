@@ -5,7 +5,8 @@
 
 using namespace fbg;
 
-void Window::wait_for_key() {
+void Window::wait_for_key() 
+{
    while (m_keysDown.size() == 0 || !this->has_keyboard_focus()) {
       SDL_Event e;
       SDL_WaitEvent(&e);
@@ -13,7 +14,8 @@ void Window::wait_for_key() {
    }
 }
 
-void Window::wait_for_key(int key_id) {
+void Window::wait_for_key(int key_id) 
+{
    while (!key_is_pressed(key_id) || !this->has_keyboard_focus()) {
       SDL_Event e;
       SDL_WaitEvent(&e);
@@ -21,7 +23,8 @@ void Window::wait_for_key(int key_id) {
    }
 }
 
-void Window::update() {
+void Window::update() 
+{
    // Alpha composite entire pixel area using AVX2 vector processing 
    alpha_compositeNC(frame.pixels, &m_backgroundColor, size());
    

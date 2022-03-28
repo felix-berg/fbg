@@ -32,19 +32,23 @@ namespace fbg {
 
       /** @returns Center point of circle */
       V2d<float> pos() const { return get_point(0); };
+
       /** @returns Radius of circle */
       float radius()   const { return m_radius; };
       
       /** Set position of center point of circle.
        * @param p: Center point of circle. */
       void pos(V2d<float> p) 		{ set_point(0, p); };
+
       /** Set position of center point of circle.
        * @param x: x-value of center point.
        * @param y: y-value of center point. */
       void pos(float x, float y) { set_point(0, V2d<float> {x, y}); };
+
       /** Set radius of circle. 
        * @param r: Radius of circle. */
-      void radius(float r) { 
+      void radius(float r) 
+      { 
          if (r < 0.0f)
             throw std::runtime_error("Radius of circle cannot be negative.");
          m_radius = r;

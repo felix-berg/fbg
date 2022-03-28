@@ -6,7 +6,8 @@ using namespace fbg;
 /*
    Compute the vertical pixels for a given pixel with the correct stroke
 */
-void draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, int sw) 
+{
    int lOff, rOff;
    offsets_from_strokeweight(sw, &lOff, &rOff);
 
@@ -18,7 +19,8 @@ void draw_stroke_part_vertical(Frame & frame, int x, int y, const Rgba & color, 
 }
 
 /** Compute the horisontal pixels for a given pixel with the correct stroke. */
-void draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void draw_stroke_part_horisontal(Frame & frame, int x, int y, const Rgba & color, int sw)
+{
    int lOff, rOff;
    offsets_from_strokeweight(sw, &lOff, &rOff);
    int fx = x - lOff; 
@@ -61,7 +63,8 @@ void fbg::compute_AA_rect_stroke(Frame & frame, int rx, int ry, int rw, int rh, 
 }
 
 /** Compute fill of axis aligned rectangle defined by top point (rx, ry) and with width rw and height rh. */
-void fbg::compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) {
+void fbg::compute_AA_rect_fill(Frame & f, int rx, int ry, int rw, int rh, const Rgba & color) 
+{
    // bottom right point
    const int brx = rx + rw;
    const int bry = ry + rh;

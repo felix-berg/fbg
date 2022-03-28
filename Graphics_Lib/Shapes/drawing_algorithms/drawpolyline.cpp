@@ -8,9 +8,8 @@
 
 using namespace fbg;
 
-void fill_stroke_patterns_minmax(std::vector<int> & minPattern, std::vector<int> & maxPattern, int fx, int fy, int tx, int ty, int arrayBeginIdx) {
-
-
+void fill_stroke_patterns_minmax(std::vector<int> & minPattern, std::vector<int> & maxPattern, int fx, int fy, int tx, int ty, int arrayBeginIdx) 
+{
    if (std::abs(tx - fx) > std::abs(ty - fy)) {
       auto setpx = [&](int x, int y) -> bool 
       { 

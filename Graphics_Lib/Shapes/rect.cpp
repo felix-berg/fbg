@@ -3,12 +3,14 @@
 #include "drawing_algorithms/drawrect.hpp"
 #include "drawing_algorithms/drawline.hpp"
 #include "drawing_algorithms/drawpolyline.hpp"
+#include "maths.hpp"
 
 using namespace fbg;
 
 Rect::DrawMode Rect::MODE = CENTER;
 
-V2d<float> middle_point_to_topleft(const V2d<float> & m, float w, float h, float a) {
+V2d<float> middle_point_to_topleft(const V2d<float> & m, float w, float h, float a) 
+{
    V2d<float> v {- w * 0.5f, - h * 0.5f};
    v.rotate(a);
    return m + v;
@@ -17,11 +19,9 @@ V2d<float> middle_point_to_topleft(const V2d<float> & m, float w, float h, float
 template <typename T>
 struct Corners { V2d<T> tl, tr, bl, br; };
 
-constexpr float halfpi = 1.57079632679489661923f;
-constexpr float twopi  = 6.28318530717958647692f;
-
 template<typename T>
-Corners<T> middle_point_to_corners(const V2d<float> & m, float w, float h, float a) {
+Corners<T> middle_point_to_corners(const V2d<float> & m, float w, float h, float a) 
+{
    Corners<T> res { };
 
    V2d<float> tlOff {-w * 0.5f, -h * 0.5f};
@@ -44,7 +44,8 @@ Corners<T> middle_point_to_corners(const V2d<float> & m, float w, float h, float
    return std::move(res);
 }
 
-V2d<float> topleft_to_middle_point(const V2d<float> & tl, float w, float h, float a) {
+V2d<float> topleft_to_middle_point(const V2d<float> & tl, float w, float h, float a) 
+{
    V2d<float> v { w * 0.5f, h * 0.5f };
    v.rotate(a);
    return tl + v;
@@ -52,11 +53,12 @@ V2d<float> topleft_to_middle_point(const V2d<float> & tl, float w, float h, floa
 
 constexpr float aaThreshold = 0.000001f;
 
-void Rect::draw_stroke(Frame & frame) {
+void Rect::draw_stroke(Frame & frame) 
+{
    if (!m_doStroke) return;
 
    // if the rectangle is axis aligned
-   float modAngle = std::fmod(m_angle, twopi);
+   float modAngle = std::fmod(m_angle, twoPi);
 
    if (modAngle > aaThreshold && modAngle < -aaThreshold) {
       V2d<float> tl;
@@ -94,11 +96,12 @@ void Rect::draw_stroke(Frame & frame) {
 
 }
 
-void Rect::draw_fill(Frame & frame) {
+void Rect::draw_fill(Frame & frame) 
+{
    if (!m_doFill) return;
 
    // if the rectangle is axis aligned
-   float modAngle = std::fmod(m_angle, twopi);
+   float modAngle = std::fmod(m_angle, twoPi);
    if (modAngle < aaThreshold && modAngle > -aaThreshold) {
       V2d<int> p;
       if (Rect::MODE == Rect::DrawMode::CENTER) {
@@ -123,7 +126,8 @@ void Rect::draw_fill(Frame & frame) {
    }
 }
 
-void fbg::Rect::rotate(float a, const V2d<float> & ref) {
+void fbg::Rect::rotate(float a, const V2d<float> & ref) 
+{
    // compare the angle of a point on the rectangle before and after rotation
    V2d<float> verticalLine = V2d<float>{10.0f, 10.0f};
    V2d<float> rotatedPoint = pos() + verticalLine;

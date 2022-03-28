@@ -9,7 +9,8 @@ namespace fbg {
       }
 
    template <typename T>
-   void print_bytes(const T v, int bits, int bytesPerLine) {
+   void print_bytes(const T v, int bits, int bytesPerLine) 
+   {
       u_char * p = (u_char *) &v;
 
       int bytes = bits / 8;
@@ -23,7 +24,8 @@ namespace fbg {
    }
 
    template <typename T>
-   void print_bits(const T v, int bits, int bitsPerLine) {
+   void print_bits(const T v, int bits, int bitsPerLine) 
+   {
       u_char * bytes = (u_char *) &v;
 
       int n_bytes = bits / 8;

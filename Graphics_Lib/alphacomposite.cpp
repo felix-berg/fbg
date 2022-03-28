@@ -13,7 +13,8 @@ inline __m256i _mm256_combine_2_128i(const __m128i _v1, const __m128i _v2);
    Alpha composit two colors. Add over to dst.
    Standard CPU instructions.
 */
-void fbg::alpha_composite1(Rgba * dst, const Rgba * over) {
+void fbg::alpha_composite1(Rgba * dst, const Rgba * over) 
+{
    // if the alpha over the over color, 
    // it is completely opaque, 
    // so just return it
@@ -33,7 +34,8 @@ void fbg::alpha_composite1(Rgba * dst, const Rgba * over) {
    };
 }
 
-void fbg::alpha_composite8(Rgba * dst, Rgba * over) {
+void fbg::alpha_composite8(Rgba * dst, Rgba * over) 
+{
    const __m256i _255 = _mm256_set1_epi8(0xFF);
 
    // c = (over.x * over.a + dst.x * (255 - over.a)) / 255
@@ -111,7 +113,8 @@ void fbg::alpha_composite8(Rgba * dst, Rgba * over) {
    Calls alpha_composite8 with chunks of eight.
    Requires that the number of elements n is divisible by eight.
 */
-void fbg::alpha_compositeN(Rgba * dst, Rgba * over, int n) {
+void fbg::alpha_compositeN(Rgba * dst, Rgba * over, int n) 
+{
    // loop through all chunks of eight in the array
    for (int i = 0; i < n - 8; i += 8) {
       alpha_composite8(dst + i, over + i);
@@ -123,7 +126,8 @@ void fbg::alpha_compositeN(Rgba * dst, Rgba * over, int n) {
    }
 }
 
-void fbg::alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
+void fbg::alpha_compositeNC(Rgba * dst, const Rgba * over, int n) 
+{
    if (n <= 0)
       return;
 
@@ -150,7 +154,8 @@ void fbg::alpha_compositeNC(Rgba * dst, const Rgba * over, int n) {
    Note: Multiplication of signed integers and unsigned integers is the same operation
    Returns 16-bit versions of the product of the given vectors. 
 */
-void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lRes, __m256i * _hRes) {
+void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _lRes, __m256i * _hRes) 
+{
    // "half"-registers
    __m128i _v1_128, _v2_128;
    // expanded registers, same as above, but with shorts
@@ -185,7 +190,8 @@ void _mm_mult_epu8_into_2epu16(const __m256i _v1, const __m256i _v2, __m256i * _
 }
 
 
-inline __m128i _mm_convertepi16_epi8(const __m256i _v) {
+inline __m128i _mm_convertepi16_epi8(const __m256i _v) 
+{
    // lowest 128 bits
    //			 0    1        7    8       15
    // _v: |00xx|00xy|...|00yz|00yy|...|00zz|
@@ -209,7 +215,8 @@ inline __m128i _mm_convertepi16_epi8(const __m256i _v) {
 }
 
 
-inline __m256i _mm256_combine_2_128i(const __m128i _low, const __m128i _hi) {
+inline __m256i _mm256_combine_2_128i(const __m128i _low, const __m128i _hi) 
+{
    __m256i _empty;
    _empty = _mm256_insertf128_si256(_empty, _low, 0);
    _empty = _mm256_insertf128_si256(_empty, _hi, 1);
@@ -219,9 +226,10 @@ inline __m256i _mm256_combine_2_128i(const __m128i _low, const __m128i _hi) {
 /*
    Divides every 16-bit unsigned integer in the given 256-bit vector by 256
 */
-inline __m256i _mm256_epu16_divideby256(const __m256i _v) {
+inline __m256i _mm256_epu16_divideby256(const __m256i _v) 
+{
    static const __m128i _shift8 = _mm_set_epi16(0x0000, 0x0000, 0x0000, 0x0008,
-                                         0x0000, 0x0000, 0x0000, 0x0008);
+      0x0000, 0x0000, 0x0000, 0x0008);
    // v / 255 =~= v / 256 == v >> 8	
    return _mm256_srl_epi16(_v, _shift8);
 }

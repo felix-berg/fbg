@@ -96,7 +96,8 @@ namespace fbg {
       /** Rotate shape around reference point. 
        * @param a: The angle to rotate the shape by.
        * @param ref: The centre of rotation. */
-      virtual void rotate(float a, const V2d<float> & ref) {
+      virtual void rotate(float a, const V2d<float> & ref) 
+      {
          for (int i = 0; i < m_points.size(); i++) {
             V2d<float> diff = get_point(i) - ref;
             diff.rotate(a);
@@ -114,7 +115,8 @@ namespace fbg {
 
       /** Rotate shape around its first point (e.g. the center of a circle).
        * @param a: Angle to rotate by */
-      virtual void rotate(float a) { 
+      virtual void rotate(float a) 
+      { 
          // copy the first point
          V2d<float> ref = get_point(0);
 
@@ -123,7 +125,8 @@ namespace fbg {
 
       /** Move shape 
        * @param v: Vector to move the shape by. */
-      virtual void move(const V2d<float> & p) { 
+      virtual void move(const V2d<float> & p) 
+      { 
          for (V2d<float> & m_point : m_points)
             m_point += p;
       }
@@ -131,7 +134,8 @@ namespace fbg {
       /** Move shape 
        * @param x: x-value to move the shape by.
        * @param y: y-value to move the shape by. */
-      virtual void move(float x, float y) {
+      virtual void move(float x, float y) 
+      {
          for (V2d<float> & m_point : m_points) {
             m_point.x += x;
             m_point.y += y;
@@ -150,7 +154,8 @@ namespace fbg {
       };
       
       // Constructor with provided list of points
-      Shape(std::initializer_list<V2d<float>> l) { 
+      Shape(std::initializer_list<V2d<float>> l) 
+      { 
          this->m_id = get_unique_id();
 
          for (auto & p : l)
@@ -160,6 +165,12 @@ namespace fbg {
       // virtual function: to be defined by subclasses
       virtual void draw_stroke(Frame & f) = 0;
       virtual void draw_fill(Frame & f)   = 0;
+
+      // virtual function for checking whether a shape is drawable
+      // overload to specify conditions
+      virtual bool isDrawable() {
+         return true;
+      }
 
       friend class Context; // allow for context to use draw_stroke and draw_fill
       

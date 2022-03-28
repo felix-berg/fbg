@@ -42,21 +42,24 @@ namespace fbg {
 
       /** Getter for framerate. 
        * @returns Current expected framerate of the window in frames/second */
-      float framerate() const { 
+      float framerate() const 
+      { 
          float dt = frametime();
          return 1.0f / dt;  // return 1.0f / frametime
       };
 
       /** Setter for framerate. 
        * @param f: Framerate in frames/second */
-      void framerate(float f)   { 
+      void framerate(float f)   
+      { 
          // convert floating point framerate into microseconds in 64 bit integer format
          m_frametime = std::chrono::duration_cast<std::chrono::duration<int, std::micro>> (std::chrono::duration<float, std::micro> (1000000.0f / f));
       };
 
       /** Getter for frametime. 
        * @returns Expected frametime of window. */
-      float frametime() const {
+      float frametime() const 
+      {
          // convert frametime from microseconds 64 int -> seconds in float
          return std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>> (m_frametime).count(); // why
       }
@@ -67,14 +70,16 @@ namespace fbg {
       
       /** Getter for total time since LoopWin::run() was called.
        * @returns Total amount of time in seconds. */
-      float totalTime() const { 
+      float totalTime() const 
+      { 
          if (isOpen()) 
             throw std::runtime_error("Cannot get total time while window is running.");
          return m_totalTime.count();
       }
 
       /** Run gameloop. Stops execution until window closes. */
-      void run() { 
+      void run() 
+      { 
          if (before_run != nullptr) before_run();
 
          m_startTime = high_resolution_clock::now();
@@ -122,7 +127,8 @@ namespace fbg {
 
    /** Log the expected and actual framerate of a window, that has finished execution.
     * @param win: The window to be analyzed. */
-   void log_window_performance(const LoopWin & win) {
+   void log_window_performance(const LoopWin & win) 
+   {
       std::cout << "Expected framerate: " 
                   << win.framerate() << '\n';
       float frametime = win.totalTime() / static_cast<float>(win.framesElapsed());

@@ -93,13 +93,15 @@ namespace fbg {
          *this *= sz;
       }
 
-      double angle() const {
+      double angle() const 
+      {
               if (x < 0) return pi + std::atan(y / x);
          else if (y < 0) return twoPi + std::atan(y / x);
          else            return std::atan(y / x);
       }
 
-      void angle(float a) {
+      void angle(float a) 
+      {
          float sz = size();
          *this = {
             std::cos(a) * sz,
@@ -109,14 +111,16 @@ namespace fbg {
       
       /** Limit the size of the vector. 
        * @param l: The limit for the size of the vector. */
-      void limit(T l) {
+      void limit(T l) 
+      {
          if (size() > l)
             size(l);
       }
 
       /** Rotate the vector by the given angle 
        * @param a: The angle to rotate the vector by. */
-      void rotate(float a) {
+      void rotate(float a) 
+      {
          T sina = std::sin(a);
          T cosa = std::cos(a);
 
@@ -130,7 +134,8 @@ namespace fbg {
    };
 
    template <typename T, typename S>
-   V2d<T> operator + (const V2d<T> & v1, const V2d<S> & v2) {
+   V2d<T> operator + (const V2d<T> & v1, const V2d<S> & v2) 
+   {
       return {
          v1.x + static_cast<T> ( v2.x ),
          v1.y + static_cast<T> ( v2.y )
@@ -138,7 +143,8 @@ namespace fbg {
    }
 
    template <typename T, typename S>
-   V2d<T> operator - (const V2d<T> & v1, const V2d<S> & v2) {
+   V2d<T> operator - (const V2d<T> & v1, const V2d<S> & v2) 
+   {
       return {
          v1.x - static_cast<T> ( v2.x ),
          v1.y - static_cast<T> ( v2.y )
@@ -150,7 +156,8 @@ namespace fbg {
     * @param v2: Second vector
     * @returns Dot product between vector v1 and vector v2. */
    template <typename T> 
-   double dot_prod(const V2d<T> & v1, const V2d<T> & v2) {
+   double dot_prod(const V2d<T> & v1, const V2d<T> & v2) 
+   {
       return v1.x * v2.x + v1.y * v2.y;
    }
 
@@ -158,23 +165,27 @@ namespace fbg {
     * @param v2: Second vector
     * @returns The angle between the given vectors. */
    template <typename T>
-   double angle_between(const V2d<T> & v1, const V2d<T> & v2) {
+   double angle_between(const V2d<T> & v1, const V2d<T> & v2) 
+   {
       return std::acos(dot_prod(v1, v2) / (v1.size() * v2.size()));
    }
 
    template <typename T>
-   std::ostream & operator << (std::ostream & os, const V2d<T> & v) {
+   std::ostream & operator << (std::ostream & os, const V2d<T> & v) 
+   {
       return (os << '(' << v.x << ", " << v.y << ')');
    }
 
    template <typename T>
-   V2d<T> operator * (const double factor, const V2d<T> & v) {
+   V2d<T> operator * (const double factor, const V2d<T> & v) 
+   {
       return v * factor;
    }
 
    /** @returns a random vector from (0, 0) to (maxX, maxY). */
    template <typename T>
-   V2d<T> random_vector(T maxX, T maxY) {
+   V2d<T> random_vector(T maxX, T maxY) 
+   {
       return { 
          fbg::random<T>(maxX), 
          fbg::random<T>(maxY) 
@@ -183,7 +194,8 @@ namespace fbg {
 
    /** @returns a random vector from (minX, minY) to (maxX, maxY). */
    template <typename T>
-   V2d<T> random_vector(T minX, T maxX, T minY, T maxY) {
+   V2d<T> random_vector(T minX, T maxX, T minY, T maxY) 
+   {
       return {
          fbg::random(minX, maxX),
          fbg::random(minY, maxY)

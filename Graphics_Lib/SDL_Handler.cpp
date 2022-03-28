@@ -34,7 +34,8 @@ SDLHandler::SDLHandler(const std::string & title, int w, int h)
 /*
    Destructor
 */
-SDLHandler::~SDLHandler() {
+SDLHandler::~SDLHandler() 
+{
    SDL_DestroyTexture(m_texture);
    SDL_DestroyRenderer(m_renderer);
    SDL_DestroyWindow(m_window);
@@ -43,28 +44,32 @@ SDLHandler::~SDLHandler() {
 /*
    Set given point to given pixel color value
 */
-void SDLHandler::set_pixel(const V2d<int> & p, const Rgba & px) {
+void SDLHandler::set_pixel(const V2d<int> & p, const Rgba & px) 
+{
    static int i = 0;
    frame.pixels[p.y * width() + p.x] = px;
 }
 /*
    Set all pixel to color
 */
-void SDLHandler::clear_pixels(const Rgba & color) {
+void SDLHandler::clear_pixels(const Rgba & color) 
+{
    std::fill(frame.pixels, frame.pixels + size(), color);
 }
 
 /*
    Clear pixels of pixelarray to black.
 */
-void SDLHandler::clear_pixels() {
+void SDLHandler::clear_pixels() 
+{
    memset(frame.pixels, 0, sizeof(Rgba) * size());
 }
 
 /*
    Push Frame to SDL Texture
 */
-void SDLHandler::push_frame(const Frame & f) {
+void SDLHandler::push_frame(const Frame & f) 
+{
    if (SDL_UpdateTexture(m_texture, NULL, f.pixels, sizeof(Rgba) * width()) != 0)
       throw std::runtime_error("Error on updating texture.\n");
 }
@@ -72,7 +77,8 @@ void SDLHandler::push_frame(const Frame & f) {
 /*
    TODO: Add support for multiple windows
 */
-void SDLHandler::handle_event(const SDL_Event * e) {
+void SDLHandler::handle_event(const SDL_Event * e) 
+{
    if (e->type == SDL_KEYDOWN && !key_is_pressed(e->key.keysym.sym)) {
       int scancode = SDL_GetScancodeFromKey(e->key.keysym.sym);
       m_keysDown.push_back(scancode); 
@@ -89,13 +95,15 @@ void SDLHandler::handle_event(const SDL_Event * e) {
       m_isOpen = false;
 }
 
-void SDLHandler::poll_events() {
+void SDLHandler::poll_events() 
+{
    SDL_Event e;
    while (SDL_PollEvent(&e))
       handle_event(&e);
 }
 
-void SDLHandler::update_pixels() {
+void SDLHandler::update_pixels() 
+{
 
    if (!isOpen()) 
       throw std::runtime_error("SDLHandler error: Cannot update unopen screen.\n");
@@ -112,7 +120,8 @@ void SDLHandler::update_pixels() {
    SDL_RenderPresent(m_renderer); 
 }
 
-bool SDLHandler::key_is_pressed(int key_id) const {
+bool SDLHandler::key_is_pressed(int key_id) const 
+{
    for (int key : m_keysDown)
       if (key == key_id)
          return true;
@@ -122,14 +131,16 @@ bool SDLHandler::key_is_pressed(int key_id) const {
 /*
    TODO: Literally doesn't work
 */
-bool SDLHandler::key_is_pressed() const {
+bool SDLHandler::key_is_pressed() const 
+{
    return !(m_keysDown.size() == 0);
 }
 
 /*
    Get the mouse position relative to the top left corner of the screen.
 */
-V2d<int> SDLHandler::mouse() const {
+V2d<int> SDLHandler::mouse() const 
+{
    SDL_PumpEvents();
    V2d<int> res;
    V2d<int> windowPos;
@@ -144,7 +155,8 @@ V2d<int> SDLHandler::mouse() const {
 /*
    Clamp point p inside bounding box defined by points f and t (inclusive).
 */
-void clamp_point(V2d<int> & p, const V2d<int> & f, const V2d<int> & t) {
+void clamp_point(V2d<int> & p, const V2d<int> & f, const V2d<int> & t) 
+{
    // clamp horisontally
    if (p.x < f.x) p.x = f.x;
    else if (p.x > t.x) p.x = t.x;
@@ -157,7 +169,8 @@ void clamp_point(V2d<int> & p, const V2d<int> & f, const V2d<int> & t) {
 /*
    TODO: Add support for multiple windows
 */
-V2d<int> SDLHandler::mouse_pos_clamped() const {
+V2d<int> SDLHandler::mouse_pos_clamped() const 
+{
    V2d<int> res = mouse();
    // clamp mouse position within screen space
    clamp_point(res, {0, 0}, {width() - 1, height() - 1});

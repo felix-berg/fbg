@@ -6,7 +6,8 @@ using namespace fbg;
 
 /** Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
  * Inclusive of tx */
-void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba & color) {
+void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba & color) 
+{
    int lLen = tx - fx + 1; // length of line
 
    // y value
@@ -32,7 +33,8 @@ void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba &
    }
 }
 
-void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, const Rgba & color) {
+void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, const Rgba & color) 
+{
    for (int y = fy; y <= ty; y++)
       frame.set_pixel(x, y, color);
 }
@@ -40,7 +42,8 @@ void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, const Rgba & c
 /*
    TODO: Untested
 */
-void fbg::draw_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
+void fbg::draw_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) 
+{
    if (sw == 1)
       frame.set_pixel(x, y, color);
    else
@@ -51,7 +54,8 @@ void fbg::draw_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) {
    Get the right and left pixel offsets based on given
    strokeweight
 */
-void fbg::offsets_from_strokeweight(int sw, int * lOff, int * rOff) {
+void fbg::offsets_from_strokeweight(int sw, int * lOff, int * rOff) 
+{
    if (sw % 2 == 0) { // even
       *lOff = sw / 2;
       *rOff = sw / 2 - 1;

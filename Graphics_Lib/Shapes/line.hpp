@@ -20,7 +20,8 @@ namespace fbg {
        * @param t: The "to" point of the line.
       */
       Line(const V2d<float> & f, const V2d<float> & t)
-         : Shape { { f, t } } {
+         : Shape { { f, t } } 
+      {
          strokeweight(DEFAULT_STROKEWEIGHT);
          stroke(255);
       };

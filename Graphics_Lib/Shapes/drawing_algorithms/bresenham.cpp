@@ -5,7 +5,8 @@
    Stepping along x-axis -> only one point per column. 
    Calls set(x, y) for every point it finds along the way. 
    set(x, y) needs to return true, if the algorithm is to continue.*/ 
-void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<bool(int x, int y)> set) {
+void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<bool(int x, int y)> set) 
+{
    int dx = tx - fx;
    int dy = ty - fy;
 
@@ -34,7 +35,8 @@ void fbg::bresenham_line(int fx, int fy, int tx, int ty, std::function<bool(int 
 }
 
 /** This function draws single pixels in the first quadrant, and expects that set() will handle the other seven. */ 
-void fbg::bresenham_circle(int r, std::function<void(int x, int y)> set) {
+void fbg::bresenham_circle(int r, std::function<void(int x, int y)> set) 
+{
    int x = r;
    int y = 0;
 

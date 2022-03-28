@@ -36,6 +36,9 @@ namespace fbg {
          if (*((Shape *) this) == s) 
             throw std::runtime_error("Context attach error: Cannot attach context to itself.\n");
          
+         if (!s.isDrawable())
+            throw std::runtime_error(std::string("Added shape is invalid. Id: ") + std::to_string(s.id()));
+         
          m_shapes.push_back(&s);
          s.move(origin());
       };

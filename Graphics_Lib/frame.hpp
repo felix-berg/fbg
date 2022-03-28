@@ -27,7 +27,8 @@ namespace fbg {
 
       /*	Draw color to pixel at the given x, y coordinate.
          Doesn't draw, if the point is out of bounds. */
-      void set_pixel(int x, int y, const Rgba & color) {
+      void set_pixel(int x, int y, const Rgba & color) 
+      {
          if (in_bound(x, y)) 
             alpha_composite1(&pixels[y * w + x], &color);
       }
@@ -37,7 +38,8 @@ namespace fbg {
          within the bounds of (lx, ly) to (ux, uy).
          Inclusive!
       */
-      bool in_bound(int x, int y) {
+      bool in_bound(int x, int y) 
+      {
          return ! (x < 0 || x >= w ||
                     y < 0 || y >= h);
       }

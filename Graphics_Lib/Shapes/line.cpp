@@ -14,9 +14,9 @@ bool Line::SMOOTH_EDGES = true;
 
 int Line::DEFAULT_STROKEWEIGHT = 5;
 
-
 /** Change given pixelbuffer based on the pixels of the line. */
-void Line::draw_stroke(Frame & frame) {
+void Line::draw_stroke(Frame & frame) 
+{
    if (!m_doStroke) return;
 
    V2d<float> f = from();
