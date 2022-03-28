@@ -7,6 +7,7 @@
 #include "Shapes/point.hpp"
 #include "Shapes/rect.hpp"
 #include "Shapes/shape.hpp"
+#include "Shapes/triangle.hpp"
 #include "Shapes/polyline.hpp"
 
 #endif

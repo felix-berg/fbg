@@ -1,10 +1,10 @@
-#include "polyline.hpp"
+#include "triangle.hpp"
 #include "drawing_algorithms/drawline.hpp"
 #include "drawing_algorithms/drawpolyline.hpp"
 
 using namespace fbg;
 
-void fbg::Polyline::draw_stroke(Frame & frame) {
+void Triangle::draw_stroke(Frame & frame) {
    if (!m_doStroke) return;
 
    // Set from to the last vector
@@ -17,16 +17,12 @@ void fbg::Polyline::draw_stroke(Frame & frame) {
       from = to;
    }
 
-   // if polyline is closed, draw the remaining line.
-   if (!m_open) {
-      from = get_point(num_points() - 1);
-      to = get_point(0);
-      compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), LineMode::ROUGH);
-   }
+   to = get_point(0);
+   compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), LineMode::ROUGH); 
 }
 
-void fbg::Polyline::draw_fill(Frame & frame) {
+void Triangle::draw_fill(Frame & frame) {
    if (!m_doFill) return;
 
-   fbg::compute_polyline_convex_fill(frame, get_points(), fill());
+   compute_polyline_convex_fill(frame, get_points(), fill());
 }

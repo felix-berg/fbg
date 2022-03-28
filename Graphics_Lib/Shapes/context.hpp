@@ -32,6 +32,9 @@ namespace fbg {
       /** Attach a shape to this context.
        * @param s: The shape to be added */
       void attach(Shape & s) { 
+         if (*((Shape *) this) == s) 
+            throw std::runtime_error("Context attach error: Cannot attach context to itself.\n");
+         
          m_shapes.push_back(&s);
          s.move(origin());
       };
