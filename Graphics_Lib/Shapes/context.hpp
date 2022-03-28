@@ -90,7 +90,9 @@ namespace fbg {
 
       void angle(float a) 
       { 
-         rotate(a - m_angle);
+         for (Shape * s : m_shapes)
+            s->rotate(a - m_angle, get_point(0));
+         m_angle = a;
       };
 
       float angle() const { return m_angle; };

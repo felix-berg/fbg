@@ -3,7 +3,7 @@
 #include "drawing_algorithms/drawrect.hpp"
 #include "drawing_algorithms/drawline.hpp"
 #include "drawing_algorithms/drawpolyline.hpp"
-#include "maths.hpp"
+#include "../maths.hpp"
 
 using namespace fbg;
 
@@ -93,7 +93,6 @@ void Rect::draw_stroke(Frame & frame)
       compute_line_stroke(frame, brX, brY, blX, blY, stroke(), strokeweight(), LineMode::ROUGHLONG);
       compute_line_stroke(frame, blX, blY, tlX, tlY, stroke(), strokeweight(), LineMode::ROUGHLONG);
    }
-
 }
 
 void Rect::draw_fill(Frame & frame) 
