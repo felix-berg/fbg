@@ -65,25 +65,26 @@ namespace fbg {
        * @returns Origin point for context. */
       const V2d<float> & origin() const { return get_point(0); };
 
-      void rotate(float a, const V2d<float> & p) 
-      {
-         for (Shape * s : m_shapes)
-            s->rotate(a, p);
-      };
+      /** Rotate around the origin of the centre 
+       * @param a: The angle to rotate by.
+       * @param p: The center of rotation. */
+      void rotate(float a, const V2d<float> & p);
 
       /** Rotate around the origin of the centre 
        * @param a: The angle to rotate by. */
-      void rotate(float a) 
-      {
-         for (Shape * s : m_shapes)
-            s->rotate(a, get_point(0));
-      }
+      void rotate(float a) { Context::rotate(a, origin()); }
 
       /** Rotate the context around the given point (x, y).
        * @param a: The angle to rotate by
        * @param x: The x-value of the reference-point
        * @param y: The y-value of the reference-point */
       void rotate(float a, float x, float y) { Context::rotate(a, {x, y}); };
+
+      void angle(float a) { 
+         rotate(a - m_angle);
+      };
+
+      float angle() const { return m_angle; };
 
       void move(const V2d<float> & v) 
       {
@@ -95,6 +96,8 @@ namespace fbg {
 
    private:
       friend class Window; // allow for window to use draw_fill
+
+      float m_angle = 0.0f;
 
       /** Empty: 
        * Drawing of shapes in ths context is done within the the draw_fill method. */
