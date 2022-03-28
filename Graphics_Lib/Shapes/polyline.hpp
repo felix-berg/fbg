@@ -18,14 +18,14 @@ namespace fbg {
        * @param list: List of points for the polyline. */
       Polyline(std::initializer_list<V2d<float>> list) : Shape { list } { 
          // set default value of stroke
-         stroke(255);
-         strokeweight(3);
+         stroke(0);
+         strokeweight(1);
       };
 
       /** Default constructor for polyline class. */
-      Polyline() {
-         stroke(255);
-         strokeweight(3);
+      Polyline() : Shape { } {
+         stroke(0);
+         strokeweight(1);
       }
 
       /** Setter for new vertex. Adds the given point to the list of vertices in the polyline.

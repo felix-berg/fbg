@@ -19,7 +19,7 @@ int main() {
    for (Rect & r : rects) {
       r.pos(rs());
       r.width(20); r.height(20);
-      r.fill(255);
+      r.fill(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
 
       context.attach(r);
    }
@@ -28,7 +28,7 @@ int main() {
    for (Circle & c : circles) {
       c.pos(rs());
       c.radius(10);
-      c.fill(255);
+      c.fill(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
 
       context.attach(c);
    }
@@ -38,15 +38,52 @@ int main() {
       l.from(rs());
       l.to(rs());
       l.strokeweight(1);
+      l.stroke(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
       
       context.attach(l);
    }
 
+   std::array<Triangle, 50> triangles;
+
+   for (Triangle & t : triangles) {
+      V2d<float> p   = rs();
+      V2d<float> off { 0.0f, 20.0f };
+      t.point(0, p + off);
+      off.rotate((120.0f / 360.0f) * twoPi);
+      t.point(1, p + off);
+      off.rotate((120.0f / 360.0f) * twoPi);
+      t.point(2, p + off);
+
+      t.fill(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
+
+      context.attach(t);
+   }
+
+   std::array<Polyline, 50> polylines;
+
+   for (Polyline & pl : polylines) {
+      V2d<float> p   { rs() };
+      V2d<float> off { 0.0f, 15.0f };
+      int numEdges = rand() % 8 + 4;
+      
+      for (int i = 0; i < numEdges; i++) {
+         off.rotate(twoPi / float(numEdges - 1));
+         pl.vertex(p + off);
+         std::cout << pl.get_vertex(i);
+      }
+
+      pl.fill(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
+
+
+      context.attach(pl);
+   }
+
+   
    win.attach(context);
 
    float t = 0;
    win.draw = [&](float dt) -> void {
-     context.rotate(0.001f);
+     context.rotate(0.005f);
      context.origin(win.mouse());
    };
    

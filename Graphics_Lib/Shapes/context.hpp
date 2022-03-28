@@ -31,7 +31,8 @@ namespace fbg {
 
       /** Attach a shape to this context.
        * @param s: The shape to be added */
-      void attach(Shape & s) { 
+      void attach(Shape & s) 
+      { 
          if (*((Shape *) this) == s) 
             throw std::runtime_error("Context attach error: Cannot attach context to itself.\n");
          
@@ -51,7 +52,8 @@ namespace fbg {
 
       /** Set origin of the context. 
        * @param o: Origin of the context.  */
-      void origin(const V2d<float> & o) { 
+      void origin(const V2d<float> & o) 
+      { 
          V2d<float> oldorg = get_point(0);
          set_point(0, o); 
 
@@ -83,7 +85,8 @@ namespace fbg {
        * @param y: The y-value of the reference-point */
       void rotate(float a, float x, float y) { Context::rotate(a, {x, y}); };
 
-      void angle(float a) { 
+      void angle(float a) 
+      { 
          rotate(a - m_angle);
       };
 
@@ -99,7 +102,6 @@ namespace fbg {
 
    private:
       friend class Window; // allow for window to use draw_fill
-
       float m_angle = 0.0f;
 
       /** Empty: 
@@ -117,7 +119,8 @@ namespace fbg {
       }
 
       // private function
-      void detach(int i) {
+      void detach(int i) 
+      {
          std::vector<Shape *>::iterator sit = m_shapes.begin() + i;
          Shape * s = *sit;
 

@@ -74,7 +74,9 @@ namespace fbg {
       
       /** Attach shape to window. 
        * @param s: The shape to be attached to the window. */
-      void attach(Shape & s) { this->context.attach(s); };
+      void attach(Shape & s) { 
+         this->context.attach(s); 
+      };
 
       /** Detach shape from window.
        * @param s: The shape to be detached from the window. */
@@ -87,12 +89,13 @@ namespace fbg {
       /** Stop execution until any key is pressed. */
       void wait_for_key();
 
-      /** The context of the window. 
-       * Holds every shape, that is attached to the window.  */
-      Context context; 
 
    private:
       Rgba m_backgroundColor {140, 140, 140, 255};
+      
+      /** The context of the window. 
+       * Holds every shape, that is attached to the window.  */
+      Context context; 
    };
 };
 
