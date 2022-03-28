@@ -21,7 +21,8 @@ namespace fbg {
        * @param w: Width of rectangle.
        * @param h: Height of rectangle. */
       Rect(const V2d<float> & f, float w, float h)
-      : m_w { w }, m_h { h } {
+      : m_w { w }, m_h { h } 
+      {
          add_point(f);
       }
 

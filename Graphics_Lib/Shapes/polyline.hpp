@@ -16,14 +16,16 @@ namespace fbg {
    public:
       /** Constructor Polyline class. 
        * @param list: List of points for the polyline. */
-      Polyline(std::initializer_list<V2d<float>> list) : Shape { list } { 
+      Polyline(std::initializer_list<V2d<float>> list) : Shape { list } 
+      { 
          // set default value of stroke
          stroke(0);
          strokeweight(1);
       };
 
       /** Default constructor for polyline class. */
-      Polyline() : Shape { } {
+      Polyline() : Shape { } 
+      {
          stroke(0);
          strokeweight(1);
       }
