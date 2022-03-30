@@ -6,7 +6,7 @@ using namespace fbg;
 
 /** Compute pixels of given horisontal line, making sure, that no buffer overflow occurs.
  * Inclusive of tx */
-void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba & color) 
+void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, Rgba color) 
 {
    int lLen = tx - fx + 1; // length of line
 
@@ -33,7 +33,7 @@ void fbg::set_horisontal_line(Frame & frame, int fx, int tx, int y, const Rgba &
    }
 }
 
-void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, const Rgba & color) 
+void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, Rgba color) 
 {
    for (int y = fy; y <= ty; y++)
       frame.set_pixel(x, y, color);
@@ -42,7 +42,7 @@ void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, const Rgba & c
 /*
    TODO: Untested
 */
-void fbg::draw_pixel(Frame & frame, int x, int y, const Rgba & color, int sw) 
+void fbg::draw_pixel(Frame & frame, int x, int y, Rgba color, int sw) 
 {
    if (sw == 1)
       frame.set_pixel(x, y, color);

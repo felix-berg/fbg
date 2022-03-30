@@ -60,7 +60,7 @@ namespace fbg {
          
       /** Setter for background color.
        * @param color: The color to set to the background. */
-      void background(const Rgba & color) { 
+      void background(Rgba color) { 
          m_backgroundColor = color;
          clear_pixels(color); 
       };

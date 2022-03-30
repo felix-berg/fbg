@@ -52,7 +52,7 @@ void SDLHandler::set_pixel(const V2d<int> & p, const Rgba & px)
 /*
    Set all pixel to color
 */
-void SDLHandler::clear_pixels(const Rgba & color) 
+void SDLHandler::clear_pixels(Rgba color) 
 {
    std::fill(frame.pixels, frame.pixels + size(), color);
 }

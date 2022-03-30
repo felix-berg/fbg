@@ -44,7 +44,7 @@ void fill_stroke_patterns_minmax(std::vector<int> & minPattern, std::vector<int>
    }
 }
 
-void fbg::compute_polyline_convex_fill(Frame & frame, std::vector<V2d<float>> lst, const Rgba & color) 
+void fbg::compute_polyline_convex_fill(Frame & frame, std::vector<V2d<float>> lst, Rgba color) 
 {
    if (lst.size() <= 0) return;
 

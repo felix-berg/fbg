@@ -51,7 +51,7 @@ namespace fbg {
       bool has_mouse_focus() const;
 
       void clear_pixels();
-      void clear_pixels(const Rgba & col);
+      void clear_pixels(Rgba);
       
       Frame frame; // container for all pixels on screen
 

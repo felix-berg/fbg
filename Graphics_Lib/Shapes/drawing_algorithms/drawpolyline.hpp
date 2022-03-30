@@ -7,7 +7,7 @@
 #include <vector>
 
 namespace fbg {
-   void compute_polyline_convex_fill(Frame & f, std::vector<V2d<float>> lst, const Rgba & color);
+   void compute_polyline_convex_fill(Frame & f, std::vector<V2d<float>> lst, Rgba color);
 };
 
 #endif

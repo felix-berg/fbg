@@ -2,7 +2,7 @@
 
 using namespace fbg;
 
-ostream & operator << (ostream & os, const Rgba & color)
+ostream & operator << (ostream & os, Rgba color)
 {
    return os << "(r: " << (int) color.r << ", "
              <<  "g: " << (int) color.g << ", "
