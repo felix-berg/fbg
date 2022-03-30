@@ -7,6 +7,9 @@ using namespace fbg;
 
 void Frame::add(const Frame & other, int tx, int ty)
 {
+   if (ty + other.h < 0 || ty >= this->h || tx + other.w < 0 || tx >= this->w)
+      return;
+
    // restrict line bounds within frame
    int lineLength = other.w;
 
@@ -20,9 +23,8 @@ void Frame::add(const Frame & other, int tx, int ty)
 
    if (tx + lineLength >= this->w) {
       lineLength -= (tx + lineLength) - this->w;
-
    }
-
+   
    // scan thru y of other
    for (int oy = 0; oy < other.h; oy++) {
       int thisy = oy + ty;

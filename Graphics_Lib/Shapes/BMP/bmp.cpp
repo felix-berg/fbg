@@ -170,7 +170,7 @@ fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int
       // bitdepth 24: |B8|G8|R8|
       size_t srcWidth = 3 * width;
       size_t srcHeight = height;
-      for (size_t y = 0; y < height; y++)
+      for (size_t y = 0; y < height; y++) {
          for (size_t x = 0; x < height; x++) {
             size_t dataIdx = x * 3 + srcWidth * (srcHeight - 1 - y); // bmp stored in opposite
             size_t pxIdx   = x + width * y;
@@ -180,6 +180,22 @@ fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int
             resf.pixels[pxIdx].r = pixelData[dataIdx + 2];
             resf.pixels[pxIdx].a = 255;
          }
+      }
+   } else if (bitdepth == 32) {
+      // bitdepth 32: |B8|G8|R8|A8|
+      size_t srcWidth = 4 * width;
+      size_t srcHeight = height;
+      for (size_t y = 0; y < height; y++) {
+         for (size_t x = 0; x < height; x++) {
+            size_t dataIdx = x * 4 + srcWidth * (srcHeight - 1 - y); // bmp stored in opposite
+            size_t pxIdx   = x + width * y;
+
+            resf.pixels[pxIdx].b = pixelData[dataIdx + 0];
+            resf.pixels[pxIdx].g = pixelData[dataIdx + 1];
+            resf.pixels[pxIdx].r = pixelData[dataIdx + 2];
+            resf.pixels[pxIdx].a = pixelData[dataIdx + 3];
+         }
+      }
    } else {
       throw std::runtime_error("Bitdepth of given .bmp image file i unsupported. Bitdepth: " + std::to_string(bitdepth));
    }
@@ -200,6 +216,7 @@ fbg::Frame create_frame_from_raw_bmp(const RawBmp & bmp) {
    u_int compressionMethod;
    memcpy(&compressionMethod, bmp.data + dibIdx + 16, sizeof(u_int));
 
+   std::cout << compressionMethod << '\n';
    if (!supported_compression_method(compressionMethod))
       throw std::runtime_error("Compression method is unsupported.");
    

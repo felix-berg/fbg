@@ -2,10 +2,11 @@
 
 using namespace fbg;
 
+// TODO: Doesn't work
 void Context::rotate(float a, const V2d<float> & p) 
 {
    for (Shape * s : m_shapes)
-      s->rotate(a, p);
+      s->rotate(a, p - origin());
 
    // compare the angle of a point on the rectangle before and after rotation
    V2d<float> verticalLine = V2d<float>{10.0f, 10.0f};

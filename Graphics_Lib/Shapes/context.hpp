@@ -17,7 +17,7 @@ namespace fbg {
       /** Constructor for Context class.
        * @param x: x-value for origin point
        * @param y: y-value for origin point */
-      Context(float x, float y) : Context { { x, y, }} { };
+      Context(float x, float y) : Context { { x, y }} { };
 
       /** Default constructor for Context class. 
        * Sets origin to (0, 0) */
@@ -40,7 +40,6 @@ namespace fbg {
             throw std::runtime_error(std::string("Added shape is invalid. Id: ") + std::to_string(s.id()));
          
          m_shapes.push_back(&s);
-         s.move(origin());
       };
 
       /** Detach a shape from this context.
@@ -91,7 +90,7 @@ namespace fbg {
       void angle(float a) 
       { 
          for (Shape * s : m_shapes)
-            s->rotate(a - m_angle, get_point(0));
+            s->rotate(a - m_angle, {0.0f, 0.0f});
          m_angle = a;
       };
 
@@ -118,8 +117,10 @@ namespace fbg {
       void draw_fill(Frame & f) 
       {
          for (Shape * s : m_shapes) {
+            s->move(origin());
             s->draw_fill(f);
             s->draw_stroke(f);
+            s->move(V2d<float> {0, 0} - origin());
          }
       }
 
@@ -128,8 +129,6 @@ namespace fbg {
       {
          std::vector<Shape *>::iterator sit = m_shapes.begin() + i;
          Shape * s = *sit;
-
-         s->move(V2d<float> { 0, 0 } - origin());
 
          m_shapes.erase(m_shapes.begin() + i);
       }

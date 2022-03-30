@@ -83,10 +83,12 @@ int main() {
    
    win.attach(context);
 
+   std::cout << context.origin() << '\n';
+
    float t = 0;
    win.draw = [&](float dt) -> void {
-      img.pos( win.mouse() - context.origin());
-      // context.angle((context.origin() - win.mouse()).angle());
+      // context.rotate(0.001f);
+      context.angle((context.origin() - win.mouse()).angle());
    };
    
    win.run();
