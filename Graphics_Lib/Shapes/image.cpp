@@ -16,6 +16,4 @@ void Image::draw_fill(Frame & frame)
    int tlX = static_cast<int> (p.x - m_w / 2.0f);
    int tlY = static_cast<int> (p.y - m_h / 2.0f);
    frame.add(this->m_frame, tlX, tlY);
-
-   std::cout << "called" << '\n';
 }
