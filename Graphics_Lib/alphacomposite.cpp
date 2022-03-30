@@ -121,6 +121,9 @@ void fbg::alpha_compositeN(Rgba * dst, Rgba * over, int n)
    }
    
    int n_pixelsLeft = n % 8;
+   if (n_pixelsLeft == 0)
+      alpha_composite8(dst + n - 8, over + n - 8);
+
    for (int i = n - n_pixelsLeft; i < n; i++) {
       alpha_composite1(dst + i, over + i);
    }
