@@ -140,17 +140,7 @@ struct RawBmp {
    ~RawBmp() { delete data; };
 };
 
-std::ostream & operator << (std::ostream & os, const RawBmp & bmp) {
-   os << std::hex;
-   for (size_t i = 0; i < bmp.fileSize; i++){
-      os << static_cast<int> (bmp.data[i]) << ' ';
-      if (i % 8 == 7) os << std::endl;
-   }
-   os << '\n';
-
-   return os;
-}
-
+/** Load RawBmp object from given filename. */
 RawBmp bmp_loadraw(const std::string & filename) 
 {
    std::ifstream fileStream { filename };
@@ -178,12 +168,18 @@ fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int
 
    if (bitdepth == 24) {
       // bitdepth 24: |B8|G8|R8|
-      for (size_t pi = 0; pi < width * height; pi++) {
-         resf.pixels[pi].r = pixelData[pi * 3 + 2];
-         resf.pixels[pi].g = pixelData[pi * 3 + 1];
-         resf.pixels[pi].b = pixelData[pi * 3 + 0];
-         resf.pixels[pi].a = 255;
-      }
+      size_t srcWidth = 3 * width;
+      size_t srcHeight = height;
+      for (size_t y = 0; y < height; y++)
+         for (size_t x = 0; x < height; x++) {
+            size_t dataIdx = x * 3 + srcWidth * (srcHeight - 1 - y); // bmp stored in opposite
+            size_t pxIdx   = x + width * y;
+
+            resf.pixels[pxIdx].b = pixelData[dataIdx + 0];
+            resf.pixels[pxIdx].g = pixelData[dataIdx + 1];
+            resf.pixels[pxIdx].r = pixelData[dataIdx + 2];
+            resf.pixels[pxIdx].a = 255;
+         }
    } else {
       throw std::runtime_error("Bitdepth of given .bmp image file i unsupported. Bitdepth: " + std::to_string(bitdepth));
    }
@@ -191,6 +187,7 @@ fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int
    return resf;
 }
 
+/** Create graphics frame object from given raw bmp data. */
 fbg::Frame create_frame_from_raw_bmp(const RawBmp & bmp) {
 
    // read DIB header of bmp
@@ -220,6 +217,7 @@ fbg::Frame create_frame_from_raw_bmp(const RawBmp & bmp) {
    return resultFrame;
 }
 
+/** Create frame from given filename of bmp-file. */
 fbg::Frame fbg::create_frame(const std::string & filename) {
    return create_frame_from_raw_bmp(bmp_loadraw(filename));
 }
