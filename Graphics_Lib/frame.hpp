@@ -53,8 +53,9 @@ namespace fbg {
       }
 
       Rgba get(int x, int y) const { return pixels[y * w + x]; };
-   };
+      void add(const Frame & other, int tx, int ty);
 
+   };
 };
 
 #endif

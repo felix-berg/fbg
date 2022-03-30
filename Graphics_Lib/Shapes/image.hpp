@@ -1,17 +1,11 @@
 #include "shape.hpp"
+#include "../frame.hpp"
 #include "BMP/bmp.hpp"
 
 namespace fbg {
    class Image : public Shape {
    public:
-      Image(const V2d<float> & p, const std::string & filename)
-         : m_filename { filename }, m_frame { create_frame(filename) },
-          m_w { static_cast<float> (m_frame.w) }, 
-          m_h { static_cast<float> (m_frame.h) }
-      { 
-         add_point(p);
-      }
-
+      Image(const V2d<float> & p, const std::string & filename);
       Image(float x, float y, const std::string & filename) 
          : Image { {x, y}, filename } { };
 
@@ -25,7 +19,7 @@ namespace fbg {
 
    protected:
       void draw_stroke(Frame &) { };
-      void draw_fill(Frame &) { };
+      void draw_fill(Frame & frame);
 
    private:
       Frame m_frame;
