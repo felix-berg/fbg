@@ -24,6 +24,6 @@ namespace fbg {
          : r { rr }, g { gg }, b { bb }, a { aa } { };
    }; 
 
-   ostream & operator << (ostream & os, const Rgba & color);
+   ostream & operator << (ostream & os, Rgba color);
 };
 #endif

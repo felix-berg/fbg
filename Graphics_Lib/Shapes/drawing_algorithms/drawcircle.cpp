@@ -38,7 +38,7 @@ void get_octants(std::array<int, 8> & octantsX, std::array<int, 8> & octantsY, i
 
 constexpr int NONE = -1;
 
-void compute_circle_stroke_single(Frame & frame, int cx, int cy, int r, const Rgba & color) 
+void compute_circle_stroke_single(Frame & frame, int cx, int cy, int r, Rgba color) 
 {
    std::array<int, 8> ocx;
    std::array<int, 8> ocy;
@@ -85,7 +85,7 @@ void double_octant_stroke_to_quartant(std::vector<int> & strokePattern)
       strokePattern[strokePattern[y]] = y;
 }
 
-void compute_circle_stroke_multi(Frame & frame, int cx, int cy, int r, const Rgba & color, int sw) 
+void compute_circle_stroke_multi(Frame & frame, int cx, int cy, int r, Rgba color, int sw) 
 {
    int lOff, rOff;
    offsets_from_strokeweight(sw, &lOff, &rOff);
@@ -129,7 +129,7 @@ void compute_circle_stroke_multi(Frame & frame, int cx, int cy, int r, const Rgb
 
 /** Draw pixels of given circle, defined by center point (cx, cy) and radius r, to the given frame.
  * Pre-condition: Strokeweight is less than half of the radius.  */
-void fbg::compute_circle_stroke(Frame &frame, int cx, int cy, int r, const Rgba &color, int sw) 
+void fbg::compute_circle_stroke(Frame &frame, int cx, int cy, int r, Rgba color, int sw) 
 {
    if (sw * 2 >= r) throw std::runtime_error("Cannot draw stroke of circle, where 2 * strokeweight is greater than radius.");
 
@@ -138,7 +138,7 @@ void fbg::compute_circle_stroke(Frame &frame, int cx, int cy, int r, const Rgba 
 }
 
 /** Draw pixels of given circles fill to the given frame. */
-void fbg::compute_circle_fill(Frame &frame, int cx, int cy, int r, const Rgba &color) 
+void fbg::compute_circle_fill(Frame &frame, int cx, int cy, int r, Rgba color) 
 {
    float fr = static_cast<float> (r);
    int posLimitY = (sin45 * fr);

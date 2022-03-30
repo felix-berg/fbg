@@ -7,7 +7,7 @@
 
 namespace fbg
 {
-   void compute_circle_stroke(Frame & frame, int cx, int cy, int r, const Rgba & color, int sw);
-   void compute_circle_fill(Frame & frame, int cx, int cy, int r, const Rgba & color);
+   void compute_circle_stroke(Frame & frame, int cx, int cy, int r, Rgba color, int sw);
+   void compute_circle_fill(Frame & frame, int cx, int cy, int r, Rgba color);
 };
 #endif

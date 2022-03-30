@@ -9,13 +9,13 @@ using namespace fbg;
 
 constexpr int NONE = INT32_MIN;
 
-void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode); 
-void draw_stroke_hi (Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode);
+void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, Rgba color, int sw, LineMode mode); 
+void draw_stroke_hi (Frame & frame, int fx, int fy, int tx, int ty, Rgba color, int sw, LineMode mode);
 
 /** Compute the colors of the lines stroke and output onto "frame".
  * Line defined by fx, fy -> tx, ty (inclusive). 
  * This function doesn't make smooth edges.     */
-void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode) 
+void fbg::compute_line_stroke(Frame & frame, int fx, int fy, int tx, int ty, Rgba color, int sw, LineMode mode) 
 {
    if (abs(tx - fx) > abs(ty - fy)) { // if gradient < 1
       if (fx > tx) // if points are the opposite way round
@@ -345,7 +345,7 @@ void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, LineMode mode,
 }
 
 /** Draw a line from (fx, fy) to (tx, ty), that has a gradient less than 1. */ 
-void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode) 
+void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, Rgba color, int sw, LineMode mode) 
 {
    std::function<void(int, int)> setpx = [&](int x, int y) -> void {
       frame.set_pixel(x, y, color);   
@@ -359,7 +359,7 @@ void draw_stroke_low(Frame & frame, int fx, int fy, int tx, int ty, const Rgba &
 }
 
 /** Draw a line from (fx, fy) to (tx, ty), that has a gradient greater than 1. */ 
-void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, const Rgba & color, int sw, LineMode mode) 
+void draw_stroke_hi(Frame & frame, int fx, int fy, int tx, int ty, Rgba color, int sw, LineMode mode) 
 {
    // use the draw_stroke_line_low, but switch x with y in the drawing functions.
    std::function<void(int, int)> setpx = [&](int x, int y) -> void {
