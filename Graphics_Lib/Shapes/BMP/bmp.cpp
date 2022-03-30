@@ -179,9 +179,9 @@ fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int
    if (bitdepth == 24) {
       // bitdepth 24: |B8|G8|R8|
       for (size_t pi = 0; pi < width * height; pi++) {
-         resf.pixels[pi].r = pixelData[pi * 3 + 3];
-         resf.pixels[pi].g = pixelData[pi * 3 + 2];
-         resf.pixels[pi].b = pixelData[pi * 3 + 1];
+         resf.pixels[pi].r = pixelData[pi * 3 + 2];
+         resf.pixels[pi].g = pixelData[pi * 3 + 1];
+         resf.pixels[pi].b = pixelData[pi * 3 + 0];
          resf.pixels[pi].a = 255;
       }
    } else {
