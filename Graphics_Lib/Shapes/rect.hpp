@@ -1,16 +1,10 @@
-#ifndef RECT_HPP
-#define RECT_HPP
-
 #include "shape.hpp"
-#include "../V2d.hpp"
-#include "../frame.hpp"
-namespace fbg {
 
-   /** Rectangle class. 
-    * @param pos(): Getting/setting point at top-left of rectangle.
-    * @param width(): Getting/setting width of rectangle.
-    * @param height(): Getting/setting height of rectangle.
-   */
+namespace fbg {
+   struct RectCorners {
+      V2d<int> tl, tr, br, bl;
+   };
+
    class Rect : public Shape {
    public:
       enum DrawMode { CORNER, CENTER };
@@ -24,6 +18,7 @@ namespace fbg {
       : m_w { w }, m_h { h } 
       {
          add_point(f);
+         add_point(f + V2d<float> { 1.0f, 0.0f });
       }
 
       /** Constructor for rectangle. 
@@ -53,12 +48,17 @@ namespace fbg {
       
       /** Setter for top-left point.
        * @param p: Position for top-left point. */
-      void pos(V2d<float> p) { set_point(0, p); };
+      void pos(V2d<float> p) { 
+         set_point(0, p); 
+         set_point(1, p + V2d<float> { 1.0f, 0.0f });
+      };
 
       /** Setter for top-left point. 
        * @param x: x-value for top-left point.
        * @param y: y-value for top-left point. */
-      void pos(float x, float y) { set_point(0, V2d<float> {x, y}); };
+      void pos(float x, float y) { 
+         pos(V2d<float> {x, y}); 
+      };
 
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
@@ -67,41 +67,14 @@ namespace fbg {
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
       void height(int h) { m_h = h; };
-
-      /** Rotate shape around reference point. 
-       * @param a: The angle to rotate the shape by.
-       * @param ref: The centre of rotation. */
-      void rotate(float a, const V2d<float> & ref);
-
-      /** Rotate shape around x, y. 
-       * @param a: Angle of rotation
-       * @param x: x-value of reference point.
-       * @param y: y-value of reference point. */
-      void rotate(float a, float x, float y) { 
-         Rect::rotate(a, {x, y});
-      };
-
-      /** Rotate shape around its first point (e.g. the center of a circle).
-       * Max rotation is at about 0.0004f.
-       * @param a: Angle to rotate by */
-      void rotate(float a) { 
-         m_angle += a;
-      };
-
-      void angle(float a) {
-         m_angle = a;
-      }
-
-      float angle() const { return m_angle; };
-
+      
    protected:
-      void draw_stroke(Frame & f);
-      void draw_fill(Frame & f);
+      float m_w = 0.0f;
+      float m_h = 0.0f;
 
-   private:
-      float m_w, m_h;
-      float m_angle = 0.0f;
+      void draw_stroke(Frame & frame);
+      void draw_fill(Frame & frame);
+
+      RectCorners get_corners() const;
    };
 };
-
-#endif

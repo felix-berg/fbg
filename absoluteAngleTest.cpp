@@ -7,13 +7,14 @@ int main() {
    LoopWin win { "Test of simple shapes.", 640, 480 };
 
    win.background(52);
-   win.framerate(144);
 
    Context context { win.dimensions() / 2.0f };
 
    auto rs = [&]() -> V2d<float> {
       return std::move(random_vector(-win.width(), win.width(), -win.height(), win.height()));
    };
+
+   // BetterRect::MODE = BetterRect::DrawMode::CORNER;
 
    std::array<Rect, 50> rects;
    for (Rect & r : rects) {
