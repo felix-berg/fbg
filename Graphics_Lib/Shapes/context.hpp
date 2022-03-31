@@ -74,6 +74,8 @@ namespace fbg {
        * @returns Origin point for context. */
       const V2d<float> & origin() const { return get_point(0); };
 
+      /** Setter for angle of context. 
+       * @param a: Angle of context */
       void angle(float a) 
       { 
          V2d<float> unitV { 1.0f, 0.0f };
@@ -81,6 +83,8 @@ namespace fbg {
          set_point(1, origin() + unitV);
       };
 
+      /** Getter for angle of context 
+       * @returns Angle of context */
       float angle() const { return (get_point(1) - get_point(0)).angle(); };
 
    private:

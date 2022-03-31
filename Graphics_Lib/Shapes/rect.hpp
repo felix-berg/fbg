@@ -49,8 +49,11 @@ namespace fbg {
       /** Setter for top-left point.
        * @param p: Position for top-left point. */
       void pos(V2d<float> p) { 
-         set_point(0, p); 
-         set_point(1, p + V2d<float> { 1.0f, 0.0f });
+         V2d<float> unitV { 1.0f, 0.0f };
+         unitV.rotate(angle());
+
+         set_point(0, p);
+         set_point(1, p + unitV);
       };
 
       /** Setter for top-left point. 
@@ -67,6 +70,21 @@ namespace fbg {
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
       void height(int h) { m_h = h; };
+
+      /** Setter for angle of rectagle.
+       * @param a: Angle of rectangle */
+      void angle(float a) {
+         V2d<float> unitV { 1.0f, 0.0f };
+         unitV.rotate(a);
+         set_point(1, pos() + unitV);
+      }
+
+      /** Getter for angle of rectangle.
+       * @returns Angle of rectangle */
+      float angle() const 
+      {
+         return (get_point(1) - get_point(0)).angle();
+      }
       
    protected:
       float m_w = 0.0f;
