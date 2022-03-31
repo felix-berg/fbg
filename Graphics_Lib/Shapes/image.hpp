@@ -17,6 +17,12 @@ namespace fbg {
 
       V2d<float> pos() const { return get_point(0); };
 
+      void width(float w)  { m_w = w; }
+      void height(float h) { m_h = h; }
+
+      float width()  const { return m_w; };
+      float height() const { return m_h; };
+
    protected:
       void draw_stroke(Frame &) { };
       void draw_fill(Frame & frame);
