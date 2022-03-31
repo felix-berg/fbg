@@ -14,7 +14,7 @@ int main() {
       return std::move(random_vector(-win.width(), win.width(), -win.height(), win.height()));
    };
 
-   // BetterRect::MODE = BetterRect::DrawMode::CORNER;
+   Rect::MODE = Rect::DrawMode::CORNER;
 
    std::array<Rect, 50> rects;
    for (Rect & r : rects) {
