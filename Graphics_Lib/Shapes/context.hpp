@@ -59,7 +59,8 @@ namespace fbg {
        * @param o: Origin of the context.  */
       void origin(const V2d<float> & o) 
       { 
-         constexpr V2d<float> unitV { 1.0f, 0.0f };
+         V2d<float> unitV { 1.0f, 0.0f };
+         unitV.rotate(angle());
          set_point(0, o); 
          set_point(1, o + unitV);
       };
@@ -94,6 +95,7 @@ namespace fbg {
       void draw_fill(Frame & f) 
       {
          float ang = angle();
+
          for (Shape * s : m_shapes) {
             s->rotate(ang, V2d<float> { 0.0f, 0.0f });
             s->move(origin());
