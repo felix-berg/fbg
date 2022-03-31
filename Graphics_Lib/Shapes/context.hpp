@@ -12,7 +12,10 @@ namespace fbg {
    public:
       /** Constructor for Context class.
        * @param o: Origin point. */
-      Context(const V2d<float> & o) : Shape { { o } } { };
+      Context(const V2d<float> & o) : Shape { { o } } {
+         constexpr V2d<float> unitV { 1.0f, 0.0f };
+         add_point(o + unitV);
+      };
 
       /** Constructor for Context class.
        * @param x: x-value for origin point
@@ -21,7 +24,7 @@ namespace fbg {
 
       /** Default constructor for Context class. 
        * Sets origin to (0, 0) */
-      Context() : Context { { 0.0f, 0.0f }} {  };
+      Context() : Context { { 0.0f, 0.0f } } {  };
 
       /** @return Number of shapes in the object */
       int numShapes() const { return m_shapes.size(); };
@@ -56,57 +59,31 @@ namespace fbg {
        * @param o: Origin of the context.  */
       void origin(const V2d<float> & o) 
       { 
-         V2d<float> oldorg = get_point(0);
+         constexpr V2d<float> unitV { 1.0f, 0.0f };
          set_point(0, o); 
-
-         for (Shape * s : m_shapes)
-            s->move(get_point(0) - oldorg);
+         set_point(1, o + unitV);
       };
 
       /** Set origin of the context.
        * @param x: x-value for origin
        * @param y: y-value for origin */
-      void origin(float x, float y) { origin({x, y}); };
+      void origin(float x, float y) { Context::origin({x, y}); };
 
       /** Get origin of the context.
        * @returns Origin point for context. */
       const V2d<float> & origin() const { return get_point(0); };
 
-      /** Rotate around the origin of the centre 
-       * @param a: The angle to rotate by.
-       * @param p: The center of rotation. */
-      void rotate(float a, const V2d<float> & p);
-
-      /** Rotate around the origin of the centre 
-       * @param a: The angle to rotate by. */
-      void rotate(float a) { Context::rotate(a, origin()); }
-
-      /** Rotate the context around the given point (x, y).
-       * @param a: The angle to rotate by
-       * @param x: The x-value of the reference-point
-       * @param y: The y-value of the reference-point */
-      void rotate(float a, float x, float y) { Context::rotate(a, {x, y}); };
-
       void angle(float a) 
       { 
-         for (Shape * s : m_shapes)
-            s->rotate(a - m_angle, {0.0f, 0.0f});
-         m_angle = a;
+         V2d<float> unitV { 1.0f, 0.0f };
+         unitV.rotate(a);
+         set_point(1, origin() + unitV);
       };
 
-      float angle() const { return m_angle; };
-
-      void move(const V2d<float> & v) 
-      {
-         for (Shape * s : m_shapes)
-            s->move(v);
-      }
-
-      void move(float x, float y) { Context::move({x, y}); };
+      float angle() const { return (get_point(1) - get_point(0)).angle(); };
 
    private:
       friend class Window; // allow for window to use draw_fill
-      float m_angle = 0.0f;
 
       /** Empty: 
        * Drawing of shapes in ths context is done within the the draw_fill method. */
@@ -116,18 +93,23 @@ namespace fbg {
        * @param f: The Frame to draw the pixels to. */
       void draw_fill(Frame & f) 
       {
+         float ang = angle();
          for (Shape * s : m_shapes) {
+            s->rotate(ang, V2d<float> { 0.0f, 0.0f });
             s->move(origin());
+
             s->draw_fill(f);
             s->draw_stroke(f);
+
             s->move(V2d<float> {0, 0} - origin());
+            s->rotate(-ang, V2d<float> { 0.0f, 0.0f });
          }
       }
 
       // private function
       void detach(int i) 
       {
-         std::vector<Shape *>::iterator sit = m_shapes.begin() + i;
+         std::vector<Shape *>::iterator sit = m_shapes.begin() + i;  
          Shape * s = *sit;
 
          m_shapes.erase(m_shapes.begin() + i);

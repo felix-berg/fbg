@@ -103,6 +103,9 @@ namespace fbg {
       void angle(float a) 
       {
          float sz = size();
+         if (sz == 0)
+            throw std::runtime_error("Cannot find angle of vector with size 0.");
+         
          *this = {
             std::cos(a) * sz,
             std::sin(a) * sz
