@@ -83,8 +83,6 @@ int main() {
    
    win.attach(context);
 
-   std::cout << context.origin() << '\n';
-
    float t = 0;
    win.draw = [&](float dt) -> void {
       // context.rotate(0.001f);

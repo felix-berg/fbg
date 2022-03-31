@@ -113,7 +113,7 @@ struct RawBmp {
          throw std::runtime_error("BMP file couldn't be loaded: field is invalid.");
 
       memcpy(&fileSize,   &headerData[2],  sizeof(u_int));
-      memcpy(&dataOffset, &headerData[14], sizeof(u_int));
+      memcpy(&dataOffset, &headerData[10], sizeof(u_int));
    
       data = new u_char[fileSize];
 
@@ -137,7 +137,7 @@ struct RawBmp {
       other.data = nullptr;
    }
 
-   ~RawBmp() { delete data; };
+   ~RawBmp() { delete[] data; };
 };
 
 /** Load RawBmp object from given filename. */
@@ -159,6 +159,24 @@ enum CompressionMethods { BI_RGB, BI_RLE8, BI_RLE4, BI_BITFIELDS, BI_JPEG, BI_PN
 bool supported_compression_method(u_int cm) {
    if (cm == BI_RGB) return true; // only BI_RGB is supported for now
    else              return false;
+}
+
+constexpr int maxImageDim = 10000;
+constexpr int supportedBitdepthts[2] = { 24, 32 };
+constexpr int maxHeaderSize = 140;
+
+/** Checks parameters from dib header against a set of invariants. */
+bool are_valid_dib_params(u_int width, u_int height, u_int bitdepth, u_int headerSize, u_int fileSize) {
+   bool supported = false;
+      for (int i = 0; i < 2; i++)
+         if (bitdepth == supportedBitdepthts[i]) { supported = true; break; }
+   
+        if (width  < 0 || width  > maxImageDim) return false;
+   else if (height < 0 || height > maxImageDim) return false;
+   else if (width * height > fileSize)          return false;
+   else if (headerSize > maxHeaderSize)         return false;
+   else if (!supported)                         return false;
+   else return true;
 }
 
 /* Reads image specified by given bitdepth, width and height, starting from the first index
@@ -207,7 +225,7 @@ fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int
 fbg::Frame create_frame_from_raw_bmp(const RawBmp & bmp) {
 
    // read DIB header of bmp
-   int dibIdx = RawBmp::headerSize;
+   int dibIdx = RawBmp::headerSize; 
    u_int headerSize;
    int width, height;
    u_short bitdepth;
@@ -216,7 +234,6 @@ fbg::Frame create_frame_from_raw_bmp(const RawBmp & bmp) {
    u_int compressionMethod;
    memcpy(&compressionMethod, bmp.data + dibIdx + 16, sizeof(u_int));
 
-   std::cout << compressionMethod << '\n';
    if (!supported_compression_method(compressionMethod))
       throw std::runtime_error("Compression method is unsupported.");
    
@@ -226,7 +243,8 @@ fbg::Frame create_frame_from_raw_bmp(const RawBmp & bmp) {
    memcpy(&height,     bmp.data + dibIdx + 8,  sizeof(int));
    memcpy(&bitdepth,   bmp.data + dibIdx + 14, sizeof(u_short));
 
-   // TODO: Check for validity -> given range of width and height values -> compare to raw filesize
+   // check for validity of odib header parameters
+   are_valid_dib_params(width, height, bitdepth, headerSize, bmp.fileSize);
 
    // read pixel data based on given attributes
    fbg::Frame resultFrame = read_bmp_pixel_data(bmp.data + dibIdx + headerSize, bitdepth, width, height);
