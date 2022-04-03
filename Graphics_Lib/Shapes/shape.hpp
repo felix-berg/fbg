@@ -16,13 +16,6 @@ namespace fbg {
     * Cannot exist on its own. Instead use one of the existing subclasses. */
    class Shape {
    public:
-      // can be used, if you want to disallow vectors of shapes.
-      // Shape(const Shape &) = delete;
-      // Shape & operator = (const Shape &) = delete;
-
-      Shape (const Shape &) = default; 
-      Shape & operator= (const Shape &) = default; 
-
       /** Getter for fill color.
        * @returns Current fill color of shape. */
       const Rgba & fill() const { return m_fill; };
@@ -145,12 +138,6 @@ namespace fbg {
          }
       }
 
-      /** Boolean equality of this shape to another. Uses the designated id of the shape.
-       * @param other: The shape, that we are comparing against.
-       * @returns True / false */
-      // bool operator == (const Shape & other) { return this->id() == other.id(); };
-
-
    protected:
       // Default constructor
       Shape() { 
@@ -165,6 +152,10 @@ namespace fbg {
          for (auto & p : l)
             add_point(p);
       };
+
+      // protected, so only derived classes can be copied
+      Shape (const Shape &) = default;
+      Shape & operator = (const Shape &) = default;
 
       // virtual function: to be defined by subclasses
       virtual void draw_stroke(Frame & f) = 0;
@@ -201,14 +192,19 @@ namespace fbg {
       
    private:
       std::vector<V2d<float>> m_points; // storage for the points of this shape
+
       unsigned int m_id; // unique id for identification
 
-      Rgba m_fill = {255, 255, 255, 255};   // fill-in color
-      Rgba m_stroke = {0, 0, 0, 255}; // color of stroke
+      Rgba m_fill {255, 255, 255, 255};   // fill-in color
+      Rgba m_stroke {0,   0,   0, 255}; // color of stroke
 
       int m_strokeWeight = 1; // pixel width of stroke
    };
 
+   /** Boolean equality of a shape to another. Uses the designated id of the shape.
+    * @param s1: First shape
+    * @param s2: Second shape
+    * @returns True / false */
    bool operator == (const Shape & s1, const Shape & s2);
 };
 #endif

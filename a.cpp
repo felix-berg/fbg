@@ -1,8 +1,155 @@
 #include "2D_Graphics_Lib.hpp"
-#include <SDL2/SDL_scancode.h>
+
+#include <vector>
+
+using namespace fbg;
+
+class Grid : public Context {
+public:
+   Grid(int cell_size, const LoopWin & window)
+      : m_cell_size { cell_size }
+   {
+      if (window.width()  % m_cell_size != 0 ||
+          window.height() % m_cell_size != 0) 
+         throw std::runtime_error("Window width and height have to be divisible by cell size."); 
+
+      m_gridw = window.width()  / m_cell_size;
+      m_gridh = window.height() / m_cell_size;   
+
+      m_lines.resize(m_gridw * m_gridh);
+      m_velocities.resize(m_gridw * m_gridh);
+      m_points.resize(m_gridw * m_gridh);
+
+      for (int gy = 0; gy < m_gridh; gy++) {
+         for (int gx = 0; gx < m_gridw; gx++) {
+            size_t idx = gx + gy * m_gridw;
+
+            m_velocities[idx] = fbg::random_vector(-1.0f, 1.0f, -1.0f, 1.0f);
+
+            m_velocities[idx].normalize();
+
+            const float csz = static_cast<float> (m_cell_size);
+            V2d<float> scrP {
+               gx * csz + csz / 2,
+               gy * csz + csz / 2
+            };
+
+            V2d<float> direction = m_velocities[idx];
+            direction.size(static_cast<float> (m_cell_size) * 0.5f);
+            
+            m_lines[idx].from(scrP);
+            m_lines[idx].to(scrP + direction); 
+
+            m_points[idx].pos(scrP);
+            m_points[idx].stroke(0);
+            m_points[idx].strokeweight(5);
+            
+            this->attach(m_lines[idx]);
+            this->attach(m_points[idx]);
+         }
+      }
+   }
+
+   V2d<float> velocity_at(const V2d<float> & p) const
+   {
+      int x = std::round(p.x / static_cast<float> (m_cell_size));
+      int y = std::round(p.y / static_cast<float> (m_cell_size));
+
+      if (x < 0 || x >= m_gridw ||
+          y < 0 || y >= m_gridh) 
+            return { 0, 0 };
+
+      return m_velocities[y * m_gridw + x];
+   }
+
+private:
+   std::vector<Line> m_lines;
+   std::vector<Point> m_points;
+   std::vector<V2d<float>> m_velocities;
+   int m_gridw;
+   int m_gridh;
+   const int m_cell_size;
+};
+
+class Particle : public Circle {
+public:
+   V2d<float> vel {};
+   V2d<float> acc {};
+
+   Particle() : Particle { 0, 0 } { };
+
+   Particle(float x, float y)
+      : Circle { x, y, 8.0f }
+   { }
+
+   void update(float dt)
+   {
+      vel += acc * dt;
+      this->move(vel * dt);
+      acc = { 0, 0 };
+   }
+};
+
+class ParticleSystem : public Context {
+public:
+   float gridPushingStrength = 50.0f;
+
+   ParticleSystem(int num, const LoopWin & win) : Context { } 
+   {
+      m_particles.resize(num);
+      for (size_t i = 0; i < num; i++) {
+         m_particles[i].pos(fbg::random(win.width()), 
+                            fbg::random(win.height()));
+         
+         this->attach(m_particles[i]);
+      }
+   }
+
+   void update(const Grid & grid, float dt) 
+   {
+      for (Particle & p : m_particles) {
+         p.acc += grid.velocity_at(p.pos()) * gridPushingStrength;
+         p.update(dt);
+      }
+   }
+
+   void wrap_to_screen(const LoopWin & win) {
+      for (Particle & particle : m_particles) {
+         V2d<float> p { particle.pos() };
+         if (p.x < 0)            p.x += win.width();
+         if (p.x >= win.width()) p.x -= win.width();
+
+         if (p.y < 0)             p.y += win.height();
+         if (p.y >= win.height()) p.y -= win.height();
+
+         particle.pos(p);
+      }
+   }
+
+private:
+   std::vector<Particle> m_particles;
+};
 
 int main() {
-   fbg::LoopWin win;
+   fbg::LoopWin win { "Vector grid test", 800, 800 };
+
+   Grid grid { 40, win };
+   ParticleSystem ps { 100, win };
+
+   Line l { 100, 100, 100, 100 };
+
+   Line k = l;
+
+   // std::vector<Shape> shapes;
+   // shapes.push_back(l);
+
+   win.attach(grid);
+   win.attach(ps);
+
+   win.draw = [&](float dt) -> void {
+      ps.wrap_to_screen(win);
+      ps.update(grid, dt);
+   };
 
    win.run();
 

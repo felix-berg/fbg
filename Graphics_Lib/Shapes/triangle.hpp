@@ -27,6 +27,7 @@ namespace fbg {
             throw std::runtime_error("Triangle: cannot get a point outside the range of 0-2.\n");
          return get_point(i); 
       };
+
    protected:
       void draw_stroke(Frame &);
       void draw_fill(Frame &);
