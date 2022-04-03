@@ -12,16 +12,16 @@ using namespace fbg;
 constexpr float sin45 = 0.7071067811865f;
 
 // Octants ((x, y) is normally in the "1" octant):
-//			  |
-//      7 -|- 6
-// 	/    |    \     
-//   3     |     2
-// --|-----+-----|- +x
-//   1     |     0
-// 	\	  |    /
-//      5 -|- 4
-//  		  |
-// 		  +y
+//			  |            |      
+//      7 -|- 6         |   
+// 	/    |    \       |          
+//   3     |     2      |      
+// --|-----+-----|- +x  |
+//   1     |     0      |      
+// 	\	  |    /       |   
+//      5 -|- 4         |   
+//  		  |            |
+// 		  +y           |            
 
 /** Get octant points for given reference point and x-y value pair (referring to the first octant). */
 void get_octants(std::array<int, 8> & octantsX, std::array<int, 8> & octantsY, int cx, int cy, int x, int y) 

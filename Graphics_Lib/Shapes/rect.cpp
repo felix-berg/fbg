@@ -3,6 +3,8 @@
 #include "drawing_algorithms/drawline.hpp"
 #include "drawing_algorithms/drawpolyline.hpp"
 
+#include <cmath>
+
 using namespace fbg;
 
 Rect::DrawMode Rect::MODE = Rect::DrawMode::CENTER;
