@@ -145,7 +145,8 @@ namespace fbg {
       /** Boolean equality of this shape to another. Uses the designated id of the shape.
        * @param other: The shape, that we are comparing against.
        * @returns True / false */
-      bool operator == (const Shape & other) { return this->id() == other.id(); };
+      // bool operator == (const Shape & other) { return this->id() == other.id(); };
+
 
    protected:
       // Default constructor
@@ -193,6 +194,8 @@ namespace fbg {
       bool m_doStroke = true,
            m_doFill	 = true;
 
+      friend bool operator == (const Shape & s1, const Shape & s2);
+      
    private:
       std::vector<V2d<float>> m_points; // storage for the points of this shape
       unsigned int m_id; // unique id for identification
@@ -202,5 +205,7 @@ namespace fbg {
 
       int m_strokeWeight = 1; // pixel width of stroke
    };
+
+   bool operator == (const Shape & s1, const Shape & s2);
 };
 #endif

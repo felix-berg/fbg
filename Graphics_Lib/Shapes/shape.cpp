@@ -7,3 +7,7 @@ unsigned int get_unique_id() {
    return uniqueIdGenerator++;
 }
 
+bool fbg::operator == (const Shape & s1, const Shape & s2)
+{
+   return s1.id() == s2.id();
+}

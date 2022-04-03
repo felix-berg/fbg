@@ -12,17 +12,17 @@ namespace fbg {
       Rgba * pixels;
       const int w, h;
 
-      Frame(int w, int h) 
-         : w { w }, h { h }
+      Frame(int w_, int h_) 
+         : w { w_ }, h { h_ }
       {
-         pixels = new Rgba[w * h];
+         pixels = new Rgba[w_ * h_];
          memset(pixels, 0, sizeof(Rgba) * w * h);
       }
 
       ~Frame() { delete pixels; };
 
       Frame(const Frame & other) 
-         : w { other.w }, h { other.h }, pixels { new Rgba[w * h] }
+         : w { other.w }, h { other.h }, pixels { new Rgba[other.w * other.h] }
       {
          memcpy(pixels, other.pixels, w * h * sizeof(Rgba));
       }
