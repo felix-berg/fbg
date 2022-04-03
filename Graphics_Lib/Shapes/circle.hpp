@@ -17,6 +17,7 @@ namespace fbg {
        * @param r: Radius of constructed circle. */
       Circle(const V2d<float> & p, float r) : Shape { { p } } { 
          radius(r);
+         stroke(0);
       };
 
       /** Constructor for circle class.
