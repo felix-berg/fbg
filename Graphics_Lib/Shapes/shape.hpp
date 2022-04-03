@@ -18,7 +18,10 @@ namespace fbg {
    public:
       // can be used, if you want to disallow vectors of shapes.
       // Shape(const Shape &) = delete;
-      // Shape & operator = (const Shape &) = delete; 
+      // Shape & operator = (const Shape &) = delete;
+
+      Shape (const Shape &) = default; 
+      Shape & operator= (const Shape &) = default; 
 
       /** Getter for fill color.
        * @returns Current fill color of shape. */
