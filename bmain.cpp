@@ -8,8 +8,8 @@ using namespace fbg;
 int main() {
    LoopWin win { "Boids flocking simulation.", 1280, 720 };
 
-   win.background(52);
-   win.framerate(60);
+   win.background(0, 12);
+   win.framerate(144);
 
    Flock flock { win, 140 };
 

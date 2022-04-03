@@ -9,9 +9,7 @@
 
 using namespace fbg;
 
-/** Whether to draw lines with smooth edges of lines or not. */
-bool Line::SMOOTH_EDGES = true; 
-
+LineMode Line::DEFAULT_LINEMODE = SMOOTH;
 int Line::DEFAULT_STROKEWEIGHT = 5;
 
 /** Change given pixelbuffer based on the pixels of the line. */
@@ -24,10 +22,7 @@ void Line::draw_stroke(Frame & frame)
    
    LineMode m;
    
-   if (m_edgeType == LineMode::UNDEFINED)
-      m = Line::SMOOTH_EDGES ? LineMode::SMOOTH : LineMode::ROUGH; 
-   else 
-      m = m_edgeType;
+   m = m_edgeType;
 
    compute_line_stroke(frame, f.x, f.y, t.x, t.y, stroke(), strokeweight(), m);
 }

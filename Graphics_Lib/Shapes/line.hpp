@@ -12,8 +12,8 @@ namespace fbg {
    */
    class Line : public Shape {
    public:
-      static bool SMOOTH_EDGES;
       static int DEFAULT_STROKEWEIGHT;
+      static LineMode DEFAULT_LINEMODE;
 
       /** Constructor for line class.
        * @param f: The "from" point of the line.
@@ -23,6 +23,7 @@ namespace fbg {
          : Shape { { f, t } } 
       {
          strokeweight(DEFAULT_STROKEWEIGHT);
+         m_edgeType = DEFAULT_LINEMODE;
          stroke(255);
       };
 
