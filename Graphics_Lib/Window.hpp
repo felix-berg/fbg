@@ -91,7 +91,7 @@ namespace fbg {
       void wait_for_key();
 
    private:
-      Rgba m_backgroundColor {140, 140, 140, 255};
+      Rgba m_backgroundColor {53, 53, 53, 255};
       
       /** The context of the window. 
        * Holds every shape, that is attached to the window.  */

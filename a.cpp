@@ -16,36 +16,36 @@ public:
       m_gridw = window.width()  / m_cell_size;
       m_gridh = window.height() / m_cell_size;   
 
-      m_lines.resize(m_gridw * m_gridh);
-      m_velocities.resize(m_gridw * m_gridh);
-      m_points.resize(m_gridw * m_gridh);
+      m_lines.reserve(m_gridw * m_gridh);
+      m_velocities.reserve(m_gridw * m_gridh);
+      m_points.reserve(m_gridw * m_gridh);
 
       for (int gy = 0; gy < m_gridh; gy++) {
          for (int gx = 0; gx < m_gridw; gx++) {
-            size_t idx = gx + gy * m_gridw;
-
-            m_velocities[idx] = fbg::random_vector(-1.0f, 1.0f, -1.0f, 1.0f);
-
-            m_velocities[idx].normalize();
+            m_velocities.push_back(fbg::random_vector(-1.0f, 1.0f, -1.0f, 1.0f));
+            m_velocities.back().normalize();
 
             const float csz = static_cast<float> (m_cell_size);
+
             V2d<float> scrP {
                gx * csz + csz / 2,
                gy * csz + csz / 2
             };
 
-            V2d<float> direction = m_velocities[idx];
+            V2d<float> direction = m_velocities.back();
             direction.size(static_cast<float> (m_cell_size) * 0.5f);
             
-            m_lines[idx].from(scrP);
-            m_lines[idx].to(scrP + direction); 
+            m_lines.push_back(Line {
+               scrP,
+               scrP + direction
+            });
 
-            m_points[idx].pos(scrP);
-            m_points[idx].stroke(0);
-            m_points[idx].strokeweight(5);
+            m_points.push_back(Point { scrP });
+            m_points.back().stroke(0);
+            m_points.back().strokeweight(5);
             
-            this->attach(m_lines[idx]);
-            this->attach(m_points[idx]);
+            this->attach(m_lines.back());
+            this->attach(m_points.back());
          }
       }
    }
@@ -96,12 +96,13 @@ public:
 
    ParticleSystem(int num, const LoopWin & win) : Context { } 
    {
-      m_particles.resize(num);
+      m_particles.reserve(num);
       for (size_t i = 0; i < num; i++) {
-         m_particles[i].pos(fbg::random(win.width()), 
-                            fbg::random(win.height()));
+         m_particles.push_back({
+            fbg::random(win.width()), 
+            fbg::random(win.height())});
          
-         this->attach(m_particles[i]);
+         this->attach(m_particles.back());
       }
    }
 
@@ -131,17 +132,10 @@ private:
 };
 
 int main() {
-   fbg::LoopWin win { "Vector grid test", 800, 800 };
+   fbg::LoopWin win { "Vector grid test", 800, 800 }; 
 
    Grid grid { 40, win };
    ParticleSystem ps { 100, win };
-
-   Line l { 100, 100, 100, 100 };
-
-   Line k = l;
-
-   // std::vector<Shape> shapes;
-   // shapes.push_back(l);
 
    win.attach(grid);
    win.attach(ps);
