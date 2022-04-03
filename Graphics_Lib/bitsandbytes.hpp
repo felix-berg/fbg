@@ -1,7 +1,7 @@
 #ifndef BITSANDBYTES_HPP
 #define BITSANDBYTES_HPP
 
-typedef unsigned char u_char;
+typedef unsigned char uint8_t;
 namespace fbg {
    template <typename T, typename F>
       inline T * force_into(F * v) {
@@ -11,7 +11,7 @@ namespace fbg {
    template <typename T>
    void print_bytes(const T v, int bits, int bytesPerLine) 
    {
-      u_char * p = (u_char *) &v;
+      uint8_t * p = (uint8_t *) &v;
 
       int bytes = bits / 8;
 
@@ -26,7 +26,7 @@ namespace fbg {
    template <typename T>
    void print_bits(const T v, int bits, int bitsPerLine) 
    {
-      u_char * bytes = (u_char *) &v;
+      uint8_t * bytes = (uint8_t *) &v;
 
       int n_bytes = bits / 8;
 

@@ -38,25 +38,25 @@ namespace fbg {
 
       /** Setter for fill color.
        * @param b: Grayscale value. [0, 255] */
-      void fill(u_char b) { m_fill = {b, b, b, 255}; m_doFill = true; };
+      void fill(uint8_t b) { m_fill = {b, b, b, 255}; m_doFill = true; };
 
       /** Setter for fill color. 
        * @param b: Grayscale value. [0, 255]
        * @param a: Alpha value. [0, 255] */
-      void fill(u_char b, u_char a) { m_fill = {b, b, b, a}; m_doFill = true; };
+      void fill(uint8_t b, uint8_t a) { m_fill = {b, b, b, a}; m_doFill = true; };
 
       /** Setter for fill color.
        * @param r: Amount of red. [0, 255] 
        * @param g: Amount of green. [0, 255]
        * @param b: Amount of blue. [0, 255]*/
-      void fill(u_char r, u_char g, u_char b) { m_fill = {r, g, b, 255}; m_doFill = true; };
+      void fill(uint8_t r, uint8_t g, uint8_t b) { m_fill = {r, g, b, 255}; m_doFill = true; };
 
       /** Setter for fill color.
        * @param r: Amount of red. [0, 255] 
        * @param g: Amount of green. [0, 255]
        * @param b: Amount of blue. [0, 255] 
        * @param a: Amount of alpha. [0, 255] */
-      void fill(u_char r, u_char g, u_char b, u_char a) { m_fill = {r, g, b, a}; m_doFill = true; }
+      void fill(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { m_fill = {r, g, b, a}; m_doFill = true; }
 
       /** Setter for stroke color. 
        * @param c: Color */
@@ -64,25 +64,25 @@ namespace fbg {
 
       /** Setter for stroke color.
        * @param b: Grayscale value. [0, 255] */
-      void stroke(u_char b) { m_stroke = {b, b, b, 255}; m_doStroke = true; };
+      void stroke(uint8_t b) { m_stroke = {b, b, b, 255}; m_doStroke = true; };
 
       /** Setter for stroke color. 
        * @param b: Grayscale value. [0, 255]
        * @param a: Alpha value. [0, 255] */
-      void stroke(u_char b, u_char a) { m_stroke = {b, b, b, a}; m_doStroke = true; };
+      void stroke(uint8_t b, uint8_t a) { m_stroke = {b, b, b, a}; m_doStroke = true; };
 
       /** Setter for stroke color.
        * @param r: Amount of red. [0, 255] 
        * @param g: Amount of green. [0, 255]
        * @param b: Amount of blue. [0, 255]*/
-      void stroke(u_char r, u_char g, u_char b) 	{ m_stroke = {r, g, b, 255}; m_doStroke = true; };
+      void stroke(uint8_t r, uint8_t g, uint8_t b) 	{ m_stroke = {r, g, b, 255}; m_doStroke = true; };
 
       /** Setter for stroke color.
        * @param r: Amount of red. [0, 255] 
        * @param g: Amount of green. [0, 255]
        * @param b: Amount of blue. [0, 255]
        * @param a: Amount of alpha. [0, 255] */
-      void stroke(u_char r, u_char g, u_char b, u_char a) { m_stroke = {r, g, b, a}; m_doStroke = true; }
+      void stroke(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { m_stroke = {r, g, b, a}; m_doStroke = true; }
 
       /** Turn off rendering of stroke. */
       void noStroke() { m_doStroke = false; };

@@ -25,12 +25,12 @@ void fbg::alpha_composite1(Rgba * dst, const Rgba * over)
 
    // c = o * oa + d * (1 - oa)
    // o = (o * OA + d * (255 - OA)) / 255
-   u_char rest = 255 - over->a;
+   uint8_t rest = 255 - over->a;
    *dst = Rgba {
-      (u_char) ((over->r * over->a + dst->r * rest) / 255),
-      (u_char) ((over->g * over->a + dst->g * rest) / 255),
-      (u_char) ((over->b * over->a + dst->b * rest) / 255),
-      (u_char) ((over->a * over->a + dst->a * rest) / 255)
+      (uint8_t) ((over->r * over->a + dst->r * rest) / 255),
+      (uint8_t) ((over->g * over->a + dst->g * rest) / 255),
+      (uint8_t) ((over->b * over->a + dst->b * rest) / 255),
+      (uint8_t) ((over->a * over->a + dst->a * rest) / 255)
    };
 }
 
@@ -51,6 +51,7 @@ void fbg::alpha_composite8(Rgba * dst, Rgba * over)
    // get a vector _oa filled with only the over.a value
 
    const __m256i _selectAlpha = _mm256_set1_epi32(0x000000FF);
+   
    // _oa = over.a & _selectAlpha
    // _oa = |R1|G1|... & |00|00|00|FF| ==> |00|00|00|A1|...|00|A2|...
    __m256i _oa = _mm256_and_si256(_over, _selectAlpha);

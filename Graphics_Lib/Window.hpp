@@ -30,14 +30,14 @@ namespace fbg {
       
       /** Setter for background color.
        * @param b: Grayscale value for background color. [0, 255] */
-      void background(u_char b) { 
+      void background(uint8_t b) { 
          m_backgroundColor = {b, b, b, 255}; 
       };
 
       /** Setter for background color.
        * @param b: Grayscale value for background color. [0, 255]
        * @param a: Alpha value for background. [0, 255] */
-      void background(u_char brightness, u_char alpha) { 
+      void background(uint8_t brightness, uint8_t alpha) { 
          m_backgroundColor = {brightness, brightness, brightness, alpha};
          clear_pixels({brightness, brightness, brightness, alpha}); 
       };
@@ -46,7 +46,7 @@ namespace fbg {
        * @param r: Red-value of background color. [0, 255]
        * @param g: Green-value of background color. [0, 255]
        * @param b: Blue-value of background color. [0, 255] */
-      void background(u_char r, u_char g, u_char b) { 
+      void background(uint8_t r, uint8_t g, uint8_t b) { 
          m_backgroundColor = { r, g, b, 255 }; 
       };
 
@@ -55,7 +55,7 @@ namespace fbg {
        * @param g: Green-value of background color. [0, 255]
        * @param b: Blue-value of background color. [0, 255] 
        * @param a: Alpha-value of background color. [0, 255]*/
-      void background(u_char r, u_char g, u_char b, u_char a) { 
+      void background(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { 
          m_backgroundColor = { r, g, b, a }; 
       };		
          

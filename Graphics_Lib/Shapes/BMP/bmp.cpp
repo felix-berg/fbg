@@ -22,8 +22,8 @@ void swap_pointers(T * ptr1, T * ptr2) {
 template <typename T>
 void reverse_bytes(T * data, size_t n_bytes) {
 
-   u_char * first = (u_char *) data;
-   u_char * last  = (u_char *) (data + n_bytes - 1);
+   uint8_t * first = (uint8_t *) data;
+   uint8_t * last  = (uint8_t *) (data + n_bytes - 1);
 
    while (first < last) 
       swap_values(first++, last--);
@@ -80,7 +80,7 @@ T byte_array_to_T(void * arr)
    return result;
 }
 
-bool is_valid_bmp_field(const u_char field[2])
+bool is_valid_bmp_field(const uint8_t field[2])
 {
    if (field[0] != 'B' || field[1] != 'M') 
       return false;
@@ -98,16 +98,16 @@ struct RawBmp {
    u_int fileSize;
    u_int dataOffset;
 
-   u_char * data;    // the data of the file, excluding the file header
+   uint8_t * data;    // the data of the file, excluding the file header
 
    RawBmp(std::ifstream & fileStream)
    {
       // load header
-      u_char headerData[headerSize];
+      uint8_t headerData[headerSize];
       read_bytes(headerData, headerSize, fileStream);
 
       // check if header has the right field specified
-      u_char tmpField[2];
+      uint8_t tmpField[2];
       memcpy(tmpField, &headerData[0], 2);
       if (!is_valid_bmp_field(tmpField)) 
          throw std::runtime_error("BMP file couldn't be loaded: field is invalid.");
@@ -115,7 +115,7 @@ struct RawBmp {
       memcpy(&fileSize,   &headerData[2],  sizeof(u_int));
       memcpy(&dataOffset, &headerData[10], sizeof(u_int));
    
-      data = new u_char[fileSize];
+      data = new uint8_t[fileSize];
 
       // load header into data
       memcpy(data, headerData, headerSize);
@@ -127,7 +127,7 @@ struct RawBmp {
    RawBmp(const RawBmp & other)
       : fileSize { other.fileSize }
    {
-      data = new u_char[fileSize];
+      data = new uint8_t[fileSize];
       memcpy(data, other.data, fileSize);
    }
 
@@ -168,7 +168,7 @@ constexpr int maxHeaderSize = 140;
 /** Checks parameters from dib header against a set of invariants. */
 bool are_valid_dib_params(u_int width, u_int height, u_int bitdepth, u_int headerSize, u_int fileSize) {
    bool supported = false;
-      for (int i = 0; i < 2; i++)
+      for (size_t i = 0; i < 2; i++)
          if (bitdepth == supportedBitdepthts[i]) { supported = true; break; }
    
         if (width  < 0 || width  > maxImageDim) return false;
@@ -181,7 +181,7 @@ bool are_valid_dib_params(u_int width, u_int height, u_int bitdepth, u_int heade
 
 /* Reads image specified by given bitdepth, width and height, starting from the first index
 in the pixelData array. */
-fbg::Frame read_bmp_pixel_data(const u_char * pixelData, u_short bitdepth, u_int width, u_int height) {
+fbg::Frame read_bmp_pixel_data(const uint8_t * pixelData, u_short bitdepth, u_int width, u_int height) {
    fbg::Frame resf { int(width), int(height) };
 
    if (bitdepth == 24) {

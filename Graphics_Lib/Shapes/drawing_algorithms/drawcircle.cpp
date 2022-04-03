@@ -81,7 +81,7 @@ void double_octant_stroke_to_quartant(std::vector<int> & strokePattern)
 
    // copy all points from the first octant to the joined octant
    // x becomes y, and y becomes x
-   for (int y = 0; y < strokePattern.size(); y++)
+   for (size_t y = 0; y < strokePattern.size(); y++)
       strokePattern[strokePattern[y]] = y;
 }
 
@@ -105,7 +105,7 @@ void compute_circle_stroke_multi(Frame & frame, int cx, int cy, int r, Rgba colo
    
    innerCircleStroke.resize(outerCircleStroke.size(), NONE);
 
-   for (int y = 0; y < outerCircleStroke.size(); y++) {
+   for (size_t y = 0; y < outerCircleStroke.size(); y++) {
       int innerX = innerCircleStroke[y];
       int outerX = outerCircleStroke[y];
 

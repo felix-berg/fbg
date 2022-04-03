@@ -3,7 +3,8 @@
 
 #include "rgba.hpp"
 
-typedef unsigned char u_char;
+#include <cstdint>
+
 namespace fbg {
    void alpha_composite8(Rgba * dst, Rgba * over);
    void alpha_composite1(Rgba * dst, const Rgba * over);
