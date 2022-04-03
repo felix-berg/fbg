@@ -14,7 +14,7 @@ namespace fbg {
 
 /** Class for running animations inside a Window.
  * @param draw(): Function pointer, that can be defined. Called immediately before every Frame is rendered.
- * @param after_draw(): Function pointer, that can be defiend. Called immediately after every Frame is rendered. 
+ * @param after_draw(): Function pointer, that can be defined. Called immediately after every Frame is rendered. 
  * @param run(): Function that starts rendering. Stops execution until window is closed.
  * @param framerate(): Getter/setter for framerate. */
    class LoopWin : public Window {
