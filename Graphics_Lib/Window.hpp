@@ -90,7 +90,6 @@ namespace fbg {
       /** Stop execution until any key is pressed. */
       void wait_for_key();
 
-
    private:
       Rgba m_backgroundColor {140, 140, 140, 255};
       

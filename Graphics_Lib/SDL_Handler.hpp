@@ -15,7 +15,13 @@ namespace fbg {
    public:
       SDLHandler(const std::string & title, const V2d<int> & startPoint, int w, int h);
       SDLHandler(const std::string & title, int w, int h);
+
       ~SDLHandler();
+
+      SDLHandler(const SDLHandler &) = delete;
+      SDLHandler & operator = (const SDLHandler &) = delete;
+      SDLHandler(SDLHandler &&) = delete;
+      SDLHandler & operator = (SDLHandler &&) = delete;
 
       int width()  const { return m_width; };
       int height() const { return m_height; };
