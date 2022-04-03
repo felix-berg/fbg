@@ -4,13 +4,11 @@
 #include "Shapes/shape.hpp"
 #include "Shapes/context.hpp"
 #include "SDL_Handler.hpp"
+#include "key.hpp"
 
 #include <vector>
 
 namespace fbg {
-   enum Key {
-
-   };
    /** Window class. Used for rendering shapes. 
     * @param attach(): Attach a shape to be drawn to the screen. 
     * @param detach(): Detach a shape from the screen.
@@ -87,7 +85,7 @@ namespace fbg {
 
       /** Stop execution until a given key is pressed. 
        * @param key_id: The key to be pressed for execution to continue. */
-      void wait_for_key(int key_id); // TODO: Make own key enum
+      void wait_for_key(Key key_id);
 
       /** Stop execution until any key is pressed. */
       void wait_for_key();

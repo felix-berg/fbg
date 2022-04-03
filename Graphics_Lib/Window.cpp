@@ -14,9 +14,9 @@ void Window::wait_for_key()
    }
 }
 
-void Window::wait_for_key(int key_id) 
+void Window::wait_for_key(Key key_id) 
 {
-   while (!key_is_pressed(key_id) || !this->has_keyboard_focus()) {
+   while (!key_is_pressed((int) key_id) || !this->has_keyboard_focus()) {
       SDL_Event e;
       SDL_WaitEvent(&e);
       handle_event(&e);
