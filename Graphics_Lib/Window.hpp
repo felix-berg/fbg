@@ -8,6 +8,9 @@
 #include <vector>
 
 namespace fbg {
+   enum Key {
+
+   };
    /** Window class. Used for rendering shapes. 
     * @param attach(): Attach a shape to be drawn to the screen. 
     * @param detach(): Detach a shape from the screen.

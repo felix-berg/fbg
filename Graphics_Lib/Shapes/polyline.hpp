@@ -3,8 +3,6 @@
 
 #include "shape.hpp"
 
-// TODO: Javadocs
-
 namespace fbg {
    /** Polyline class. 
     * @param vertex(): Setter for a new vertex

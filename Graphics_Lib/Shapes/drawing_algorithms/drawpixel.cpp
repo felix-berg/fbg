@@ -39,9 +39,7 @@ void fbg::set_vertical_line(Frame & frame, int x, int fy, int ty, Rgba color)
       frame.set_pixel(x, y, color);
 }
 
-/*
-   TODO: Untested
-*/
+
 void fbg::draw_pixel(Frame & frame, int x, int y, Rgba color, int sw) 
 {
    if (sw == 1)
