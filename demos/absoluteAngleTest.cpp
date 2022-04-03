@@ -7,6 +7,7 @@ int main() {
    LoopWin win { "Test of simple shapes.", 640, 480 };
 
    win.background(52);
+   win.framerate(1000000);
 
    Context context { win.dimensions() / 2.0f };
 
@@ -80,13 +81,11 @@ int main() {
 
    Image img { rs() / 2.0f, "test2.bmp"};
    context.attach(img);
-
    
    win.attach(context);
 
    float t = 0;
    win.draw = [&](float dt) -> void {
-      // context.rotate(0.001f);
       context.angle((context.origin() - win.mouse()).angle());
    };
    

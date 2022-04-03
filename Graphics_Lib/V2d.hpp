@@ -179,6 +179,7 @@ namespace fbg {
       return (os << '(' << v.x << ", " << v.y << ')');
    }
 
+
    template <typename T>
    V2d<T> operator * (const double factor, const V2d<T> & v) 
    {
