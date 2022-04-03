@@ -155,7 +155,9 @@ namespace fbg {
 
       // protected, so only derived classes can be copied
       Shape (const Shape &) = default;
+      Shape (Shape &&)      = default;
       Shape & operator = (const Shape &) = default;
+      Shape & operator = (Shape &&)      = default;
 
       // virtual function: to be defined by subclasses
       virtual void draw_stroke(Frame & f) = 0;
