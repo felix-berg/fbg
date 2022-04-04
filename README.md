@@ -86,6 +86,21 @@ Here we again see the use of inherited methods to simplify the class definition.
 
 The `bounce_on_walls`-method compares the position of the particle against the boundaries of the given window. In the function, the velocity is updated, if a collision i detected.
 
+```C++
+void Particle::bounce_on_walls(const Window * w)
+{
+   V2d<float> p = pos();
+   float r = radius();
+
+   // bounce on walls
+   if (p.x - r < 0 || p.x + r >= w->width())  
+      velocity.x *= -1;
+
+   // bounce on ceiling
+   if (p.y - r < 0 || p.y + r >= w->height()) 
+      velocity.y *= -1;
+}
+```
 
 Because the `Particle`-class is derived from a shape, the standard `Window::attach` or `Context::attach` methods can be used on it, just as if the particle was any other shape (e.g. `Circle` or `Rect`).
 
@@ -130,6 +145,42 @@ Particle::Particle(size_t num, const Window * w)
       // using inherited Context::attach method.
       Particle & newP = m_particles.back();
       this->attach(newP); 
+   }
+}
+```
+
+In the `ParticleSystem::update`-method, all particles are updated, and collisions between the particles are detected.
+```C++
+void ParticleSystem::update(float dt)
+{
+   // ...
+
+   // check every particle p against every other
+   // particle o, and react to potential collision
+   for (size_t i = 0; i < m_particles.size(); i++) {
+      Particle & p = m_particles[i];
+      
+      for (size_t j = i + 1; j < m_particles.size(); j++) {
+         Particle & o = m_particles[j];
+
+         if (p.collides_with(o)) {
+            // collision detected
+
+            // reaction
+            p.velocity += (p.pos() - o.pos());
+            o.velocity += (o.pos() - p.pos());
+
+            // use of inherited method Shape::stroke
+            p.stroke(255);
+            o.stroke(255);
+         }
+      }
+   }
+
+   // updating of positions
+   for (Particle & p : m_particles) {
+      p.bounce_on_walls(windowPtr);
+      p.update(dt);
    }
 }
 ```
