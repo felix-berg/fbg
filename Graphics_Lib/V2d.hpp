@@ -7,6 +7,11 @@
 #include "maths.hpp"
 
 namespace fbg {
+   // definition of number as either an integral (integer)
+   // or a floating point number
+   template <typename T>
+      concept Number = std::integral<T> || std::floating_point<T>;
+
    /** Base 2d vector for the fbg graphics library. 
     * @param x: x-value for vector
     * @param y: y-value for vector
@@ -14,8 +19,9 @@ namespace fbg {
     * @param size_sq(): Optimized getter for the size of the vector, squared.
     * @param normalize(): Normalizes the vector. Equivalent to size(1).
     * @param limit(): Limits the size of the vector. */
-   template <typename T>
-   struct V2d {
+   template<typename T>
+      requires Number<T>
+   struct V2d  {
       T x, y;
 
       V2d<T> operator + (const V2d<T> & oth)  const { return { x + oth.x, y + oth.y }; };
