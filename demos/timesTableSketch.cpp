@@ -4,7 +4,7 @@
 
 using namespace fbg;
 
-void create_times_table(std::vector<Line> & lines, const Circle & circle, float times)
+void update_times_table(std::vector<Line> & lines, const Circle & circle, float times)
 {
    float anglePer = twoPi / float(lines.size());
 
@@ -48,7 +48,7 @@ int main()
       win.attach(l);
 
    win.draw = [&](float dt) {
-      create_times_table(lines, circle, times);
+      update_times_table(lines, circle, times);
       times += dt * 0.5f;
    };
    
