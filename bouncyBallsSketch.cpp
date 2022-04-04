@@ -4,11 +4,11 @@ using namespace fbg;
 
 class Particle : public Circle {
 public:
-   V2d<float> vel;
+   V2d<float> velocity;
 
    Particle(float x, float y, float r)
       : Circle { x, y, r },
-        vel { fbg::random_vector(-1.0f, 1.0f, -1.0f, 1.0f) }
+        velocity { fbg::random_vector(-1.0f, 1.0f, -1.0f, 1.0f) }
    {
       stroke(140);
       noFill();
@@ -17,7 +17,7 @@ public:
 
    void update(float dt)
    { 
-      this->move(vel * dt);
+      this->move(velocity * dt);
    }
 
    bool collides_with(const Particle & other)
@@ -33,8 +33,8 @@ public:
       V2d<float> p { pos() };
       float r { radius() };
 
-      if (p.x - r < 0 || p.x + r >= w->width())  vel.x *= -1;
-      if (p.y - r < 0 || p.y + r >= w->height()) vel.y *= -1;
+      if (p.x - r < 0 || p.x + r >= w->width())  velocity.x *= -1;
+      if (p.y - r < 0 || p.y + r >= w->height()) velocity.y *= -1;
    }
 };
 
@@ -69,9 +69,9 @@ public:
             Particle & o = m_particles[j];
 
             if (p.collides_with(o)) {
-               p.vel += (p.pos() - o.pos());
-               o.vel += (o.pos() - p.pos());
-               
+               p.velocity += (p.pos() - o.pos());
+               o.velocity += (o.pos() - p.pos());
+
                p.stroke(255);
                o.stroke(255);
             }

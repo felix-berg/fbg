@@ -9,34 +9,34 @@
 using namespace fbg;
 
 int main() {
-	// Construct 1280x720 Window object.
-	LoopWin window { "Window Title", 1280, 720 };
+   // Construct 1280x720 Window object.
+   LoopWin window { "Window Title", 1280, 720 };
 
-	// set window attributes:
-	window.background(0, 50); // set background color to black with alpha 50
-	window.framerate(112.0f);
-	
-	// Create circle object at (0, 0) with radius 50
-	Circle circle {0.0f, 0.0f, 50.0f};
-	
-	// draw circle object at every Frame update,
-	// by attaching it to the window object
-	window.attach(circle);
+   // set window attributes:
+   window.background(0, 50); // set background color to black with alpha 50
+   window.framerate(112.0f);
+   
+   // Create circle object at (0, 0) with radius 50
+   Circle circle {0.0f, 0.0f, 50.0f};
+   
+   // draw circle object at every Frame update,
+   // by attaching it to the window object
+   window.attach(circle);
 
-	// define function that will be called at every frame
-	window.draw = [&](float frametime) -> void {
-		// grab the mouse position from the window
-		V2d<int> mpos = window.mouse();
-	
-		// set the position of the radius to the
-		// current mouse position
-		circle.pos(mpos);
-	};
+   // define function that will be called at every frame
+   window.draw = [&](float frametime) {
+      // grab the mouse position from the window
+      V2d<int> mpos = window.mouse();
+   
+      // set the position of the radius to the
+      // current mouse position
+      circle.pos(mpos);
+   };
 
-	// Start the game loop by calling run.
-	window.run(); 
+   // Start the game loop by calling run.
+   window.run(); 
 
-	return 0; // :)
+   return 0; // :)
 }
 ```
 
@@ -47,4 +47,117 @@ Produces output:
 ## Particle-system: Bouncy-balls
 The following example produces the following output:
 ![image](https://user-images.githubusercontent.com/93908883/161541847-820393f2-ca34-48e9-9ac0-7109823e78f2.png)
-The example shows how the fbg::Shape derived classes can be expanded upon, to simplify graphics programming.
+
+The example shows how the `fbg::Shape` derived classes can be expanded upon to simplify graphics programming.
+
+### Particle (extends `Circle`)
+The bouncy balls are all instances of the `Particle` class:
+```C++
+
+class Particle : public Circle {
+public:
+   V2d<float> velocity;
+
+   Particle(float x, float y, float radius);
+
+   void update(float dt);
+   bool collides_with(const Particle &);
+   void bounce_on_walls(const Window *);
+};
+```
+
+The `Particle::update(float)`-method simply adds the current velocity to the position of the Particle, using the inherited `Circle::move`-method.
+
+```C++
+void Particle::update(float dt)
+{
+   move(velocity * dt);
+}
+```
+The `collides_with` method simply checks whether the distance to the other particle is less than their combined radii:
+```C++
+bool Particle::collides_with(const Particle & other) 
+{
+   return (other.pos() - this->pos()).size() 
+           < other.radius() + this->radius();
+}
+```
+Here we again see the use of inherited methods to simplify the class definition.
+
+The `bounce_on_walls`-method compares the position of the particle against the boundaries of the given window. In the function, the velocity is updated, if a collision i detected.
+
+
+Because the `Particle`-class is derived from a shape, the standard `Window::attach` or `Context::attach` methods can be used on it, just as if the particle was any other shape (e.g. `Circle` or `Rect`).
+
+```C++
+Context con { /* ... */ };
+Particle p  { /* ... */ };
+con.attach(p);
+```
+
+### ParticleSystem (extends `Context`)
+This is used with another `Shape`-derived class, namely the `ParticleSystem`-class, which extends `Context`.
+
+```C++
+class ParticleSystem : public Context {
+public:
+   // construct and attach vector of particles
+   Particle(size_t num, const Window * w);
+
+   // update all particles (call .update(), etc...)
+   void update(float dt);
+
+private:
+   // container for particles
+   std::vector<Particle> m_particles;
+};
+```
+
+This allows the `Particlesystem` to both act as a container of particles, and a context for every particle in the sketch.
+
+In the `ParticleSystem`-constructor, the vector is filled with `Particle`-instances, which are attached to itself:
+```C++
+Particle::Particle(size_t num, const Window * w) 
+   // ...
+{
+   for (size_t i = 0; i < num; i++) {
+      m_particles.push_back(Particle { /* Random starting value */ });
+
+      // Set particle parameters
+      // ...
+
+      // Attach new particle to this Particlesystem,
+      // using inherited Context::attach method.
+      Particle & newP = m_particles.back();
+      this->attach(newP); 
+   }
+}
+```
+
+Finally, an instance of `ParticleSystem` is created, and it is attached to a window, again, since `ParticleSystem` is derived from `Context`.
+```C++
+#include "2D_Graphics_Lib"
+using namespace fbg;
+int main() 
+{
+   LoopWin win { /* ... */ };
+
+   // initialize particlesystem with 40 particles
+   ParticleSystem ps { 40, &win };
+
+   // attach created particle system to window
+   win.attach(ps);
+
+   // update the particlesystem every frame
+   win.draw = [&](float dt) {
+      ps.update(dt);
+   };
+
+   // run animation
+   win.run();
+
+   return 0; // :)
+}
+```
+
+The full source-code for the example can be found in `demos/bouncyBallsSketch.cpp`
