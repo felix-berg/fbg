@@ -19,6 +19,10 @@ namespace fbg {
       {
          add_point(f);
          add_point(f + V2d<float> { 1.0f, 0.0f });
+
+         stroke(0);
+         fill(255);
+         strokeweight(1);
       }
 
       /** Constructor for rectangle. 

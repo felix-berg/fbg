@@ -18,15 +18,13 @@ namespace fbg {
       { 
          // set default value of stroke
          stroke(0);
+         fill(255);
          strokeweight(1);
       };
 
       /** Default constructor for polyline class. */
-      Polyline() : Shape { } 
-      {
-         stroke(0);
-         strokeweight(1);
-      }
+      Polyline() : Polyline { { } } { };
+
 
       /** Setter for new vertex. Adds the given point to the list of vertices in the polyline.
        * @param v: Vertex to add. */

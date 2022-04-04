@@ -12,7 +12,10 @@ namespace fbg {
       /** Constructor for point.
        * @param p: Position */
       Point(const V2d<float> & p) :
-         Shape { p } { };
+         Shape { p } 
+      {
+         stroke(255);
+      };
       
       /** Default constructor for point.
        * Sets position to (0, 0) */
@@ -25,6 +28,7 @@ namespace fbg {
       /** Setter for position. 
        * @param p: Position of point. */
       void pos(V2d<float> p)   { set_point(0, p); 	  };
+
       /** Setter for position. 
        * @param x: x-value for position.
        * @param y: y-value for position.*/
@@ -39,6 +43,10 @@ namespace fbg {
       }
 
       void draw_fill(Frame &) { };
+
+      // protect functions about fill
+      using Shape::fill;
+      using Shape::noFill;
    };
 };
 

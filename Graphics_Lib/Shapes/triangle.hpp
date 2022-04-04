@@ -4,7 +4,11 @@ namespace fbg {
    class Triangle : public Shape {
    public:
       Triangle(const V2d<float> & p1, const V2d<float> & p2, const V2d<float> & p3)
-         : Shape { p1, p2, p3 } { };
+         : Shape { p1, p2, p3 } 
+      {
+         stroke(0);
+         fill(255);
+      };
 
       Triangle() 
          : Triangle { { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f } } { };

@@ -25,6 +25,7 @@ namespace fbg {
          strokeweight(DEFAULT_STROKEWEIGHT);
          m_edgeType = DEFAULT_LINEMODE;
          stroke(255);
+         strokeweight(3);
       };
 
       /** Constructor for line class. 
