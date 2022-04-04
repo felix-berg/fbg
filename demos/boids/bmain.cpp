@@ -7,10 +7,10 @@ using namespace fbg;
 
 
 int main() {
-   LoopWin win { "Boids flocking simulation.", 640, 480 };
+   LoopWin win { "Boids flocking simulation", 640, 480 };
 
-   win.background(52);
-   win.framerate(600);
+   win.background(0, 20);
+   win.framerate(60);
 
    Flock flock { win, 140 };
 

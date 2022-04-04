@@ -56,12 +56,13 @@ struct Flock {
 
 
    Flock(LoopWin & w, int num) : win { w } {
-      boids.resize(num);
+      boids.reserve(num);
 
       for (int i = 0; i < num; i++) {
-         boids[i].pos(random_vector(win.width(), win.height()));
-         boids[i].velocity = random_vector(-100.0f, 100.0f, -100.0f, 100.0f);
-         win.attach(boids[i]);
+         boids.push_back(Boid { (float) random(win.width()), (float) random(win.height()) });
+
+         boids.back().velocity = random_vector(-100.0f, 100.0f, -100.0f, 100.0f);
+         win.attach(boids.back());
       }
    }
 
