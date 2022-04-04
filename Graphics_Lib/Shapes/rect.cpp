@@ -16,13 +16,17 @@ void rotatevec90(V2d<float> & vec) {
    vec.y = -tmp;
 }
 
-/** Get the top left point from given middle vector and unit vector of rectangle. */
-V2d<float> get_top_left_from_middle(const V2d<float> & middle, V2d<float> unit, float width, float height) 
+void width_and_height_vectors(V2d<float> & widthVec, V2d<float> & heightVec, const V2d<float> & unit, float width, float height)
 {
-   unit.rotate(quarterPi + pi);
-   unit.size((V2d<float> {width / 2.0f, height / 2.0f}).size());
+   widthVec  = unit * width;
+   heightVec = unit * height;
+   rotatevec90(heightVec);
+}
 
-   return middle + unit;
+/** Get the top left point from given middle vector and unit vector of rectangle. */
+V2d<float> get_top_left_from_middle(const V2d<float> & middle, const V2d<float> & widthVec, const V2d<float> & heightVec) 
+{
+   return middle - widthVec * 0.5f - heightVec * 0.5f;
 }
 
 /** Get a rectcorners structure holding tl, tr, br and bl points for this rectangle. */
@@ -31,16 +35,16 @@ RectCorners Rect::get_corners() const
    V2d<float> unit = get_point(1) - pos();
    V2d<float> topLeft;
 
+   V2d<float> widthVec, heightVec;
+   width_and_height_vectors(widthVec, heightVec, unit, width(), height());
+
    if (Rect::MODE == Rect::DrawMode::CENTER)
-      topLeft = get_top_left_from_middle(pos(), unit, width(), height());
+      topLeft = get_top_left_from_middle(pos(), widthVec, heightVec);
    else if (Rect::MODE == Rect::DrawMode::CORNER) 
       topLeft = pos();
    else
       throw std::runtime_error("Error in drawing rectangle: Unknown drawing mode.");
 
-   V2d<float> widthVec = width() * unit;
-   rotatevec90(unit);
-   V2d<float> heightVec = height() * unit;
 
    V2d<float> topRight = topLeft + widthVec;
    V2d<float> botRight = topLeft + widthVec + heightVec;
@@ -67,8 +71,13 @@ void Rect::draw_stroke(Frame & frame)
       V2d<float> tl;
       if (Rect::MODE == Rect::DrawMode::CORNER)
          tl = pos();
-      else if (Rect::MODE == Rect::DrawMode::CENTER)
-         tl = get_top_left_from_middle(pos(), get_point(1) - pos(), width(), height());
+      else if (Rect::MODE == Rect::DrawMode::CENTER) {
+         V2d<float> unit = get_point(1) - pos();
+         V2d<float> widthVec, heightVec;
+         width_and_height_vectors(widthVec, heightVec, unit, width(), height());
+
+         tl = get_top_left_from_middle(pos(), widthVec, heightVec);
+      }
       else
          throw std::runtime_error("Unknown Rect::DrawMode");
       
@@ -93,7 +102,9 @@ void Rect::draw_fill(Frame & frame)
    if (modAngle < aaThreshold && modAngle > -aaThreshold) {
       V2d<int> tl;
       if (Rect::MODE == Rect::DrawMode::CENTER) {
-         tl = get_top_left_from_middle(pos(), get_point(1) - pos(), width(), height());
+         V2d<float> unit = get_point(1) - pos();
+         V2d<float> widthVec, heightVec;
+         width_and_height_vectors(widthVec, heightVec, unit, width(), height());
       } else {
          tl = pos();
       }
