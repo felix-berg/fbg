@@ -1,5 +1,8 @@
 # Low-level 2D Graphics Library!
-Example usage:
+
+
+
+## Simple sketch
 ```C++
 #include "2D_Graphics_Lib.hpp"
 
@@ -39,3 +42,9 @@ int main() {
 
 Produces output:
 ![Final output](https://user-images.githubusercontent.com/93908883/159099446-f5976859-6240-45c8-a9e5-a05dad4b5cb2.png)
+
+
+## Particle-system: Bouncy-balls
+The following example produces the following output:
+
+The example shows how the fbg::Shape derived classes can be expanded upon, to simplify graphics programming.

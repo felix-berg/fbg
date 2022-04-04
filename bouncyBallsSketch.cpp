@@ -71,6 +71,7 @@ public:
             if (p.collides_with(o)) {
                p.vel += (p.pos() - o.pos());
                o.vel += (o.pos() - p.pos());
+               
                p.stroke(255);
                o.stroke(255);
             }
