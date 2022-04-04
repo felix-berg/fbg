@@ -19,8 +19,7 @@ namespace fbg {
     * @param size_sq(): Optimized getter for the size of the vector, squared.
     * @param normalize(): Normalizes the vector. Equivalent to size(1).
     * @param limit(): Limits the size of the vector. */
-   template<typename T>
-      requires Number<T>
+   template<Number T>
    struct V2d  {
       T x, y;
 
