@@ -46,5 +46,5 @@ Produces output:
 
 ## Particle-system: Bouncy-balls
 The following example produces the following output:
-
+![image](https://user-images.githubusercontent.com/93908883/161541847-820393f2-ca34-48e9-9ac0-7109823e78f2.png)
 The example shows how the fbg::Shape derived classes can be expanded upon, to simplify graphics programming.
