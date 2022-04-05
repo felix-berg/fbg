@@ -4,7 +4,6 @@
 #include <iostream>
 #include <cstdint>
 #include <SDL2/SDL.h>
-using std::ostream;
 
 /*
    A color given by a red, green, blue and alpha value.
@@ -25,6 +24,6 @@ namespace fbg {
          : r { rr }, g { gg }, b { bb }, a { aa } { };
    }; 
 
-   ostream & operator << (ostream & os, Rgba color);
+   std::ostream & operator << (std::ostream & os, Rgba color);
 };
 #endif
