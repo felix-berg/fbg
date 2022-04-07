@@ -73,11 +73,14 @@ namespace fbg {
       /** Render the currently attached shapes to the window */
       void update();
       
-      /** Attach shape to window. 
-       * @param s: The shape to be attached to the window. */
-      void attach(Shape & s) { 
-         this->context.attach(s); 
-      };
+      /** Attach any number of shapes to this Window. 
+       * @param ss: List of shapes to be added. */
+      template <typename ... Shapes>
+         requires ((... && std::convertible_to<Shapes *, Shape *>))
+      void attach(Shapes & ... ss)
+      {
+         this->context.attach(ss...);
+      }
 
       /** Detach shape from window.
        * @param s: The shape to be detached from the window. */

@@ -32,18 +32,27 @@ namespace fbg {
       /** @return Vector of pointers to the current shapes */
       const std::vector<Shape *> & getShapes() const { return m_shapes; };
 
-      /** Attach a shape to this context.
-       * @param s: The shape to be added */
-      void attach(Shape & s) 
-      { 
-         if (*((Shape *) this) == s) 
+
+      /** Attach any number of shapes to this context. 
+       * @param ss: List of shapes to be added. */
+      template <typename ... Shapes>
+         requires ((... && std::convertible_to<Shapes *, Shape *>))
+      void attach(Shapes & ... ss)
+      {
+         bool isSelf = false;
+         ((isSelf = (isSelf || *((Shape *) this) == ss)), ...);
+
+         if (isSelf)
             throw std::runtime_error("Context attach error: Cannot attach context to itself.\n");
+
+         int invalidId = -1;
+         ((invalidId = (!ss.isDrawable() ? ss.id() : invalidId)), ...);
+
+         if (invalidId != -1)
+            throw std::runtime_error(std::string("Added shape is invalid. Id: ") + std::to_string(invalidId));
          
-         if (!s.isDrawable())
-            throw std::runtime_error(std::string("Added shape is invalid. Id: ") + std::to_string(s.id()));
-         
-         m_shapes.push_back(&s);
-      };
+         ((m_shapes.push_back(&ss)), ...);
+      }
 
       /** Detach a shape from this context.
        * @param s: The shape to be removed */
