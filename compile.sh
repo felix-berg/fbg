@@ -1,11 +1,16 @@
 rm a.out
 shopt -s globstar
 cd include
-echo "Lines of code: " $(wc -l **/*.cpp **/*.hpp | tr -d ' ' | awk 'END {print $NF}') "
-"
-
+if [[ $(wc -l **/*.o) ]] 
+then
+   echo "Found .o files - compiling from existing precompiled files"
+else
+   echo "Didn't find .o files"
+   echo "Precompiling..."
+   $(bash ../precompile.sh)
+fi
 
 echo "Compiling..."
-g++-11 -std=c++20 **/*.cpp ../*.cpp -o ../a.out -lSDL2 -mavx2 -pthread -O3
+g++-11 -std=c++20 **/*.o ../*.cpp -o ../a.out -lSDL2 -mavx2 -pthread -O3
 
 echo "Finished."
