@@ -1,4 +1,4 @@
-# Low-level 2D Graphics Library!
+# 2D Graphics Library for C++!
 
 
 
