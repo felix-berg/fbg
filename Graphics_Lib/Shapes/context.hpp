@@ -87,12 +87,10 @@ namespace fbg {
        * @returns Angle of context */
       float angle() const { return (get_point(1) - get_point(0)).angle(); };
 
-      // copy and move undefined, because shapes are
+      // copy undefined, because shapes are
       // stored as pointers.
       Context (const Context &) = delete;
-      Context (Context &&)      = delete;
-      Context & operator= (const Context &) = delete;
-      Context & operator= (Context &&) = delete;
+      Context & operator = (const Context &) = delete;
 
    private:
       friend class Window; // allow for window to use draw_fill
