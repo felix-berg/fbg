@@ -1,4 +1,4 @@
-#include "2D_Graphics_Lib.hpp"
+#include "fbg.hpp"
 
 using namespace fbg;
 

@@ -1,7 +1,7 @@
 #ifndef BOID_HPP
 #define BOID_HPP
 
-#include "2D_Graphics_Lib.hpp"
+#include "fbg.hpp"
 
 using namespace fbg;
 
