@@ -2,4 +2,4 @@ main.cpp
 a.out
 .vscode/settings.json
 .vscode/c_cpp_properties.json
-fbg.gch
+*.gch

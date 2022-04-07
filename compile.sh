@@ -6,6 +6,6 @@ echo "Lines of code: " $(wc -l **/*.cpp **/*.hpp | tr -d ' ' | awk 'END {print $
 
 
 echo "Compiling..."
-g++-11 -std=c++20 **/*.cpp ../*.cpp -lSDL2 -mavx2 -pthread -O3
+g++-11 -std=c++20 **/*.cpp ../*.cpp -o ../a.out -lSDL2 -mavx2 -pthread -O3
 
 echo "Finished."
