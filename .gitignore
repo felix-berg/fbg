@@ -4,3 +4,4 @@ a.out
 .vscode/c_cpp_properties.json
 *.gch
 *.o
+.devcompile.sh

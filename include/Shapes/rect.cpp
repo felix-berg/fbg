@@ -12,8 +12,8 @@ Rect::DrawMode Rect::MODE = Rect::DrawMode::CENTER;
 /** Rotate given vector by 90 degrees. */
 void rotatevec90(V2d<float> & vec) {
    float tmp = vec.x;
-   vec.x = vec.y;
-   vec.y = -tmp;
+   vec.x = -vec.y;
+   vec.y = tmp;
 }
 
 void width_and_height_vectors(V2d<float> & widthVec, V2d<float> & heightVec, const V2d<float> & unit, float width, float height)
@@ -32,14 +32,15 @@ V2d<float> get_top_left_from_middle(const V2d<float> & middle, const V2d<float> 
 /** Get a rectcorners structure holding tl, tr, br and bl points for this rectangle. */
 RectCorners Rect::get_corners() const 
 {
-   V2d<float> unit = get_point(1) - pos();
-   V2d<float> topLeft;
-
+   V2d<float> topLeft { };
    V2d<float> widthVec, heightVec;
+   V2d<float> unit = get_point(1) - pos();
    width_and_height_vectors(widthVec, heightVec, unit, width(), height());
 
-   if (Rect::MODE == Rect::DrawMode::CENTER)
+   if (Rect::MODE == Rect::DrawMode::CENTER) {
+
       topLeft = get_top_left_from_middle(pos(), widthVec, heightVec);
+   }
    else if (Rect::MODE == Rect::DrawMode::CORNER) 
       topLeft = pos();
    else
@@ -58,7 +59,7 @@ RectCorners Rect::get_corners() const
    };
 }
 
-constexpr float aaThreshold = 0.000001f;
+constexpr float aaThreshold = 0.0001f;
 void Rect::draw_stroke(Frame & frame)
 {
    if (!m_doStroke) return;
@@ -67,11 +68,9 @@ void Rect::draw_stroke(Frame & frame)
    float modAngle = std::fmod(angle, twoPi);
 
    // if the rectangle is axis aligned
-   if (modAngle > 0 + aaThreshold && modAngle < 0 - aaThreshold) {
+   if (modAngle > -aaThreshold && modAngle < aaThreshold) {
       V2d<float> tl;
-      if (Rect::MODE == Rect::DrawMode::CORNER)
-         tl = pos();
-      else if (Rect::MODE == Rect::DrawMode::CENTER) {
+      if (Rect::MODE == Rect::DrawMode::CENTER) {
          V2d<float> unit = get_point(1) - pos();
          V2d<float> widthVec, heightVec;
          width_and_height_vectors(widthVec, heightVec, unit, width(), height());
@@ -79,8 +78,8 @@ void Rect::draw_stroke(Frame & frame)
          tl = get_top_left_from_middle(pos(), widthVec, heightVec);
       }
       else
-         throw std::runtime_error("Unknown Rect::DrawMode");
-      
+         tl = pos();
+         
       compute_AA_rect_stroke(frame, tl.x, tl.y, width(), height(), stroke(), strokeweight());
    } else {
       RectCorners crs = get_corners();
@@ -100,14 +99,15 @@ void Rect::draw_fill(Frame & frame)
    float modAngle = std::fmod(angle, twoPi);
 
    if (modAngle < aaThreshold && modAngle > -aaThreshold) {
-      V2d<int> tl;
+      V2d<float> tl;
       if (Rect::MODE == Rect::DrawMode::CENTER) {
          V2d<float> unit = get_point(1) - pos();
          V2d<float> widthVec, heightVec;
          width_and_height_vectors(widthVec, heightVec, unit, width(), height());
-      } else {
+
+         tl = get_top_left_from_middle(pos(), widthVec, heightVec);
+      } else
          tl = pos();
-      }
 
       compute_AA_rect_fill(frame, tl.x, tl.y, width(), height(), fill());
    } else {
