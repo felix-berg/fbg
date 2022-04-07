@@ -1,6 +1,8 @@
 #ifndef BITSANDBYTES_HPP
 #define BITSANDBYTES_HPP
 
+#include <stdio.h>
+
 typedef unsigned char uint8_t;
 namespace fbg {
    template <typename T, typename F>
