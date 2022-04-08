@@ -21,7 +21,7 @@ namespace fbg {
     * @param limit(): Limits the size of the vector. */
    template <Number T>
    struct V2d  {
-      T x, y;
+      T x {}, y {};
 
       V2d<T> operator + (const V2d<T> & oth)  const { return { x + oth.x, y + oth.y }; };
       V2d<T> operator - (const V2d<T> & oth)  const { return { x - oth.x, y - oth.y }; };
