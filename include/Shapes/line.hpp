@@ -51,7 +51,7 @@ namespace fbg {
       
       /** Setter for "from" point.
        * @param f: Position of "from". */
-      void from(const V2d<float> & f) { set_point(0, f); 			};
+      void from(const V2d<float> & f) { set_point(0, f); };
 
       /** Setter for "from" point.
        * @param x: x-value for "from" point. 

@@ -14,12 +14,10 @@ int main()
    float_vector_test();
    alpha_composite_test();
    frame_test();
-
-
+   shape_tests();
 
    return 0;
 }
-
 
 void float_vector_test()
 {
@@ -436,5 +434,54 @@ void frame_test()
 
 void shape_tests()
 {
-   
+   MultiTest<Line> lineT { "Test of line" };
+
+   lineT.add_constructor("Default constructor + set to()", [](auto * & line) {
+      line = new Line { };
+      line->to(20.0f, 10.0f);
+   });
+
+   lineT.add_constructor("Constructor with points", [](auto * & line) {
+      line = new Line { V2d<float> { 0.0f, 0.0f }, V2d<float> { 20.0f, 10.0f }};
+   });
+
+   lineT.add_constructor("Constructor with x, y", [](auto * & line) {
+      line = new Line { 0, 0, 20, 10 };
+   });
+
+   lineT.add_test(
+      "from() sets from() (V2d<float>)", [](auto & line) {
+         line.from(V2d<float> {32.0f, 132.0f});
+         assert_equals(32.0f, line.from().x);
+         assert_equals(132.0f, line.from().y);
+      }
+   );
+
+   lineT.add_test(
+      "from() sets from() (x, y)", [](auto & line) {
+         line.from(32.0f, 132.0f);
+         assert_equals(32.0f, line.from().x);
+         assert_equals(132.0f, line.from().y);
+      }
+   );
+
+   lineT.add_test(
+      "to() sets to() (V2d<float>)", [](auto & line) {
+         line.to(V2d<float> {32.0f, 132.0f});
+         assert_equals(32.0f, line.to().x);
+         assert_equals(132.0f, line.to().y);
+      }
+   );
+
+   lineT.add_test(
+      "to() sets to() (x, y)", [](auto & line) {
+         line.to(32.0f, 132.0f);
+         assert_equals(32.0f, line.to().x);
+         assert_equals(132.0f, line.to().y);
+      }
+   );
+
+   lineT.run();
+
+   std::cout << lineT;
 }
