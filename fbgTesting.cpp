@@ -3,6 +3,8 @@
 
 void float_vector_test();
 void alpha_composite_test();
+void frame_test();
+void shape_tests();
 
 using namespace fbg;
 using namespace fbtt;
@@ -11,6 +13,8 @@ int main()
 {
    float_vector_test();
    alpha_composite_test();
+   frame_test();
+
 
 
    return 0;
@@ -363,7 +367,71 @@ void alpha_composite_test()
 
 void frame_test()
 {
-   
+   MultiTest<Frame> frameTest { "Test of frame class" };
+   srand(clock());
+
+   frameTest.add_constructor("Constructor with size n", [](auto * & frame) {
+      int x = rand() % 1400 + 10;
+      int y = rand() % 1400 + 10;
+      frame = new Frame { x, y };
+   });
+
+   frameTest.add_constructor("Copy constructor", [](auto * & frame) {
+      Frame cp { 200, 300 };
+      frame = new Frame { cp };
+   });
+
+   frameTest.add_constructor("Move constructor", [](auto * & frame) {
+      Frame cp { 200, 300 };
+      frame = new Frame { std::move(cp) };
+   });
+
+   frameTest.add_test<Frame::OutOfRange>(
+      "getting pixel -1, -1 throws out of range", [](auto & frame) {
+         frame.get(-1, -1);
+      }
+   );
+
+   frameTest.add_test<Frame::OutOfRange>(
+      "getting pixel (w, h) throws out of range", [](auto & frame) {
+         frame.get(frame.w, frame.h);
+      }
+   );
+
+   frameTest.add_test(
+      "New frame is black", [](auto & frame) {
+         for (int y = 0; y < frame.h; y++)
+            for (int x = 0; x < frame.w; x++) {
+               Rgba col = frame.get(x, y); 
+               assert_equals(col.r, 0, "Red not 0");
+               assert_equals(col.g, 0, "Red not 0");
+               assert_equals(col.b, 0, "Red not 0");
+               assert_equals(col.a, 0, "Red not 0");
+            }
+      }
+   );
+
+   frameTest.add_test(
+      "Setting pixel result in pixel having that color", [](auto & frame) {
+         frame.set_pixel(5, 6, { 1, 2, 3, 255 });
+         Rgba res { frame.get(5, 6) };
+         assert_equals(res.r, 1, "red invalid");
+         assert_equals(res.g, 2, "red invalid");
+         assert_equals(res.b, 3, "red invalid");
+         assert_equals(res.a, 255, "red invalid");
+      }
+   );
+
+   frameTest.add_test(
+      "Test of in_bound", [](auto & frame) {
+         assert_true(frame.in_bound(0, 0));
+         assert_false(frame.in_bound(frame.w, frame.h));
+         assert_false(frame.in_bound(-1, -1));
+      }
+   );
+
+   frameTest.run();
+   std::cout << frameTest;
 }
 
 void shape_tests()

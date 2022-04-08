@@ -9,6 +9,11 @@
 */
 namespace fbg {
    struct Frame { 
+      struct OutOfRange : std::runtime_error {
+         OutOfRange(int x, int y) 
+            : std::runtime_error { "Position (" + std::to_string(x) + ", " + std::to_string(y) + ") is out of range." } { };
+      };
+
       Rgba * pixels;
       const int w, h;
 
@@ -52,9 +57,12 @@ namespace fbg {
                     y < 0 || y >= h);
       }
 
-      Rgba get(int x, int y) const { return pixels[y * w + x]; };
-      void add(const Frame & other, int tx, int ty);
-
+      Rgba get(int x, int y) const { 
+         if (x < 0 || x >= w || y < 0 || y >= h)
+            throw OutOfRange(x, y);
+         
+         return pixels[y * w + x]; 
+      };
    };
 };
 
