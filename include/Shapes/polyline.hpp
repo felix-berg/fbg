@@ -61,6 +61,11 @@ namespace fbg {
       /** Close the polyline, so the first and last points are connected. */
       void close() { m_open = false; };
 
+      bool isDrawable()
+      {
+         return !(num_points() == 0);
+      }
+
    protected:
       void draw_stroke(Frame & f) const;
       void draw_fill(Frame & f) const;

@@ -971,9 +971,9 @@ void shape_tests()
 
    contextT.add_test(
       "Attaching new shape adds shape to context", [](auto & context, auto & circ, auto & rect, auto & tri) {
-         Polyline pl { };
-         context.attach(pl);
-         assert_equals(*context.getShapes().back(), pl);
+         Line l { 100.0f, 100.0f, 200.0f, 200.0f };
+         context.attach(l);
+         assert_equals(*context.getShapes().back(), l);
       }
    );
 
@@ -987,6 +987,20 @@ void shape_tests()
       }
    );
 
+   contextT.add_test<Context::UndrawableShape>(
+      "Attaching undrawable shape throws error", [](auto & context, auto & circ, auto & rect, auto & tri) {
+         Polyline pl; // no point -> invalid
+
+         context.attach(pl);
+      }
+   );
+
+   contextT.add_test<Context::SelfAttach>(
+      "Attaching to self throws error", [](auto & context, auto & circ, auto & rect, auto & tri) {
+         context.attach(context);
+      }
+   );
+
    lineT.run();
    rectT.run();
    circleT.run();
@@ -994,10 +1008,10 @@ void shape_tests()
    polyShapeT.run();
    contextT.run();
 
-   std::cout << lineT     << '\n' 
-             << rectT     << '\n'
-             << circleT   << '\n'
-             << triangleT << '\n'
-             << polyShapeT     << '\n'
-             << contextT  << '\n';
+   std::cout << lineT      << '\n' 
+             << rectT      << '\n'
+             << circleT    << '\n'
+             << triangleT  << '\n'
+             << polyShapeT << '\n'
+             << contextT   << '\n';
 }
