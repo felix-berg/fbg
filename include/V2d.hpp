@@ -125,6 +125,7 @@ namespace fbg {
        * @param a: The angle to rotate the vector by. */
       void rotate(float a) 
       {
+         if (a == 0.0f) return;
          T sina = std::sin(a);
          T cosa = std::cos(a);
 

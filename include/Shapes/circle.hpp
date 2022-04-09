@@ -12,6 +12,11 @@ namespace fbg {
     * @param radius(): Getting/setting of radius. */ 
    class Circle : public Shape {
    public:
+      struct InvalidRadius : public std::runtime_error {
+         InvalidRadius(float r)
+            : std::runtime_error { "Radius " + std::to_string(r) + " is invalid."} { };
+      };
+
       /** Constructor for circle class.
        * @param p: Center point of constructed circle.
        * @param r: Radius of constructed circle. */
@@ -52,7 +57,7 @@ namespace fbg {
       void radius(float r) 
       { 
          if (r < 0.0f)
-            throw std::runtime_error("Radius of circle cannot be negative.");
+            throw InvalidRadius(r);
          m_radius = r;
       };
 

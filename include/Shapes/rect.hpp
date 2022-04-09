@@ -7,6 +7,11 @@ namespace fbg {
 
    class Rect : public Shape {
    public:
+      struct InvalidSize : public std::runtime_error {
+         InvalidSize(float s)
+            : std::runtime_error { "Invalid size of rectangle: " + std::to_string(s) } { };
+      };
+
       enum DrawMode { CORNER, CENTER };
       static DrawMode MODE;
 
@@ -69,11 +74,16 @@ namespace fbg {
 
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
-      void width(int w)  { m_w = w; };
+      void width(int w)  { 
+         if (w < 0.0f) throw InvalidSize(w);
+         m_w = w; 
+      };
 
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
-      void height(int h) { m_h = h; };
+      void height(int h) { 
+         if (h < 0.0f) throw InvalidSize(h);
+         m_h = h; };
 
       /** Setter for angle of rectagle.
        * @param a: Angle of rectangle */

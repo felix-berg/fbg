@@ -23,7 +23,7 @@ namespace fbg {
       };
 
       /** Default constructor for polyline class. */
-      Polyline() : Shape { { } } 
+      Polyline() : Shape { } 
       {
          stroke(0);
          fill(255);
@@ -43,6 +43,12 @@ namespace fbg {
        * @param i: The index of the vertex to modify.
        * @param v: The value to give the vertex. */
       void set_vertex(int i, const V2d<float> & v) { Shape::set_point(i, v); };
+
+      /** Setter for existing vertex. 
+       * @param i: The index of the vertex to modify.
+       * @param x: The x-value to give the vertex.
+       * @param y: The y-value to give the vertex.  */
+      void set_vertex(int i, float x, float y) { Shape::set_point(i, {x, y}); };
 
       /** Getter for existing vertex.
        * @param i: The index of the vertex to return.

@@ -32,6 +32,8 @@ namespace fbg {
       /** @return Vector of pointers to the current shapes */
       const std::vector<Shape *> & getShapes() const { return m_shapes; };
 
+      /** @return True if context is empty, false otherwise. */
+      bool empty() const { return getShapes().size() == 0; };
 
       /** Attach any number of shapes to this context. 
        * @param ss: List of shapes to be added. */
