@@ -16,6 +16,11 @@ namespace fbg {
       {
          stroke(255);
       };
+
+      /** Constructor for point.
+       * @param x: x-value for position 
+       * @param y: y-value for position */
+      Point(float x, float y) : Point { V2d<float> { x, y } } { };
       
       /** Default constructor for point.
        * Sets position to (0, 0) */

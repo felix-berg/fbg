@@ -481,7 +481,7 @@ void shape_tests()
       }
    );
 
-   lineT.run();
 
+   lineT.run();
    std::cout << lineT;
 }
