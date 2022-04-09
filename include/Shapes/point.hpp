@@ -40,7 +40,7 @@ namespace fbg {
       void pos(float x, float y) { set_point(0, {x, y}); };
 
    protected:
-      void draw_stroke(Frame & f) 
+      void draw_stroke(Frame & f) const 
       {
          if (!m_doStroke) return;
          V2d<int> p = pos();

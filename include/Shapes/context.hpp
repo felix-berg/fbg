@@ -106,11 +106,11 @@ namespace fbg {
 
       /** Empty: 
        * Drawing of shapes in ths context is done within the the draw_fill method. */
-      void draw_stroke(Frame & f) {	};
+      void draw_stroke(Frame & f) const {	};
 
       /** Draw pixels of every object in this context.
        * @param f: The Frame to draw the pixels to. */
-      void draw_fill(Frame & f) 
+      void draw_fill(Frame & f) const 
       {
          float ang = angle();
 

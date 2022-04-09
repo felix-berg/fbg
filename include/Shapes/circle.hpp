@@ -57,8 +57,8 @@ namespace fbg {
       };
 
    protected:
-      void draw_stroke(Frame & f);
-      void draw_fill(Frame & f);	
+      void draw_stroke(Frame & f) const;
+      void draw_fill(Frame & f) const;	
 
    private:
       float m_radius;

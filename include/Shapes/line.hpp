@@ -74,8 +74,8 @@ namespace fbg {
       void roughEdge()  { m_edgeType = LineMode::ROUGH;  };
 
    protected:
-      void draw_stroke(Frame & f);
-      void draw_fill(Frame & f)   { };
+      void draw_stroke(Frame & f) const;
+      void draw_fill(Frame & f) const   { };
 
    private:
       fbg::LineMode m_edgeType;
