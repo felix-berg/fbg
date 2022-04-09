@@ -481,6 +481,15 @@ void shape_tests()
       }
    );
 
+   MultiTest<Rect> rectT { "Test of rectangle" };
+
+   rectT.add_constructor(
+      "Corner with point", [](auto * & rect) {
+         Rect::MODE = Rect::DrawMode::CORNER;
+         rect = new Rect { 0.0f, 0.0f, 100.0f, 200.0f };
+      }
+   );
+
 
    lineT.run();
    std::cout << lineT;

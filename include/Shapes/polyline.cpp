@@ -4,7 +4,7 @@
 
 using namespace fbg;
 
-void fbg::Polyline::draw_stroke(Frame & frame) {
+void fbg::Polyline::draw_stroke(Frame & frame) const {
    if (!m_doStroke) return;
 
    // Set from to the last vector
@@ -26,7 +26,7 @@ void fbg::Polyline::draw_stroke(Frame & frame) {
    }
 }
 
-void fbg::Polyline::draw_fill(Frame & frame) 
+void fbg::Polyline::draw_fill(Frame & frame) const 
 {
    if (!m_doFill) return;
 

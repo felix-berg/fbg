@@ -47,7 +47,7 @@ namespace fbg {
          draw_pixel(f, p.x, p.y, stroke(), strokeweight());
       }
 
-      void draw_fill(Frame &) { };
+      void draw_fill(Frame &) const { };
 
       // protect functions about fill
       using Shape::fill;

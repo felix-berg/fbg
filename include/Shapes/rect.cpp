@@ -60,7 +60,7 @@ RectCorners Rect::get_corners() const
 }
 
 constexpr float aaThreshold = 0.0001f;
-void Rect::draw_stroke(Frame & frame)
+void Rect::draw_stroke(Frame & frame) const
 {
    if (!m_doStroke) return;
 
@@ -91,7 +91,7 @@ void Rect::draw_stroke(Frame & frame)
    }
 }
 
-void Rect::draw_fill(Frame & frame) 
+void Rect::draw_fill(Frame & frame) const 
 {
    if (!m_doFill) return;
 

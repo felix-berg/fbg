@@ -63,6 +63,8 @@ namespace fbg {
          
          return pixels[y * w + x]; 
       };
+
+      void add(const Frame & other, int tx, int ty);
    };
 };
 

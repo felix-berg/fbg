@@ -33,7 +33,7 @@ namespace fbg {
       };
 
    protected:
-      void draw_stroke(Frame &);
-      void draw_fill(Frame &);
+      void draw_stroke(Frame &) const;
+      void draw_fill(Frame &) const;
    };
 };

@@ -1,3 +1,6 @@
+#ifndef IMAGE_HPP
+#define IMAGE_HPP
+
 #include "shape.hpp"
 #include "../frame.hpp"
 #include "BMP/bmp.hpp"
@@ -24,8 +27,8 @@ namespace fbg {
       float height() const { return m_h; };
 
    protected:
-      void draw_stroke(Frame &) { };
-      void draw_fill(Frame & frame);
+      void draw_stroke(Frame &) const { };
+      void draw_fill(Frame &) const;
 
    private:
       Frame m_frame;
@@ -42,3 +45,5 @@ namespace fbg {
       using Shape::noFill;
    };
 }
+
+#endif

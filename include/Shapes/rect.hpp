@@ -94,8 +94,8 @@ namespace fbg {
       float m_w = 0.0f;
       float m_h = 0.0f;
 
-      void draw_stroke(Frame & frame);
-      void draw_fill(Frame & frame);
+      void draw_stroke(Frame & frame) const;
+      void draw_fill(Frame & frame) const;
 
       RectCorners get_corners() const;
    };
