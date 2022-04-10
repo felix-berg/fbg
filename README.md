@@ -176,7 +176,7 @@ void  LoopWin::run()                  // Run gameloop. Stops execution until win
 ```
 
 ### Shapes
-
+file:///home/felix/Screenshot%20from%202022-04-10%2012-02-44.png![image](https://user-images.githubusercontent.com/93908883/162613027-b4821bbd-71af-4f28-85a5-d5538c1f3b12.png)
 #### `fbg::Rect`: The rectangle class
 
 
