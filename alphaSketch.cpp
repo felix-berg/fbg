@@ -4,10 +4,10 @@ using namespace fbg;
 
 int main() 
 {  
-   LoopWin win { "Test of alpha background", 480, 480 };
+   LoopWin win { "Test of alpha background", 1080, 480 };
 
-   win.background(0, 20);
-   win.framerate(144);
+   win.background(0, 2);
+   win.framerate(LoopWin::Unlimited);
 
    V2d<float> middle = win.dimensions() / 2;
    

@@ -6,6 +6,8 @@ int main()
 {
    LoopWin win { "Transparency example", 800, 800 };
 
+   win.framerate(LoopWin::Unlimited);
+
    Rect grr { win.dimensions() / 2, 300, 300 };
    Rect rdr { win.dimensions() / 2 - V2d<float> { 100, 100 }, 120, 220 };
    Rect blr { win.dimensions() / 2 + V2d<float> { 100, 100 }, 234, 140 };
@@ -25,12 +27,14 @@ int main()
 
    win.draw = [&](float) {
       mouser.pos(win.mouse());
-      mouser.rotate(0.01f);
-      rdr.rotate(0.02f);
-      blr.rotate(0.03f);
+      mouser.rotate(0.005f);
+      rdr.rotate(0.01f);
+      blr.rotate(0.015f);
    };
 
    win.run();
+
+   log_window_performance(win);
 
    return 0;
 }

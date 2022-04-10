@@ -16,6 +16,8 @@ public:
       cockpit.noStroke();
       window.fill(100, 255, 100);
 
+      body.fill(255);
+
       this->attach(cockpit);
       this->attach(window);
       this->attach(lwing);

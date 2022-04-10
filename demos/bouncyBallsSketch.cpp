@@ -10,8 +10,12 @@ public:
       : Circle { x, y, r },
         velocity { fbg::random_vector(-1.0f, 1.0f, -1.0f, 1.0f) }
    {
-      stroke(140);
-      noFill();
+      srand(clock());
+      noStroke();
+      fill(rand() % 255,
+           rand() % 255,
+           rand() % 255,
+           140);
       strokeweight(3);
    }
 
@@ -35,6 +39,12 @@ public:
 
       if (p.x - r < 0 || p.x + r >= w->width())  velocity.x *= -1;
       if (p.y - r < 0 || p.y + r >= w->height()) velocity.y *= -1;
+   }
+
+   void set_alpha(uint8_t a)
+   {
+      Rgba old = fill();
+      fill(old.r, old.g, old.b, a);
    }
 };
 
@@ -61,7 +71,9 @@ public:
    void update(float dt)
    {
 
-      std::for_each(m_particles.begin(), m_particles.end(), [](auto & p) { p.stroke(140); });
+      std::for_each(m_particles.begin(), m_particles.end(), [](auto & p) { 
+         p.set_alpha(140);
+      });
 
       for (size_t i = 0; i < m_particles.size(); i++) {
          Particle & p = m_particles[i];
@@ -72,8 +84,8 @@ public:
                p.velocity += (p.pos() - o.pos());
                o.velocity += (o.pos() - p.pos());
 
-               p.stroke(255);
-               o.stroke(255);
+               p.set_alpha(255);
+               o.set_alpha(255);
             }
          }
       }
@@ -92,6 +104,8 @@ private:
 int main() 
 {
    LoopWin win { "Bouncy Balls!", 640, 480 };
+
+   win.framerate(140);
 
    ParticleSystem ps { 20, &win };
 
