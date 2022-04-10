@@ -3,6 +3,9 @@ This is a 2D graphics library, built from scratch using C++. The only dependency
 This means, that the every pixel drawn to the screen, i have drawn myself. 
 The library is inspired by [processing](https://processing.org) and [p5.js](https://p5js.org), but takes a more object-oriented approach to drawing objects to the screen. I.e. instead of a global `draw_line(x1, y1, x2, y2)`-function, you will instead create a `fbg::Line`-object and attach it to a window object using the `Window::attach(line)`-method.
 
+![image](https://user-images.githubusercontent.com/93908883/162615053-8f46a798-3984-4f8e-96c2-d0c25daa435d.png)
+
+
 ## Simple sketch
 ```C++
 #include "fbg.hpp"
