@@ -235,6 +235,28 @@ void pos(V2d<float> p);
 void pos(float x, float y);
 ```
 
+#### `fbg::Rect`
+A rectangle defined by a position `Rect::pos()` and a `Rect::width()` and a `Rect::height()`.
+
+```C++
+// getters
+V2d<float> pos() const;
+float width() const; 
+float height() const;
+
+// setters
+void pos(V2d<float> p);
+void pos(float x, float y);
+void width(int w);
+void height(int h);
+
+float angle() const;
+void angle(float a);
+
+// static field: for all rectangles
+static DrawMode MODE; // either CORNER or CENTER 
+```
+
 #### `fbg::Triangle`
 A triangle defined by three points: `Triangle::point(0)`, `Triangle::point(1)` and `Triangle::point(2)`
 ```C++
