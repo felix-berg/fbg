@@ -161,10 +161,10 @@ See above: `fbg::Window` methods are inhertied, and therefore accessible
 *ALL METHODS OF fbg::Window are usable*
 
 // user defined stored functions:
-std::function<void(float dt)> draw;       // called before frame is rendered in run() loop
-                                          //  - gives frametime of last frame as a parameter (dt)
-std::function<void(float dt)> after_draw; // called after frame is rendered in run() loop
-std::function<void(void)>     before_run; // called right after Window::run is called.
+std::function<void(float dt)> LoopWin::draw;       // called before frame is rendered in run() loop
+                                                   //  - gives frametime of last frame as a parameter (dt)
+std::function<void(float dt)> LoopWin::after_draw; // called after frame is rendered in run() loop
+std::function<void(void)>     LoopWin::before_run; // called right after Window::run is called.
 
 // Methods:
 void  LoopWin::framerate(float f); // setter
@@ -175,10 +175,134 @@ int   LoopWin::framesElapsed() const; // returns number of frames completed sinc
 void  LoopWin::run()                  // Run gameloop. Stops execution until window closes. */
 ```
 
-### Shapes
-file:///home/felix/Screenshot%20from%202022-04-10%2012-02-44.png![image](https://user-images.githubusercontent.com/93908883/162613027-b4821bbd-71af-4f28-85a5-d5538c1f3b12.png)
-#### `fbg::Rect`: The rectangle class
+### Shapes (derived from `fbg::Shape`)
+![image](https://user-images.githubusercontent.com/93908883/162613027-b4821bbd-71af-4f28-85a5-d5538c1f3b12.png)
+#### Methods of all shapes:
+```C++
+// colors:
+void Shape::fill(Rgba c);   // or (r, g, b, a), (r, g, b), (b, a), (b)
+void Shape::stroke(Rgba c); // or (r, g, b, a), (r, g, b), (b, a), (b)
+Rgba Shape::fill();         // getter
+Rgba Shape::stroke();       // getter
 
+void Shape::noStroke();
+void Shape::noFill();
+
+void Shape::strokeweight(int sw); // thickness of drawn lines
+int  Shape::strokeweight() const;
+
+void Shape::rotate(float a, const V2d<float> & ref); // rotate shape around given reference point
+void Shape::rotate(float a, float x, float y);       // rotate shape around (x, y)
+void Shape::rotate(float a);                         // rotate shape around itself (differs from shape to shape)
+
+void Shape::move(const V2d<float> & p); // move shape by given vector
+void Shape::move(float x, float y)      // move shape by (x, y)
+```
+
+#### `fbg::Circle`
+A circle defined by a middle point `Circle::pos()` and a radius `Circle::radius()`.
+```C++
+/** Center point of circle */
+V2d<float> Circle::pos() const;
+void       Circle::pos(V2d<float> p); 
+void       Circle::pos(float x, float y);
+/** Radius of circle */
+void       Circle::radius(float r);
+```
+
+#### `fbg::Line`
+A line defined by points: `Line::from()` and `Line::to()`.
+```C++
+V2d<float> Line::from() const;
+V2d<float> Line::to()   const;
+
+void Line::from(const V2d<float> & p);
+void Line::to(const V2d<float> & p);
+
+void Line::from(float x, float y);
+void Line::to(float x, float y);
+
+void Line::smoothEdge(); // draw line with smooth edges
+void Line::roughEdge();  // draw line with rough edges (square edges)
+```
+
+#### `fbg::Point`
+A point defined by a position: `Point::pos()`.
+```C++
+V2d<float> pos() const;
+
+void pos(V2d<float> p);
+void pos(float x, float y);
+```
+
+#### `fbg::Triangle`
+A triangle defined by three points: `Triangle::point(0)`, `Triangle::point(1)` and `Triangle::point(2)`
+```C++
+void point(int i, const V2d<float> & p); // setter (i: 0 - 2)
+void point(int i, float x, float y);
+
+V2d<float> point(int i) const; // getter (i: 0 - 2)
+```
+
+#### `fbg::Polyline`
+A polyline defined by any number of connected points.
+```C++
+// add new vertex
+void vertex(const V2d<float> & v);
+void vertex(float x, float y);
+
+// modify already added vertex
+void set_vertex(int i, const V2d<float> & v);
+void set_vertex(int i, float x, float y);
+
+V2d<float> get_vertex(int i) const;
+
+// set the polyline to open/closed -> open by default
+void open();
+void close();
+```
+
+#### `fbg::Context`: The rotatable canvas
+The `fbg::Context` class is the class used by the window, to keep track of all it shapes. A context can also be defined by a user, which allows groups of object to be moved and rotated simultaneously. A context has a center point `Context::origin`, from which every attached shape is related to:
+```C++
+Context ctx;
+LoopWin window { };
+
+ctx.origin(200, 300);
+
+Line lines[30] = { /* Initialize lines */ };
+
+// attach all lines to context
+for (auto i = 0; i < 30; i++)
+   ctx.attach(lines[i]);
+
+// attach context to window (works like any other shape)
+window.attach(ctx);
+
+win.draw = [&](float dt) {
+   context.rotate(0.01); // rotate context, which rotates all shapes
+   context.origin(window.mouse()); // set context origin, which sets position of all shapes
+};
+```
+
+Context can even be attached to other contexts! This can be used to create small models, an example of which can be found in the demo `"demos/AeroplaneSketch"`.
+
+##### Methods
+```C++
+void       origin(const V2d<float> & o); // setters
+void       origin(float x, float y);
+
+V2d<float> origin() const; // getter
+
+// attach any number of shapes to context
+void attach(Shapes & ... ss);
+
+
+void angle(float a); // rotate context
+float angle();       // get angle of context
+
+// move and rotate are also available: derived from Shape
+```
 
 ## Particle-system: Bouncy-balls
 The following example produces the following output:
