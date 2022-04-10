@@ -4,6 +4,7 @@
 #include "Shapes/drawing_algorithms/bresenham.hpp"
 
 #include <vector>
+#include <cmath>
 
 using namespace fbg;
 

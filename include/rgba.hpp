@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <cstdint>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 /*
    A color given by a red, green, blue and alpha value.

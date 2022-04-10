@@ -1,8 +1,8 @@
 #ifndef ALPHACOMPOSIT_HPP
 #define ALPHACOMPOSIT_HPP
 
+#include <cstring> // memset
 #include "rgba.hpp"
-
 #include <cstdint>
 
 namespace fbg {
