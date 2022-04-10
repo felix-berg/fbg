@@ -6,6 +6,9 @@ add_library(fbg INTERFACE)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
+add_subdirectory(external/SDL)
+add_subdirectory(external/fbtt)
+
 target_include_directories(${PROJECT_NAME} INTERFACE include)
 
 target_include_directories(${PROJECT_NAME} 
