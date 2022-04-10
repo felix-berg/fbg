@@ -199,6 +199,8 @@ void Shape::move(const V2d<float> & p); // move shape by given vector
 void Shape::move(float x, float y)      // move shape by (x, y)
 ```
 
+![image](https://user-images.githubusercontent.com/93908883/162614938-9dcb76b9-fcf0-4c16-99e8-b4a1dde92eb2.png)
+
 #### `fbg::Circle`
 A circle defined by a middle point `Circle::pos()` and a radius `Circle::radius()`.
 ```C++
@@ -326,10 +328,12 @@ float angle();       // get angle of context
 
 // move and rotate are also available: derived from Shape
 ```
+![image](https://user-images.githubusercontent.com/93908883/162614639-dc45665d-cfb6-4ce6-b260-1f0125a28156.png)
 
 ## Particle-system: Bouncy-balls
 The following example produces the following output:
-![image](https://user-images.githubusercontent.com/93908883/161541847-820393f2-ca34-48e9-9ac0-7109823e78f2.png)
+![image](https://user-images.githubusercontent.com/93908883/162614894-6e6d6915-776d-46d0-85bd-6df0390a6291.png)
+
 
 The example shows how the `fbg::Shape` derived classes can be expanded upon to simplify graphics programming.
 
