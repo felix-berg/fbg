@@ -24,7 +24,7 @@ namespace fbg {
       T x {}, y {};
 
       struct NoAngle : public std::runtime_error {
-         NoAngle() : std::runtime_error { "Cannot find angle of vector, because size == 0." } { };
+         NoAngle() : std::runtime_error { "Cannot use angle of vector, because size == 0." } { };
       };
 
       V2d<T> operator + (const V2d<T> & oth)  const { return { x + oth.x, y + oth.y }; };
@@ -91,10 +91,10 @@ namespace fbg {
        * @returns Angle of vector */
       double angle() const 
       {
-         if (x == 0.0f) throw NoAngle();
-              if (x < 0) return pi + std::atan(y / x);
-         else if (y < 0) return twoPi + std::atan(y / x);
-         else            return std::atan(y / x);
+              if (x < 0)     return pi + std::atan(y / x);
+         else if (y < 0)     return twoPi + std::atan(y / x);
+         else if (x == 0.0f) return halfPi + pi * (y < 0);
+         else                return std::atan(y / x);
       }
 
       /** Set angle of vector 

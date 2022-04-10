@@ -86,7 +86,7 @@ bool is_bound(const V2d<T> & lower,        // true if point at end of vector is 
               const V2d<T> & upper) const; // bounding box defined by [lower; upper]  
 ```
 
-####`fbg::Window`: The static window. 
+#### `fbg::Window`: The static window. 
 This class is used for creating static images, or user-controlled animations. When an instance of the `fbg::Window` class is created, a window is created an initialized. After this, objects derived from the `fbg::Shape`-class can be attached to the window using `Window::attach`.
 ```C++
 int main() 
