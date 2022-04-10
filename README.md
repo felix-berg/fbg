@@ -458,8 +458,8 @@ void ParticleSystem::update(float dt)
             o.velocity += (o.pos() - p.pos());
 
             // use of inherited method Shape::stroke
-            p.stroke(255);
-            o.stroke(255);
+            p.set_alpha(255);
+            o.set_alpha(255);
          }
       }
    }
