@@ -1,3 +1,5 @@
+.dev_log/
+
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
