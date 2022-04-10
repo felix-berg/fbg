@@ -21,7 +21,7 @@ target_link_directories(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
    INTERFACE fbtt
-   INTERFACE SDL
+   INTERFACE SDL2
 )
 
 find_package(Git QUIET)
