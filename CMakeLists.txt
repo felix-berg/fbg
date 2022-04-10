@@ -1,4 +1,25 @@
 cmake_minimum_required(VERSION 3.10)
+
+find_package(Git QUIET)
+IF (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+   option(GIT_SUBMODULE "Check submodules during build" ON)
+   if (GIT_SUBMODULE)
+      execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+                      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                      RESULT_VARIABLE GIT_SUBMOD_RESULT)
+      if (NOT GIT_SUBMOD_RESULT EQUAL "0")
+         message(FATAL_ERROR "git submodule update failed")
+      endif()
+   endif()
+endif()
+
+if (NOT EXISTS "${PROJECT_SOURCE_DIR}/external/fbtt/CMakeLists.txt" OR 
+    NOT EXISTS "${PROJECT_SOURCE_DIR}/external/SDL/CMakeLists.txt")
+
+    message(FATAL_ERROR "Couldn't load SDL or fbtt!")
+endif()
+
+
 project(fbg VERSION 1.0.1 DESCRIPTION "Felix Berg 2D Graphics Library")
 
 set(CMAKE_CXX_STANDARD 20)
@@ -46,22 +67,4 @@ target_link_libraries(${PROJECT_NAME}
    PUBLIC fbtt
 )
 
-find_package(Git QUIET)
-IF (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-   option(GIT_SUBMODULE "Check submodules during build" ON)
-   if (GIT_SUBMODULE)
-      execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                      RESULT_VARIABLE GIT_SUBMOD_RESULT)
-      if (NOT GIT_SUBMOD_RESULT EQUAL "0")
-         message(FATAL_ERROR "git submodule update failed")
-      endif()
-   endif()
-endif()
-
-if (NOT EXISTS "${PROJECT_SOURCE_DIR}/external/fbtt/CMakeLists.txt" OR 
-    NOT EXISTS "${PROJECT_SOURCE_DIR}/external/SDL/CMakeLists.txt")
-
-    message(FATAL_ERROR "Couldn't load SDL or fbtt!")
-endif()
 
