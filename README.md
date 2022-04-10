@@ -234,6 +234,7 @@ V2d<float> pos() const;
 void pos(V2d<float> p);
 void pos(float x, float y);
 ```
+![image](https://user-images.githubusercontent.com/93908883/162614392-24830984-9627-40f7-9977-b914a6ad9f76.png)
 
 #### `fbg::Rect`
 A rectangle defined by a position `Rect::pos()` and a `Rect::width()` and a `Rect::height()`.
