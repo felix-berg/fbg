@@ -3,6 +3,12 @@
 namespace fbg {
    class Triangle : public Shape {
    public:
+      struct NotAPoint : std::runtime_error {
+         NotAPoint(int i)
+            : std::runtime_error { "Invalid point index: " + std::to_string(i) }
+         { };
+      };
+
       Triangle(const V2d<float> & p1, const V2d<float> & p2, const V2d<float> & p3)
          : Shape { p1, p2, p3 } 
       {
@@ -16,7 +22,7 @@ namespace fbg {
       void point(int i, const V2d<float> & p) 
       { 
          if (i > 2) 
-            throw std::runtime_error("Triangle cannot be assigned a point outside the range of 0-2.\n");
+            throw NotAPoint(i);
 
          set_point(i, p); 
       };
@@ -28,7 +34,8 @@ namespace fbg {
 
       V2d<float> point(int i) const { 
          if (i > 2) 
-            throw std::runtime_error("Triangle: cannot get a point outside the range of 0-2.\n");
+            throw NotAPoint(i);
+         
          return get_point(i); 
       };
 

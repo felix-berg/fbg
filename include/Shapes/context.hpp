@@ -93,7 +93,7 @@ namespace fbg {
 
       /** Get origin of the context.
        * @returns Origin point for context. */
-      const V2d<float> & origin() const { return get_point(0); };
+      V2d<float> origin() const { return get_point(0); };
 
       /** Setter for angle of context. 
        * @param a: Angle of context */
@@ -157,6 +157,14 @@ namespace fbg {
       }
 
       std::vector<Shape *> m_shapes;
+
+      using Shape::draw_fill;
+      using Shape::draw_stroke;
+      using Shape::noStroke;
+      using Shape::noFill;
+      using Shape::strokeweight;
    };
+
+
 };
 #endif

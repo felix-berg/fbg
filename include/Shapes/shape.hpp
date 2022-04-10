@@ -18,11 +18,11 @@ namespace fbg {
    public:
       /** Getter for fill color.
        * @returns Current fill color of shape. */
-      const Rgba & fill() const { return m_fill; };
+      Rgba fill() const { return m_fill; };
 
       /** Getter for stroke color.
        * @returns Current stroke color of shape. */
-      const Rgba & stroke() const { return m_stroke; };
+      Rgba stroke() const { return m_stroke; };
 
       /** Getter for strokeweight
        * @returns Current strokeweight of shape. */
@@ -30,7 +30,7 @@ namespace fbg {
       
       /** Setter for fill color. 
        * @param c: Color */
-      void fill(const Rgba & c) { m_fill = c; m_doFill = true; };
+      void fill(Rgba c) { m_fill = c; m_doFill = true; };
 
       /** Setter for fill color.
        * @param b: Grayscale value. [0, 255] */
@@ -56,7 +56,7 @@ namespace fbg {
 
       /** Setter for stroke color. 
        * @param c: Color */
-      void stroke(const Rgba & c) { m_stroke = c; m_doStroke = true; };
+      void stroke(Rgba c) { m_stroke = c; m_doStroke = true; };
 
       /** Setter for stroke color.
        * @param b: Grayscale value. [0, 255] */

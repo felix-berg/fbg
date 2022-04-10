@@ -18,7 +18,7 @@ namespace fbg {
       { 
          // set default value of stroke
          stroke(0);
-         fill(255);
+         noFill();
          strokeweight(1);
       };
 
@@ -26,7 +26,7 @@ namespace fbg {
       Polyline() : Shape { } 
       {
          stroke(0);
-         fill(255);
+         noFill();
          strokeweight(1);
       };
 
