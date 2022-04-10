@@ -1,0 +1,3 @@
+[submodule "fbtt"]
+	path = fbtt
+	url = https://github.com/felix-berg/fbtt
