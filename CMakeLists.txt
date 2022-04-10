@@ -1,15 +1,25 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(fbg)
-add_library(fbtt INTERFACE)
+add_library(fbg INTERFACE)
 
-# add_subdirectory(include)
-# add_subdirectory(src)
+target_include_directories(${PROJECT_NAME} INTERFACE include)
 
+target_include_directories(${PROJECT_NAME} 
+   INTERFACE include
+   INTERFACE external/fbtt/include
+   INTERFACE external/SDL/include
+)
 
-target_include_directories(${PROJECT_NAME} PRIVATE include)
-target_link_directories(${PROJECT_NAME} PUBLIC src)
+target_link_directories(${PROJECT_NAME}
+   INTERFACE src
+   INTERFACE external/SDL/src
+)
 
+target_link_libraries(${PROJECT_NAME}
+   INTERFACE fbtt
+   INTERFACE SDL
+)
 
 find_package(Git QUIET)
 IF (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
@@ -24,4 +34,8 @@ IF (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
    endif()
 endif()
 
-if ()
+if (NOT EXISTS "${PROJECT_SOURCE_DIR}/external/fbtt/CMakeLists.txt" OR 
+    NOT EXISTS "${PROJECT_SOURCE_DIR}/external/SDL/CMakeLists.txt")
+
+    message(FATAL_ERROR "Couldn't load SDL or fbtt!")
+endif()
