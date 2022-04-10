@@ -162,3 +162,5 @@ bool SDLHandler::has_keyboard_focus() const {
 bool SDLHandler::has_mouse_focus() const {
    return SDL_GetMouseFocus() == m_window; 
 }
+
+#define SDL_HAS_BEEN_COMPILED_SO_WE_CAN_USE_IT_FROM_USR_INCLUDE 0

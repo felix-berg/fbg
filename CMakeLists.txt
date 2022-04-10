@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -O3 -mavx2") # avx, O3 and c++20
 
-# update modules (git submodule update --init --recursive)
+# update modules (git submodule update --init --recursive)R
 find_package(Git QUIET)
 IF (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
    option(GIT_SUBMODULE "Check submodules during build" ON)
@@ -30,8 +30,7 @@ endif()
 
 # include files needed for setting target
 include_directories(${PROJECT_NAME} 
-   PRIVATE include 
-   PRIVATE src
+   PRIVATE include
 )
 
 # set target by making a library
@@ -51,11 +50,8 @@ add_library(${PROJECT_NAME}
    src/Shapes/drawing_algorithms/drawpolyline.cpp  src/Shapes/drawing_algorithms/drawrect.cpp
 )
 
-# Set PUBLIC_HEADER property to "fbg.hpp"
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/fbg.hpp)
-
 # allow for make install
-configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
+configure_file(${PROJECT_NAME}.pc.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
 
 # add the to cmake directories "external/fbtt" and "external/SDL"
 add_subdirectory(external/fbtt)
@@ -63,24 +59,23 @@ add_subdirectory(external/SDL)
 
 # headers for all directories
 target_include_directories(${PROJECT_NAME}
-   # PRIVATE include
-   PRIVATE external/fbtt/include
-   PRIVATE external/SDL/include
+   PUBLIC external/fbtt/include
+   PUBLIC external/SDL/include
 )
 
 target_link_directories(${PROJECT_NAME}
-   # PUBLIC src
    PUBLIC external/SDL/src
 )
 
 target_link_libraries(${PROJECT_NAME}
-   PUBLIC SDL2
+   PRIVATE SDL2::SDL2
    PUBLIC fbtt
 )
 
 # allow for make install
-install(TARGETS ${PROJECT_NAME}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+install (
+   TARGETS ${PROJECT_NAME} DESTINATION lib
+)
+install (
+   DIRECTORY include/ DESTINATION include
+)

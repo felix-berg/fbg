@@ -1,7 +1,14 @@
 #ifndef SCREEN_HPP
 #define SCREEN_HPP
 
-#include <SDL.h>
+#if __has_include( <SDL2/SDL.h> )
+   #include <SDL2/SDL.h>
+#elif __has_include ( <SDL.h> )
+   #include <SDL.h>
+#else
+   #error No version of SDL detected!
+#endif
+
 #include <string>
 #include <iostream>
 #include <vector>

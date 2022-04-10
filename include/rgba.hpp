@@ -3,7 +3,12 @@
 
 #include <iostream>
 #include <cstdint>
-#include <SDL.h>
+#if __has_include( <SDL2/SDL.h> )
+   #include <SDL2/SDL.h>
+#elif __has_include ( <SDL.h> )
+   #include <SDL.h>
+#endif
+
 
 /*
    A color given by a red, green, blue and alpha value.
