@@ -201,7 +201,7 @@ void Shape::move(const V2d<float> & p); // move shape by given vector
 void Shape::move(float x, float y)      // move shape by (x, y)
 ```
 
-![image](https://user-images.githubusercontent.com/93908883/162614938-9dcb76b9-fcf0-4c16-99e8-b4a1dde92eb2.png)
+![image](https://user-images.githubusercontent.com/93908883/162615197-9500c145-1478-4f52-9692-7e36e4fb6a8e.png)
 
 #### `fbg::Circle`
 A circle defined by a middle point `Circle::pos()` and a radius `Circle::radius()`.
@@ -261,6 +261,8 @@ void angle(float a);
 // static field: for all rectangles
 static DrawMode MODE; // either CORNER or CENTER 
 ```
+
+![image](https://user-images.githubusercontent.com/93908883/162615307-4c6b5297-b899-4b1b-ba54-103d7e411208.png)
 
 #### `fbg::Triangle`
 A triangle defined by three points: `Triangle::point(0)`, `Triangle::point(1)` and `Triangle::point(2)`
