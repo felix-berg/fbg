@@ -262,7 +262,7 @@ void angle(float a);
 static DrawMode MODE; // either CORNER or CENTER 
 ```
 
-![image](https://user-images.githubusercontent.com/93908883/162615307-4c6b5297-b899-4b1b-ba54-103d7e411208.png)
+![image](https://user-images.githubusercontent.com/93908883/162615377-44ba072c-a8ea-49dd-a386-7fc592e427ec.png)
 
 #### `fbg::Triangle`
 A triangle defined by three points: `Triangle::point(0)`, `Triangle::point(1)` and `Triangle::point(2)`
