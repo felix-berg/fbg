@@ -10,6 +10,16 @@ namespace fbg {
     * @param detach(): Detaching of shapes to context. */
    class Context : public Shape {
    public:
+      struct SelfAttach : public std::runtime_error {
+         SelfAttach()
+            : std::runtime_error { "Cannot attach context to itself. " } { };
+      };
+
+      struct UndrawableShape : public std::runtime_error {
+         UndrawableShape(int id)
+            : std::runtime_error { "Attached undrawable shape with id: " + std::to_string(id) } { };
+      };
+
       /** Constructor for Context class.
        * @param o: Origin point. */
       Context(const V2d<float> & o) : Shape { { o } } {
@@ -32,6 +42,8 @@ namespace fbg {
       /** @return Vector of pointers to the current shapes */
       const std::vector<Shape *> & getShapes() const { return m_shapes; };
 
+      /** @return True if context is empty, false otherwise. */
+      bool empty() const { return getShapes().size() == 0; };
 
       /** Attach any number of shapes to this context. 
        * @param ss: List of shapes to be added. */
@@ -43,13 +55,13 @@ namespace fbg {
          ((isSelf = (isSelf || *((Shape *) this) == ss)), ...);
 
          if (isSelf)
-            throw std::runtime_error("Context attach error: Cannot attach context to itself.\n");
+            throw SelfAttach();
 
          int invalidId = -1;
          ((invalidId = (!ss.isDrawable() ? ss.id() : invalidId)), ...);
 
          if (invalidId != -1)
-            throw std::runtime_error(std::string("Added shape is invalid. Id: ") + std::to_string(invalidId));
+            throw UndrawableShape(invalidId);
          
          ((m_shapes.push_back(&ss)), ...);
       }
@@ -101,16 +113,25 @@ namespace fbg {
       Context (const Context &) = delete;
       Context & operator = (const Context &) = delete;
 
+      bool isDrawable()
+      {
+         bool allDrawable = true;
+         for (Shape * s : m_shapes)
+            allDrawable = allDrawable && s->isDrawable();
+
+         return allDrawable;
+      }
+
    private:
       friend class Window; // allow for window to use draw_fill
 
       /** Empty: 
        * Drawing of shapes in ths context is done within the the draw_fill method. */
-      void draw_stroke(Frame & f) {	};
+      void draw_stroke(Frame & f) const {	};
 
       /** Draw pixels of every object in this context.
        * @param f: The Frame to draw the pixels to. */
-      void draw_fill(Frame & f) 
+      void draw_fill(Frame & f) const 
       {
          float ang = angle();
 

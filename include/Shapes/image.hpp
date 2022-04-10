@@ -1,3 +1,6 @@
+#ifndef IMAGE_HPP
+#define IMAGE_HPP
+
 #include "shape.hpp"
 #include "../frame.hpp"
 #include "BMP/bmp.hpp"
@@ -17,15 +20,12 @@ namespace fbg {
 
       V2d<float> pos() const { return get_point(0); };
 
-      void width(float w)  { m_w = w; }
-      void height(float h) { m_h = h; }
-
       float width()  const { return m_w; };
       float height() const { return m_h; };
 
    protected:
-      void draw_stroke(Frame &) { };
-      void draw_fill(Frame & frame);
+      void draw_stroke(Frame &) const { };
+      void draw_fill(Frame &) const;
 
    private:
       Frame m_frame;
@@ -42,3 +42,5 @@ namespace fbg {
       using Shape::noFill;
    };
 }
+
+#endif

@@ -3,7 +3,7 @@
 
 using namespace fbg;
 
-void Circle::draw_stroke(Frame & f) 
+void Circle::draw_stroke(Frame & f) const 
 {
    if (!m_doStroke) return;
    
@@ -13,7 +13,7 @@ void Circle::draw_stroke(Frame & f)
    compute_circle_stroke(f, p.x, p.y, r, stroke(), strokeweight());
 }
 
-void Circle::draw_fill(Frame & f) 
+void Circle::draw_fill(Frame & f) const 
 {
    if (!m_doFill) return;
 

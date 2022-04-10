@@ -51,7 +51,7 @@ namespace fbg {
       
       /** Setter for "from" point.
        * @param f: Position of "from". */
-      void from(const V2d<float> & f) { set_point(0, f); 			};
+      void from(const V2d<float> & f) { set_point(0, f); };
 
       /** Setter for "from" point.
        * @param x: x-value for "from" point. 
@@ -74,8 +74,8 @@ namespace fbg {
       void roughEdge()  { m_edgeType = LineMode::ROUGH;  };
 
    protected:
-      void draw_stroke(Frame & f);
-      void draw_fill(Frame & f)   { };
+      void draw_stroke(Frame & f) const;
+      void draw_fill(Frame & f) const   { };
 
    private:
       fbg::LineMode m_edgeType;

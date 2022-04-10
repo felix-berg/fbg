@@ -2,22 +2,18 @@
 #define MATHS_HPP
 
 #include <cmath>
+#include <ostream>
 
 
 namespace fbg {
+   struct DivisionByZero : public std::runtime_error {
+      DivisionByZero() : std::runtime_error { "Division by zero" } { };
+   };
+
    constexpr float quarterPi = 0.7853981633f;
    constexpr float halfPi    = 1.5707963267f;
    constexpr float pi        = 3.1415926535f;
    constexpr float twoPi     = 6.2831853071f;
-
-   // template <typename T> T random(T min, T max);
-   // template <typename T> T random(T max);
-   // template <typename T> T sin(const T & value);
-   // template <typename T> T cos(const T & value);
-   // template <typename T> T tan(const T & value);
-   // template <typename T> T asin(const T & value);
-   // template <typename T> T acos(const T & value);
-   // template <typename T> T atan(const T & value);
 
    /** Random number generator.
     * @param min: Minimum value of generated number.

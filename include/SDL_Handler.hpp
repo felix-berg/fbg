@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 
-#include "V2d.hpp"
 #include "rgba.hpp"
 #include "frame.hpp"
 
@@ -26,9 +25,8 @@ namespace fbg {
       int width()  const { return m_width; };
       int height() const { return m_height; };
       int size()   const { return m_width * m_height; };
-      
+
       V2d<int> dimensions() const { return { m_width, m_height }; }
-      
 
       const std::vector<int> & pressedKeys() const { return m_keysDown; };
       bool key_is_pressed(int key_id) const;
@@ -40,8 +38,7 @@ namespace fbg {
 
    protected:
       const Rgba & get_pixel(unsigned int n) 					  const { return frame.pixels[n]; };
-      const Rgba & get_pixel(unsigned int x, unsigned int y)  const { return frame.pixels[y   * width() + x  ]; };
-      const Rgba & get_pixel(const V2d<int> p)					  const { return frame.pixels[p.y * width() + p.x]; };
+      const Rgba & get_pixel(unsigned int x, unsigned int y)  const { return frame.get(x, y); };
 
       void set_pixel(const V2d<int> & p, const Rgba & px);
 

@@ -160,8 +160,8 @@ namespace fbg {
       Shape & operator = (Shape &&)      = default;
 
       // virtual function: to be defined by subclasses
-      virtual void draw_stroke(Frame & f) = 0;
-      virtual void draw_fill(Frame & f)   = 0;
+      virtual void draw_stroke(Frame & f) const = 0;
+      virtual void draw_fill(Frame & f)   const = 0;
 
       // virtual function for checking whether a shape is drawable
       // overload to specify conditions

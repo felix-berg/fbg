@@ -19,6 +19,12 @@ namespace fbg {
  * @param framerate(): Getter/setter for framerate. */
    class LoopWin : public Window {
    public:
+      constexpr static float Unlimited = INT16_MAX;   
+      struct InvalidFramerate : public std::runtime_error {
+         InvalidFramerate(float f)
+            : std::runtime_error { "Invalid framerate: " + std::to_string(f) } { };
+      };
+
       /** Constructor for looping window. 
        * @param title: The title at the top bar of the window.
        * @param w: The width of the window.
@@ -52,6 +58,7 @@ namespace fbg {
        * @param f: Framerate in frames/second */
       void framerate(float f)   
       { 
+         if (f < 0.0f) throw InvalidFramerate(f);
          // convert floating point framerate into microseconds in 64 bit integer format
          m_frametime = std::chrono::duration_cast<std::chrono::duration<int, std::micro>> (std::chrono::duration<float, std::micro> (1000000.0f / f));
       };
@@ -61,7 +68,7 @@ namespace fbg {
       float frametime() const 
       {
          // convert frametime from microseconds 64 int -> seconds in float
-         return std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>> (m_frametime).count(); // why
+         return std::chrono::duration_cast<std::chrono::duration<float, std::ratio<1, 1>>> (m_frametime).count(); // why chrono
       }
 
       /** Getter for number of frames elapsed since LoopWin::run() was called.

@@ -16,6 +16,11 @@ namespace fbg {
       {
          stroke(255);
       };
+
+      /** Constructor for point.
+       * @param x: x-value for position 
+       * @param y: y-value for position */
+      Point(float x, float y) : Point { V2d<float> { x, y } } { };
       
       /** Default constructor for point.
        * Sets position to (0, 0) */
@@ -35,14 +40,14 @@ namespace fbg {
       void pos(float x, float y) { set_point(0, {x, y}); };
 
    protected:
-      void draw_stroke(Frame & f) 
+      void draw_stroke(Frame & f) const 
       {
          if (!m_doStroke) return;
          V2d<int> p = pos();
          draw_pixel(f, p.x, p.y, stroke(), strokeweight());
       }
 
-      void draw_fill(Frame &) { };
+      void draw_fill(Frame &) const { };
 
       // protect functions about fill
       using Shape::fill;

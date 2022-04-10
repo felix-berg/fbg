@@ -4,7 +4,7 @@
 
 using namespace fbg;
 
-void Triangle::draw_stroke(Frame & frame) 
+void Triangle::draw_stroke(Frame & frame) const 
 {
    if (!m_doStroke) return;
 
@@ -22,7 +22,7 @@ void Triangle::draw_stroke(Frame & frame)
    compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), LineMode::ROUGH); 
 }
 
-void Triangle::draw_fill(Frame & frame) 
+void Triangle::draw_fill(Frame & frame) const 
 {
    if (!m_doFill) return;
 

@@ -13,7 +13,7 @@ LineMode Line::DEFAULT_LINEMODE = SMOOTH;
 int Line::DEFAULT_STROKEWEIGHT = 5;
 
 /** Change given pixelbuffer based on the pixels of the line. */
-void Line::draw_stroke(Frame & frame) 
+void Line::draw_stroke(Frame & frame) const 
 {
    if (!m_doStroke) return;
 

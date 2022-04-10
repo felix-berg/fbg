@@ -10,7 +10,7 @@ Image::Image(const V2d<float> & p, const std::string & filename)
    add_point(p);
 }
 
-void Image::draw_fill(Frame & frame) 
+void Image::draw_fill(Frame & frame) const
 {
    V2d<float> p = pos();
    int tlX = static_cast<int> (p.x - m_w / 2.0f);

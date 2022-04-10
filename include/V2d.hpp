@@ -21,37 +21,22 @@ namespace fbg {
     * @param limit(): Limits the size of the vector. */
    template <Number T>
    struct V2d  {
-      T x, y;
+      T x {}, y {};
+
+      struct NoAngle : public std::runtime_error {
+         NoAngle() : std::runtime_error { "Cannot find angle of vector, because size == 0." } { };
+      };
 
       V2d<T> operator + (const V2d<T> & oth)  const { return { x + oth.x, y + oth.y }; };
       V2d<T> operator - (const V2d<T> & oth)  const { return { x - oth.x, y - oth.y }; };
       V2d<T> operator * (const double factor) const { return { (T) (x * factor), (T) (y * factor) };	};
       V2d<T> operator / (const double factor) const { return { (T) (x / factor), (T) (y / factor) };	};
 
-      V2d<T> & operator += (const V2d<T> & oth) {
-         this->x += oth.x;
-         this->y += oth.y;
-         return *this;
-      };
+      V2d<T> & operator += (const V2d<T> & oth)  { return (*this = *this + oth);    };
+      V2d<T> & operator -= (const V2d<T> & oth)  { return (*this = *this - oth);    };
+      V2d<T> & operator *= (const double factor) { return (*this = *this * factor); };
+      V2d<T> & operator /= (const double factor) { return (*this = *this / factor); };
 
-      V2d<T> & operator -= (const V2d<T> & oth) {
-         this->x -= oth.x;
-         this->y -= oth.y;
-         return *this;
-      };
-
-      V2d<T> & operator *= (const double factor) {
-         this->x *= factor;
-         this->y *= factor;
-         return *this;
-      };
-
-      V2d<T> & operator /= (const double factor) {
-         this->x /= factor;
-         this->y /= factor;
-         return *this;
-      };
-      
       template <typename S>
       V2d<T> & operator = (const V2d<S> & oth) { 
          this->x = static_cast<T> (oth.x);
@@ -83,12 +68,16 @@ namespace fbg {
 
       /** @returns Normalized vector with same direction. */
       V2d<T> normal() const {
-         return *this / size();
+         float sz = size();
+         if (sz == 0.0f) 
+            throw DivisionByZero();
+         
+         return *this / sz;
       }
 
       /** Normalizes vector to have size 1. */
       void normalize() {
-         *this /= this->size();
+         *this = normal();
       }
 
       /** Setter for size of vector. 
@@ -98,18 +87,25 @@ namespace fbg {
          *this *= sz;
       }
 
+      /** Get angle of vector
+       * @returns Angle of vector */
       double angle() const 
       {
+         if (x == 0.0f) throw NoAngle();
               if (x < 0) return pi + std::atan(y / x);
          else if (y < 0) return twoPi + std::atan(y / x);
          else            return std::atan(y / x);
       }
 
+      /** Set angle of vector 
+       * @param a: angle of vector 
+       * @throws Throws NoAngle exception, if size is 0. */
       void angle(float a) 
       {
          float sz = size();
+
          if (sz == 0)
-            throw std::runtime_error("Cannot find angle of vector with size 0.");
+            throw NoAngle();
          
          *this = {
             std::cos(a) * sz,
@@ -129,6 +125,7 @@ namespace fbg {
        * @param a: The angle to rotate the vector by. */
       void rotate(float a) 
       {
+         if (a == 0.0f) return;
          T sina = std::sin(a);
          T cosa = std::cos(a);
 
@@ -175,6 +172,9 @@ namespace fbg {
    template <typename T>
    double angle_between(const V2d<T> & v1, const V2d<T> & v2) 
    {
+      if (v1.size() == 0.0f || v2.size() == 0.0f) 
+         throw typename V2d<T>::NoAngle(); // C++ ??
+      
       return std::acos(dot_prod(v1, v2) / (v1.size() * v2.size()));
    }
 
@@ -183,7 +183,6 @@ namespace fbg {
    {
       return (os << '(' << v.x << ", " << v.y << ')');
    }
-
 
    template <typename T>
    V2d<T> operator * (const double factor, const V2d<T> & v) 

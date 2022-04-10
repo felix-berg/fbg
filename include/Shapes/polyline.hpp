@@ -23,7 +23,7 @@ namespace fbg {
       };
 
       /** Default constructor for polyline class. */
-      Polyline() : Shape { { } } 
+      Polyline() : Shape { } 
       {
          stroke(0);
          fill(255);
@@ -44,6 +44,12 @@ namespace fbg {
        * @param v: The value to give the vertex. */
       void set_vertex(int i, const V2d<float> & v) { Shape::set_point(i, v); };
 
+      /** Setter for existing vertex. 
+       * @param i: The index of the vertex to modify.
+       * @param x: The x-value to give the vertex.
+       * @param y: The y-value to give the vertex.  */
+      void set_vertex(int i, float x, float y) { Shape::set_point(i, {x, y}); };
+
       /** Getter for existing vertex.
        * @param i: The index of the vertex to return.
        * @returns Vertex with given index i. */
@@ -55,9 +61,14 @@ namespace fbg {
       /** Close the polyline, so the first and last points are connected. */
       void close() { m_open = false; };
 
+      bool isDrawable()
+      {
+         return !(num_points() == 0);
+      }
+
    protected:
-      void draw_stroke(Frame & f);
-      void draw_fill(Frame & f);
+      void draw_stroke(Frame & f) const;
+      void draw_fill(Frame & f) const;
 
    private:
       bool m_open = true;
