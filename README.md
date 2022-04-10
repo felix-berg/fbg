@@ -3,6 +3,8 @@ This is a 2D graphics library, built from scratch using C++. The only dependency
 This means, that the every pixel drawn to the screen, i have drawn myself. 
 The library is inspired by [processing](https://processing.org) and [p5.js](https://p5js.org), but takes a more object-oriented approach to drawing objects to the screen. I.e. instead of a global `draw_line(x1, y1, x2, y2)`-function, you will instead create a `fbg::Line`-object and attach it to a window object using the `Window::attach(line)`-method.
 
+![image](https://user-images.githubusercontent.com/93908883/162615104-3ee1cc1b-f979-4062-8037-6137f7686761.png)
+
 ## Simple sketch
 ```C++
 #include "fbg.hpp"
@@ -199,7 +201,7 @@ void Shape::move(const V2d<float> & p); // move shape by given vector
 void Shape::move(float x, float y)      // move shape by (x, y)
 ```
 
-![image](https://user-images.githubusercontent.com/93908883/162614938-9dcb76b9-fcf0-4c16-99e8-b4a1dde92eb2.png)
+![image](https://user-images.githubusercontent.com/93908883/162615197-9500c145-1478-4f52-9692-7e36e4fb6a8e.png)
 
 #### `fbg::Circle`
 A circle defined by a middle point `Circle::pos()` and a radius `Circle::radius()`.
@@ -259,6 +261,8 @@ void angle(float a);
 // static field: for all rectangles
 static DrawMode MODE; // either CORNER or CENTER 
 ```
+
+![image](https://user-images.githubusercontent.com/93908883/162615377-44ba072c-a8ea-49dd-a386-7fc592e427ec.png)
 
 #### `fbg::Triangle`
 A triangle defined by three points: `Triangle::point(0)`, `Triangle::point(1)` and `Triangle::point(2)`
