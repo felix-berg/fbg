@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.10)
 project(fbg)
 add_library(fbg INTERFACE)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FALGS "${CMAKE_CXXFLAGS} -std=c++20")
+
 target_include_directories(${PROJECT_NAME} INTERFACE include)
 
 target_include_directories(${PROJECT_NAME} 
