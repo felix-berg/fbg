@@ -26,13 +26,24 @@ add_library(${PROJECT_NAME}
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/fbg.hpp)
-   
+
+add_subdirectory(external/fbtt)
+add_subdirectory(external/SDL)
+
 target_include_directories(${PROJECT_NAME}
    PRIVATE include
+   PRIVATE external/fbtt/include
+   PRIVATE external/SDL/include
 )
 
 target_link_directories(${PROJECT_NAME}
    PUBLIC src
+   PUBLIC external/SDL/src
+)
+
+target_link_libraries(${PROJECT_NAME}
+   PUBLIC SDL2
+   PUBLIC fbtt
 )
 
 find_package(Git QUIET)
