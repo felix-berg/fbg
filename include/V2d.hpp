@@ -82,7 +82,7 @@ namespace fbg {
 
       /** Setter for size of vector. 
        * @param sz: Wanted size. */
-      void size(T sz) { 
+      void size(double sz) { 
          this->normalize();
          *this *= sz;
       }
@@ -115,7 +115,7 @@ namespace fbg {
       
       /** Limit the size of the vector. 
        * @param l: The limit for the size of the vector. */
-      void limit(T l) 
+      void limit(double l) 
       {
          if (size() > l)
             size(l);

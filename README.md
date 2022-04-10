@@ -44,6 +44,141 @@ int main() {
 Produces output:
 ![Final output](https://user-images.githubusercontent.com/93908883/159099446-f5976859-6240-45c8-a9e5-a05dad4b5cb2.png)
 
+## Main Classes 
+#### `fbg::V2d<T>`: The 2D-vector
+This class is the main vector class used by the library. An `fbg::V2d` vector has an `x` and a `y`-value. These values are of the specified type `T`:
+```C++
+template <typename T>
+struct V2d { 
+   T x, y; 
+   /* ... */ 
+};
+```
+This class has many available matematical operators and functions. Instead of explaining each one, here is the summary:
+##### Methods
+```C++
+// Basic arithmetic (+, -, *, /)
+V2d<T>   operator +  (const V2d<T> & oth) const;
+V2d<T>   operator -  (const V2d<T> & oth) const;
+V2d<T> & operator += (const V2d<T> & oth);
+V2d<T> & operator -= (const V2d<T> & oth);
+
+V2d<T>   operator *  (double d) const;
+V2d<T>   operator /  (double d) const;
+V2d<T> & operator *= (double d);
+V2d<T> & operator /= (double d);
+
+// Mathematical functions
+double V2d<T>::size() const;
+double V2d<T>::size_sq() const;  // size * size -> more efficient
+
+void   V2d<T>::size(double sz);  // setter
+
+V2d<T> V2d<T>::normal() const;
+void   V2d<T>::normalize();
+void   V2d<T>::limit(double sz); // limits size of vector
+
+double V2d<T>::angle() const;    // returns angle againt x-axis (positive angle = clockwise)
+void   V2d<T>::angle(float a);   // setter
+void   V2d<T>::rotate(float a);
+
+bool is_bound(const V2d<T> & lower,        // true if point at end of vector is within 
+              const V2d<T> & upper) const; // bounding box defined by [lower; upper]  
+```
+
+####`fbg::Window`: The static window. 
+This class is used for creating static images, or user-controlled animations. When an instance of the `fbg::Window` class is created, a window is created an initialized. After this, objects derived from the `fbg::Shape`-class can be attached to the window using `Window::attach`.
+```C++
+int main() 
+{
+   Window window { <Title in top bar>, <width>, <height>};
+   Line line { 50, 50, 100, 100 };
+   window.attach(line);
+
+   // ...
+```
+
+The attached shapes are drawn to then window, when the `Window::update` method is called. Don't forget to have a way to stop the program from exiting, though. Here, i just use `Window::wait_for_key`, with no arguments, which simply waits until any key is pressed.
+```C++
+   // ...  
+   window.update();
+   window.wait_for_key();
+
+   return 0;
+}
+```
+
+##### Methods:
+```C++
+void Window::background(Rgba color);   // Setter for background color.
+void Window::background(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void Window::background(uint8_t r, uint8_t g, uint8_t b);
+void Window::background(uint8_t brightness, uint8_t alpha);
+void Window::background(uint8_t brightness);
+
+void Window::attach(Shapes & ... ss);  // Attach any number of shapes to this Window.
+void Window::detach(Shape & s)         // Detach shape from window.
+
+void Window::update();                 // Render the currently attached shapes to the window
+
+void Window::wait_for_key(Key k);      // Wait for given key to be pressed
+void Window::wait_for_key();           // Wait for any key to be pressed
+
+int Window::width();                   // sets/gets the current width of the window
+int Window::height();                  // sets/gets the current height of the window
+
+V2d<int> Window::dimensions();         // returns a vector with coordinates (width, height);
+```
+
+
+#### `fbg::LoopWin`: The dynamic window
+This class is derived from `fbg::Window`, which means, that all methods  of  `fbg::Window` can be used. 
+The difference between the two classes, is that the `fbg::LoopWin` object has the method `LoopWin::run`, which starts a loop at 60 fps. The attached objects to the window are drawn at every frame of this loop.
+Furthermore, the loop calls the user-defined `LoopWin::draw` function, which can be defined using a lambda-expression.
+```C++
+int main() 
+{
+   Window window { <Title in top bar>, <width>, <height>};
+   Circle circle { 0, 0, 100 };
+   window.attach(Circle);
+
+   window.draw = [](float frametime) {
+      // user defined function
+      // ...
+      // change position, size, color of shapes 
+      //   according to game/animation
+   };
+
+   window.run(); // don't forget!
+   
+   return 0;
+}
+```
+
+##### Methods & fields
+See above: `fbg::Window` methods are inhertied, and therefore accessible
+```C++
+*ALL METHODS OF fbg::Window are usable*
+
+// user defined stored functions:
+std::function<void(float dt)> draw;       // called before frame is rendered in run() loop
+                                          //  - gives frametime of last frame as a parameter (dt)
+std::function<void(float dt)> after_draw; // called after frame is rendered in run() loop
+std::function<void(void)>     before_run; // called right after Window::run is called.
+
+// Methods:
+void  LoopWin::framerate(float f); // setter
+float LoopWin::framerate() const;  // getter
+
+int   LoopWin::framesElapsed() const; // returns number of frames completed since window was created
+
+void  LoopWin::run()                  // Run gameloop. Stops execution until window closes. */
+```
+
+### Shapes
+
+#### `fbg::Rect`: The rectangle class
+
 
 ## Particle-system: Bouncy-balls
 The following example produces the following output:
