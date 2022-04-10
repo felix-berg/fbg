@@ -350,6 +350,7 @@ public:
    void update(float dt);
    bool collides_with(const Particle &);
    void bounce_on_walls(const Window *);
+   void set_alpha(uint8_t);
 };
 ```
 
