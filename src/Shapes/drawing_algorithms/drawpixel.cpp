@@ -1,6 +1,6 @@
-#include "drawpixel.hpp"
-#include "drawcircle.hpp"
-#include "../../alphacomposite.hpp"
+#include "Shapes/drawing_algorithms/drawpixel.hpp"
+#include "Shapes/drawing_algorithms/drawcircle.hpp"
+#include "alphacomposite.hpp"
 
 using namespace fbg;
 

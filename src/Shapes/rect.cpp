@@ -1,7 +1,7 @@
-#include "rect.hpp"
-#include "drawing_algorithms/drawrect.hpp"
-#include "drawing_algorithms/drawline.hpp"
-#include "drawing_algorithms/drawpolyline.hpp"
+#include "Shapes/rect.hpp"
+#include "Shapes/drawing_algorithms/drawrect.hpp"
+#include "Shapes/drawing_algorithms/drawline.hpp"
+#include "Shapes/drawing_algorithms/drawpolyline.hpp"
 
 #include <cmath>
 

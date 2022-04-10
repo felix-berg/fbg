@@ -1,30 +1,38 @@
 cmake_minimum_required(VERSION 3.10)
-
-project(fbg)
-add_library(fbg INTERFACE)
+project(fbg VERSION 1.0.1 DESCRIPTION "Felix Berg 2D Graphics Library")
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -O3 -mavx2")
 
-add_subdirectory(external/SDL)
-add_subdirectory(external/fbtt)
+include_directories(${PROJECT_NAME} 
+   PRIVATE include 
+   PRIVATE src
+)
 
-target_include_directories(${PROJECT_NAME} INTERFACE include)
+add_library(${PROJECT_NAME}
+   src/Shapes/circle.cpp    src/Shapes/image.cpp  src/Shapes/line.cpp  
+   src/Shapes/polyline.cpp  src/Shapes/rect.cpp   src/Shapes/shape.cpp  
+   src/Shapes/triangle.cpp
 
-target_include_directories(${PROJECT_NAME} 
-   INTERFACE include
-   INTERFACE external/fbtt/include
-   INTERFACE external/SDL/include
+   src/alphacomposite.cpp  src/frame.cpp  src/rgba.cpp  
+   src/SDL_Handler.cpp     src/Window.cpp
+
+   src/Shapes/BMP/bmp.cpp
+
+   src/Shapes/drawing_algorithms/bresenham.cpp     src/Shapes/drawing_algorithms/drawcircle.cpp  
+   src/Shapes/drawing_algorithms/drawline.cpp      src/Shapes/drawing_algorithms/drawpixel.cpp  
+   src/Shapes/drawing_algorithms/drawpolyline.cpp  src/Shapes/drawing_algorithms/drawrect.cpp
+)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER include/fbg.hpp)
+   
+target_include_directories(${PROJECT_NAME}
+   PRIVATE include
 )
 
 target_link_directories(${PROJECT_NAME}
-   INTERFACE src
-   INTERFACE external/SDL/src
-)
-
-target_link_libraries(${PROJECT_NAME}
-   INTERFACE fbtt
-   INTERFACE SDL2
+   PUBLIC src
 )
 
 find_package(Git QUIET)
@@ -45,3 +53,4 @@ if (NOT EXISTS "${PROJECT_SOURCE_DIR}/external/fbtt/CMakeLists.txt" OR
 
     message(FATAL_ERROR "Couldn't load SDL or fbtt!")
 endif()
+

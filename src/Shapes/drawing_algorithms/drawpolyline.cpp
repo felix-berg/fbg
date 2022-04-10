@@ -1,8 +1,8 @@
 
-#include "drawpolyline.hpp"
-#include "bresenham.hpp"
-#include "drawline.hpp"
-#include "drawpixel.hpp"
+#include "Shapes/drawing_algorithms/drawpolyline.hpp"
+#include "Shapes/drawing_algorithms/bresenham.hpp"
+#include "Shapes/drawing_algorithms/drawline.hpp"
+#include "Shapes/drawing_algorithms/drawpixel.hpp"
 
 #include <functional>
 

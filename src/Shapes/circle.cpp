@@ -1,5 +1,5 @@
-#include "drawing_algorithms/drawcircle.hpp"
-#include "circle.hpp"
+#include "Shapes/drawing_algorithms/drawcircle.hpp"
+#include "Shapes/circle.hpp"
 
 using namespace fbg;
 

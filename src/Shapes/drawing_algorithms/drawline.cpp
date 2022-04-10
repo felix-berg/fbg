@@ -1,7 +1,7 @@
-#include "drawline.hpp"
-#include "drawpixel.hpp"
-#include "drawcircle.hpp"
-#include "bresenham.hpp"
+#include "Shapes/drawing_algorithms/drawline.hpp"
+#include "Shapes/drawing_algorithms/drawpixel.hpp"
+#include "Shapes/drawing_algorithms/drawcircle.hpp"
+#include "Shapes/drawing_algorithms/bresenham.hpp"
 
 #include <vector>
 

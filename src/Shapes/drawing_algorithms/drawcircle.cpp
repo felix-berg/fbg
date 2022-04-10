@@ -1,8 +1,8 @@
 
-#include "drawcircle.hpp"
-#include "drawpixel.hpp"
-#include "../../frame.hpp"
-#include "bresenham.hpp"
+#include "Shapes/drawing_algorithms/drawcircle.hpp"
+#include "Shapes/drawing_algorithms/drawpixel.hpp"
+#include "frame.hpp"
+#include "Shapes/drawing_algorithms/bresenham.hpp"
 
 #include <array>
 #include <vector>

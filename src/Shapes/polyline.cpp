@@ -1,6 +1,6 @@
-#include "polyline.hpp"
-#include "drawing_algorithms/drawline.hpp"
-#include "drawing_algorithms/drawpolyline.hpp"
+#include "Shapes/polyline.hpp"
+#include "Shapes/drawing_algorithms/drawline.hpp"
+#include "Shapes/drawing_algorithms/drawpolyline.hpp"
 
 using namespace fbg;
 

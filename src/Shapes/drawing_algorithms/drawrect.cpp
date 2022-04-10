@@ -1,5 +1,5 @@
-#include "drawrect.hpp"
-#include "drawpixel.hpp"
+#include "Shapes/drawing_algorithms/drawrect.hpp"
+#include "Shapes/drawing_algorithms/drawpixel.hpp"
 
 using namespace fbg;
 

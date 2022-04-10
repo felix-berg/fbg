@@ -1,8 +1,8 @@
-#include "line.hpp"
-#include "../V2d.hpp"
-#include "../rgba.hpp"
-#include "drawing_algorithms/drawline.hpp"
-#include "../alphacomposite.hpp"
+#include "Shapes/line.hpp"
+#include "V2d.hpp"
+#include "rgba.hpp"
+#include "Shapes/drawing_algorithms/drawline.hpp"
+#include "alphacomposite.hpp"
 
 #include <iostream>
 #include <cmath>

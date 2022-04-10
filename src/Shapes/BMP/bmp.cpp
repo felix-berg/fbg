@@ -1,4 +1,4 @@
-#include "bmp.hpp"
+#include "Shapes/BMP/bmp.hpp"
 
 #include <fstream>
 #include <iostream>

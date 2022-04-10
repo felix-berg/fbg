@@ -1,4 +1,4 @@
-#include "bresenham.hpp"
+#include "Shapes/drawing_algorithms/bresenham.hpp"
 
 /*	Bresenhams line algorithm: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
    Case for when absolute change in x is greater than absolute change in y. abs(gradient) < 1.
