@@ -4,7 +4,7 @@ project(fbg)
 add_library(fbg INTERFACE)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FALGS "${CMAKE_CXXFLAGS} -std=c++20")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 target_include_directories(${PROJECT_NAME} INTERFACE include)
 
