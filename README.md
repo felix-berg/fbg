@@ -119,7 +119,7 @@ void Window::background(uint8_t brightness, uint8_t alpha);
 void Window::background(uint8_t brightness);
 
 void Window::attach(Shapes & ... ss);  // Attach any number of shapes to this Window.
-void Window::detach(Shape & s)         // Detach shape from window.
+void Window::detach(Shape & s);        // Detach shape from window.
 
 void Window::update();                 // Render the currently attached shapes to the window
 
