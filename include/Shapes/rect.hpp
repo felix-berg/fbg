@@ -74,14 +74,14 @@ namespace fbg {
 
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
-      void width(int w)  { 
-         if (w < 0.0f) throw InvalidSize(w);
+      void width(float w)  { 
+         if (w < 0.0f) throw InvalidSize (w);
          m_w = w; 
       };
 
       /** Setter for width of rectangle.
        * @param w: Width of rectangle. */
-      void height(int h) { 
+      void height(float h) { 
          if (h < 0.0f) throw InvalidSize(h);
          m_h = h; };
 
@@ -97,7 +97,7 @@ namespace fbg {
        * @returns Angle of rectangle */
       float angle() const 
       {
-         return (get_point(1) - get_point(0)).angle();
+         return float((get_point(1) - get_point(0)).angle());
       }
       
    protected:

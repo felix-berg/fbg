@@ -112,7 +112,7 @@ std::vector<int> & limit_stroke_pattern_to_stroke_weight(const std::vector<int> 
    int lineY = static_cast<int> (std::round(std::sin(std::atan(gradient)) * float(sw))); // sin(atan(gradient)) * strokeweight
 
    // remove top and bottom lines according to gradient
-   int n_linesToRemove = s_limitedStrokePattern.size() - lineY;
+   int n_linesToRemove = (int) s_limitedStrokePattern.size() - lineY;
 
    for (int i = 0; i < n_linesToRemove; i++) {
       bool isEven = i % 2 == 0;
@@ -191,7 +191,7 @@ std::vector<int> & get_circle_stroke_pattern(int patternHeight)
 /** Draw the given stroke pattern to the (cx, cy) coordinate. */
 void draw_stroke_pattern(const std::vector<int> & strokePattern, int cx, int cy, std::function<void(int x, int y)> setpx) 
 {
-   int sz = strokePattern.size();
+   int sz = int(strokePattern.size());
    for (int y = 0; y < sz; y++) {
       if (strokePattern[y] == NONE) continue;
 
@@ -274,8 +274,8 @@ void draw_stroke_line_low(int fx, int fy, int tx, int ty, int sw, LineMode mode,
    // calculate the offsets from the edge of the line 
    // to the center of the circle
    float gradient = std::atan(float(ty - fy) / float(tx - fx));       // a = tan^-1(dy / dx)
-   int xOffset    = std::cos(gradient) * float(patternHeight) * 0.5f; // a = cos(A) * c
-   int yOffset    = std::sin(gradient) * float(patternHeight) * 0.5f; // a = cos(A) * c
+   int xOffset    = static_cast<int>(std::cos(gradient) * float(patternHeight) * 0.5f); // a = cos(A) * c
+   int yOffset    = static_cast<int>(std::sin(gradient) * float(patternHeight) * 0.5f); // a = cos(A) * c
 
    // the edges of the circle -> where the algorithm has to step from and to
    int algoFromX, algoFromY, algoToX, algoToY;
