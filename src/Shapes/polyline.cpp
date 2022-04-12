@@ -20,7 +20,7 @@ void fbg::Polyline::draw_stroke(Frame & frame) const {
 
    // if polyline is closed, draw the remaining line.
    if (!m_open) {
-      from = get_point(num_points() - 1);
+      from = get_point(int(num_points()) - 1);
       to = get_point(0);
       compute_line_stroke(frame, from.x, from.y, to.x, to.y, stroke(), strokeweight(), LineMode::ROUGH);
    }

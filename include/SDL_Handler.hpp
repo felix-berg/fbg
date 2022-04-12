@@ -45,8 +45,8 @@ namespace fbg {
       bool isOpen() const { return m_isOpen; };
 
    protected:
-      Rgba get_pixel(u_int n)          const { return frame.pixels[n]; };
-      Rgba get_pixel(u_int x, u_int y) const { return frame.get(x, y); };
+      Rgba get_pixel(unsigned int n)                 const { return frame.pixels[n]; };
+      Rgba get_pixel(unsigned int x, unsigned int y) const { return frame.get(x, y); };
 
       void set_pixel(const V2d<int> & p, const Rgba & px);
 

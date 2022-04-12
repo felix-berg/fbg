@@ -17,8 +17,8 @@ void Line::draw_stroke(Frame & frame) const
 {
    if (!m_doStroke) return;
 
-   V2d<float> f = from();
-   V2d<float> t = to();
+   V2d<int> f = from();
+   V2d<int> t = to();
    
    LineMode m;
    

@@ -1,6 +1,8 @@
 #ifndef CIRCLE_HPP
 #define CIRCLE_HPP
 
+#include <iostream>
+
 #include "shape.hpp"
 #include "../V2d.hpp"
 #include "../frame.hpp"

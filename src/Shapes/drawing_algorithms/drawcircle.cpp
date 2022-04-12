@@ -81,7 +81,7 @@ void double_octant_stroke_to_quartant(std::vector<int> & strokePattern)
 
    // copy all points from the first octant to the joined octant
    // x becomes y, and y becomes x
-   for (size_t y = 0; y < strokePattern.size(); y++)
+   for (int y = 0; y < strokePattern.size(); y++)
       strokePattern[strokePattern[y]] = y;
 }
 
@@ -105,7 +105,7 @@ void compute_circle_stroke_multi(Frame & frame, int cx, int cy, int r, Rgba colo
    
    innerCircleStroke.resize(outerCircleStroke.size(), NONE);
 
-   for (size_t y = 0; y < outerCircleStroke.size(); y++) {
+   for (int y = 0; y < outerCircleStroke.size(); y++) {
       int innerX = innerCircleStroke[y];
       int outerX = outerCircleStroke[y];
 
@@ -141,8 +141,8 @@ void fbg::compute_circle_stroke(Frame &frame, int cx, int cy, int r, Rgba color,
 void fbg::compute_circle_fill(Frame &frame, int cx, int cy, int r, Rgba color) 
 {
    float fr = static_cast<float> (r);
-   int posLimitY = (sin45 * fr);
-   int negLimitY = (0.0f - sin45 * fr);
+   int posLimitY = static_cast<int>(sin45 * fr);
+   int negLimitY = static_cast<int>(0.0f - sin45 * fr);
 
    bresenham_circle(r, [&](int x, int y) -> void {
       bool yIsNot0 = y != 0;

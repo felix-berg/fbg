@@ -37,7 +37,7 @@ namespace fbg {
       Context() : Context { { 0.0f, 0.0f } } {  };
 
       /** @return Number of shapes in the object */
-      int numShapes() const { return m_shapes.size(); };
+      size_t numShapes() const { return m_shapes.size(); };
 
       /** @return Vector of pointers to the current shapes */
       const std::vector<Shape *> & getShapes() const { return m_shapes; };
@@ -106,7 +106,7 @@ namespace fbg {
 
       /** Getter for angle of context 
        * @returns Angle of context */
-      float angle() const { return (get_point(1) - get_point(0)).angle(); };
+      float angle() const { return (float) (get_point(1) - get_point(0)).angle(); };
 
       // copy undefined, because shapes are
       // stored as pointers.

@@ -2,6 +2,8 @@
 #define PIXELGRID_HPP
 
 #include <cstring> // memset
+#include <iostream>
+#include <string>
 
 #include "rgba.hpp"
 #include "alphacomposite.hpp"

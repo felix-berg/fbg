@@ -1,12 +1,13 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-#include <vector>
 #include "../V2d.hpp"
 #include "../rgba.hpp"
 #include "../frame.hpp"
 
+#include <vector>
 #include <cmath>
+#include <cstdint>
 
 unsigned int get_unique_id();
 
@@ -180,7 +181,7 @@ namespace fbg {
       const std::vector<V2d<float>> & get_points() const { return m_points; }; 
 
       // get number of points currently added to shape
-      int num_points() const { return m_points.size(); };
+      size_t num_points() const { return m_points.size(); };
 
       // get unique id
       unsigned int id() const { return m_id; };
