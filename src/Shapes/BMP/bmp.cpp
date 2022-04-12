@@ -3,7 +3,12 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <cstdint>
 #include <memory.h>
+
+typedef unsigned int u_int;
+typedef unsigned char u_char;
+typedef unsigned short u_short;
 
 template <typename T>
 void swap_values(T * ptr1, T * ptr2) {

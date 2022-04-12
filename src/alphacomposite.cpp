@@ -36,7 +36,7 @@ void fbg::alpha_composite1(Rgba * dst, const Rgba * over)
 
 void fbg::alpha_composite8(Rgba * dst, Rgba * over) 
 {
-   const __m256i _255 = _mm256_set1_epi8(0xFF);
+   const __m256i _255 = _mm256_set1_epi8(0b11111111);
 
    // c = (over.x * over.a + dst.x * (255 - over.a)) / 255
    // rest = 255 - over.a;
@@ -88,7 +88,7 @@ void fbg::alpha_composite8(Rgba * dst, Rgba * over)
    // new dst = dst.x * _rest
    _mm_mult_epu8_into_2epu16(_dst, _rest, &_lnDst16, &_hnDst16);
 
-   __m256i _nOver, _lnOver16, _hnOver16; // new over low part and high part
+   __m256i _lnOver16, _hnOver16; // new over low part and high part
    // new over = (over.x * over.a) / 255
    _mm_mult_epu8_into_2epu16(_over, _oa, &_lnOver16, &_hnOver16);
 

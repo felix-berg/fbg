@@ -4,7 +4,7 @@
 
 #include <string>
 
-class RawBmp;
+struct RawBmp;
 
 namespace fbg {
    Frame create_frame(const std::string & filename);

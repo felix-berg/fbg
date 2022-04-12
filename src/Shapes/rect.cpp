@@ -95,7 +95,7 @@ void Rect::draw_fill(Frame & frame) const
 {
    if (!m_doFill) return;
 
-   float angle = (get_point(1) - pos()).angle();
+   float angle = (float) (get_point(1) - pos()).angle();
    float modAngle = std::fmod(angle, twoPi);
 
    if (modAngle < aaThreshold && modAngle > -aaThreshold) {
@@ -109,7 +109,7 @@ void Rect::draw_fill(Frame & frame) const
       } else
          tl = pos();
 
-      compute_AA_rect_fill(frame, tl.x, tl.y, width(), height(), fill());
+      compute_AA_rect_fill(frame, int(tl.x), int(tl.y), int(width()), int(height()), fill());
    } else {
 
       RectCorners crs = get_corners();
