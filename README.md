@@ -140,7 +140,7 @@ Furthermore, the loop calls the user-defined `LoopWin::draw` function, which can
 ```C++
 int main() 
 {
-   Window window { <Title in top bar>, <width>, <height>};
+   LoopWin window { <Title in top bar>, <width>, <height>};
    Circle circle { 0, 0, 100 };
    window.attach(Circle);
 
