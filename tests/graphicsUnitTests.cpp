@@ -1,5 +1,5 @@
-#include "../fbg.hpp"
-#include "fbTestingTool.hpp"
+#include <fbg.hpp>
+#include <fbtt.hpp>
 
 void float_vector_test();
 void alpha_composite_test();
