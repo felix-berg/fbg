@@ -122,6 +122,11 @@ namespace fbg {
          return allDrawable;
       }
 
+      Context(const Context&) = delete;
+      Context& operator=(const Context&) = default;
+      Context(Context&&) = default;
+      Context& operator=(Context&&) = default;
+
    private:
       friend class Window; // allow for window to use draw_fill
 
