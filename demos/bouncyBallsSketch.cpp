@@ -53,32 +53,32 @@ public:
    ParticleSystem(size_t num, const Window * w)
       : Context { }, windowPtr { w }
    { 
-      m_particles.reserve(num);
+      particles_.reserve(num);
 
       float particleRadius = 20.0f;
 
       for (size_t i = 0; i < num; i++) {
-         m_particles.push_back(Particle {
+         particles_.push_back(Particle {
             (float) random(particleRadius, w->width()  - particleRadius),
             (float) random(particleRadius, w->height() - particleRadius),
             particleRadius
          });
 
-         this->attach(m_particles.back());
+         this->attach(particles_.back());
       }
    }
 
    void update(float dt)
    {
 
-      std::for_each(m_particles.begin(), m_particles.end(), [](auto & p) { 
+      std::for_each(particles_.begin(), particles_.end(), [](auto & p) { 
          p.set_alpha(140);
       });
 
-      for (size_t i = 0; i < m_particles.size(); i++) {
-         Particle & p = m_particles[i];
-         for (size_t j = i + 1; j < m_particles.size(); j++) {
-            Particle & o = m_particles[j];
+      for (size_t i = 0; i < particles_.size(); i++) {
+         Particle & p = particles_[i];
+         for (size_t j = i + 1; j < particles_.size(); j++) {
+            Particle & o = particles_[j];
 
             if (p.collides_with(o)) {
                p.velocity += (p.pos() - o.pos());
@@ -90,14 +90,14 @@ public:
          }
       }
 
-      for (Particle & p : m_particles) {
+      for (Particle & p : particles_) {
          p.bounce_on_walls(windowPtr);
          p.update(dt);
       }
    }
 
 private:
-   std::vector<Particle> m_particles;
+   std::vector<Particle> particles_;
    const Window * windowPtr;
 };
 

@@ -19,6 +19,7 @@ int main()
    return 0;
 }
 
+
 void float_vector_test()
 {
    MultiTest<V2d<float>> newVector { "Test of V2d vector class" };

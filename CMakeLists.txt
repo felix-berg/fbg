@@ -14,7 +14,7 @@ elseif (WIN32)
 endif()
 
 
-# update modules (git submodule update --init --recursive)R
+# update modules (git submodule update --init --recursive)
 find_package(Git QUIET)
 IF (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
    option(GIT_SUBMODULE "Check submodules during build" ON)
@@ -64,15 +64,15 @@ configure_file(${PROJECT_NAME}.pc.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONL
 add_subdirectory(external/fbtt)
 add_subdirectory(external/SDL)
 
-
 # headers for all directories
 target_include_directories(${PROJECT_NAME}
-   PUBLIC external/fbtt/include
-   PUBLIC external/SDL/include
+   PRIVATE external/fbtt/include
+   PRIVATE external/SDL/include
+   PUBLIC include
 )
 
 target_link_directories(${PROJECT_NAME}
-   PUBLIC external/SDL/src
+   PRIVATE external/SDL/src
 )
 
 target_link_libraries(${PROJECT_NAME}

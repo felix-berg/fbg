@@ -41,6 +41,7 @@ void SDLHandler::set_pixel(const V2d<int> & p, const Rgba & px)
    static int i = 0;
    frame.pixels[p.y * width() + p.x] = px;
 }
+
 /** Set all pixel to color */
 void SDLHandler::clear_pixels(Rgba color) 
 {

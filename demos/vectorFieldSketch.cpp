@@ -96,26 +96,26 @@ public:
 
    ParticleSystem(int num, const LoopWin & win) : Context { } 
    {
-      m_particles.reserve(num);
+      particles_.reserve(num);
       for (size_t i = 0; i < num; i++) {
-         m_particles.push_back({
+         particles_.push_back({
             fbg::random(win.width()), 
             fbg::random(win.height())});
          
-         this->attach(m_particles.back());
+         this->attach(particles_.back());
       }
    }
 
    void update(const Grid & grid, float dt) 
    {
-      for (Particle & p : m_particles) {
+      for (Particle & p : particles_) {
          p.acc += grid.velocity_at(p.pos()) * gridPushingStrength;
          p.update(dt);
       }
    }
 
    void wrap_to_screen(const LoopWin & win) {
-      for (Particle & particle : m_particles) {
+      for (Particle & particle : particles_) {
          V2d<float> p { particle.pos() };
          if (p.x < 0)            p.x += win.width();
          if (p.x >= win.width()) p.x -= win.width();
@@ -128,7 +128,7 @@ public:
    }
 
 private:
-   std::vector<Particle> m_particles;
+   std::vector<Particle> particles_;
 };
 
 int main() {

@@ -27,7 +27,7 @@ namespace fbg {
          stroke(0);
          fill(255);
       };
-
+      
       /** Constructor for circle class.
        * @param x: x-value for center point.
        * @param y: y-value for center point.
