@@ -122,7 +122,7 @@ namespace fbg {
          return allDrawable;
       }
 
-      Context(const Context&) = delete;
+      Context(const Context&) = default;
       Context& operator=(const Context&) = default;
       Context(Context&&) = default;
       Context& operator=(Context&&) = default;
