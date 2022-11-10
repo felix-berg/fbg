@@ -108,11 +108,6 @@ namespace fbg {
        * @returns Angle of context */
       float angle() const { return (float) (get_point(1) - get_point(0)).angle(); };
 
-      // copy undefined, because shapes are
-      // stored as pointers.
-      Context (const Context &) = delete;
-      Context & operator = (const Context &) = delete;
-
       bool isDrawable()
       {
          bool allDrawable = true;
