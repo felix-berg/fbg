@@ -60,25 +60,23 @@ add_library(${PROJECT_NAME}
 # allow for make install
 configure_file(${PROJECT_NAME}.pc.in ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc @ONLY)
 
-# add the to cmake directories "external/fbtt" and "external/SDL"
-add_subdirectory(external/fbtt)
-add_subdirectory(external/SDL)
 
 # headers for all directories
 target_include_directories(${PROJECT_NAME}
-   PRIVATE external/fbtt/include
-   PRIVATE external/SDL/include
-   PUBLIC include
+PRIVATE external/fbtt/include
+PRIVATE external/SDL/include
+PUBLIC include
 )
 
-target_link_directories(${PROJECT_NAME}
-   PRIVATE external/SDL/src
-)
 
+
+# add the to cmake directories "external/fbtt" and "external/SDL"
+add_subdirectory(external/fbtt)
+add_subdirectory(external/SDL)
 target_link_libraries(${PROJECT_NAME}
    PRIVATE SDL2main
    PRIVATE SDL2
-   PUBLIC fbtt
+   PRIVATE fbtt
 )
 
 # allow for make install
