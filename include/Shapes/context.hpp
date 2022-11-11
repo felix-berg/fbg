@@ -122,6 +122,8 @@ namespace fbg {
       Context(Context&&) = default;
       Context& operator=(Context&&) = default;
 
+      virtual ~Context() { };
+
    private:
       friend class Window; // allow for window to use draw_fill
 

@@ -139,6 +139,8 @@ namespace fbg {
          }
       }
 
+      virtual ~Shape() { };
+
    protected:
       // Default constructor
       Shape() { 
